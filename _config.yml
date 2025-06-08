@@ -1,19 +1,19 @@
 title: CheckIT-Core Documentation
-description: Professional PowerShell module for Windows computer management in domain environments
+description: Professional PowerShell module for Windows computer management
 baseurl: "/CheckIT-Documentation"
 url: "https://nyantoasty.github.io"
 
 # Theme and plugins
-theme: jekyll-theme-slate
+theme: minima
 plugins:
   - jekyll-feed
   - jekyll-sitemap
 
-# Jekyll settings
+# Remove SCSS settings since we're using plain CSS
 markdown: kramdown
 highlighter: rouge
 
-# Site navigation
+# Navigation
 header_pages:
   - README.md
   - implementation-status.md
@@ -26,5 +26,6 @@ header_pages:
 github_username: nyantoasty
 repository: nyantoasty/CheckIT-Documentation
 
-# Show excerpts on home page
+# Additional settings
 show_excerpts: false
+future: false
