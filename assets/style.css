@@ -198,3 +198,54 @@ th {
     font-size: 1.8rem;
   }
 }
+
+
+/* Custom header styling */
+.site-header {
+  background: #1a1f29 !important;
+  border-bottom: 1px solid #374151 !important;
+  padding: 1rem 0 !important;
+}
+
+.site-header .wrapper {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+/* Hide the checkbox and menu icon completely */
+#nav-trigger,
+.menu-icon,
+.nav-trigger {
+  display: none !important;
+}
+
+/* Ensure navigation is always visible */
+.site-nav {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.site-nav .page-link {
+  color: #e6e8eb !important;
+  margin-left: 1.5rem !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.site-nav .page-link:hover {
+  color: #3b82f6 !important;
+}
+
+/* Mobile responsive navigation */
+@media (max-width: 768px) {
+  .site-nav {
+    flex-direction: column !important;
+    align-items: flex-end !important;
+  }
+  
+  .site-nav .page-link {
+    margin: 0.25rem 0 !important;
+    margin-left: 0 !important;
+  }
+}
