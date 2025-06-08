@@ -261,11 +261,6 @@ a:hover {
   margin-left: 1rem !important;
 }
 
-/* Ensure proper indentation is preserved */
-.highlight pre {
-  padding-left: 2rem !important;
-  text-indent: 0 !important;
-}
 
 /* Tables - Ultra Comfortable Dark Theme */
 table {
