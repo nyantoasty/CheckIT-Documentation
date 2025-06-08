@@ -4,7 +4,7 @@ baseurl: "/CheckIT-Documentation"
 url: "https://nyantoasty.github.io"
 
 # Theme and plugins
-theme: minima
+theme: jekyll-theme-slate
 plugins:
   - jekyll-feed
   - jekyll-sitemap
