@@ -250,16 +250,6 @@ a:hover {
   background: none !important;
 }
 
-/* Add left margin to code content */
-.highlight code {
-  margin-left: 1rem !important;
-  display: block !important;
-}
-
-/* Better spacing for code lines */
-.highlight .line {
-  margin-left: 1rem !important;
-}
 
 
 /* Tables - Ultra Comfortable Dark Theme */
