@@ -1,3 +1,10 @@
+---
+title: Quick Reference
+layout: default
+---
+
+<link rel="stylesheet" href="../assets/style.css">
+
 # CheckIT Quick Reference
 
 > Essential patterns, functions, and rules for rapid development and troubleshooting

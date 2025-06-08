@@ -1,3 +1,10 @@
+---
+title: API Reference
+layout: default
+---
+
+<link rel="stylesheet" href="../assets/style.css">
+
 # CheckIT API Reference
 
 > Complete function library with usage examples, status, and dependencies

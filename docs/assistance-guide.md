@@ -1,3 +1,10 @@
+---
+title: AI Collaboration Guide
+layout: default
+---
+
+<link rel="stylesheet" href="../assets/style.css">
+
 # AI-Assisted Development Guide
 
 > Specialized guidance for human and AI collaboration in CheckIT-Core development

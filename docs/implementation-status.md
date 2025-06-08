@@ -1,3 +1,10 @@
+---
+title: Implementation Status Dashboard
+layout: default
+---
+
+<link rel="stylesheet" href="../assets/style.css">
+
 # Implementation Status Dashboard
 
 > Current status of all CheckIT-Core functions based on code analysis and testing

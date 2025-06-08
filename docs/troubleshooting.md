@@ -1,3 +1,10 @@
+---
+title: Troubleshooting Guide
+layout: default
+---
+
+<link rel="stylesheet" href="../assets/style.css">
+
 # CheckIT Troubleshooting Guide
 
 > Solutions, fixes, and anti-patterns for CheckIT-Core development and deployment
