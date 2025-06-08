@@ -14,12 +14,13 @@ highlighter: rouge
 
 # Navigation - matches the files you copied
 header_pages:
-  - README.md
-  - implementation-status.md
-  - api-reference.md
-  - developer-guide.md
-  - quick-reference.md
-  - troubleshooting.md
+  - docs/README.md
+  - docs/implementation-status.md
+  - docs/api-reference.md
+  - docs/developer-guide.md
+  - docs/quick-reference.md
+  - docs/troubleshooting.md
+  - CHANGELOG.md
 
 # GitHub integration
 github_username: nyantoasty
