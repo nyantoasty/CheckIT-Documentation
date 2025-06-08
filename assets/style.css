@@ -166,7 +166,6 @@ a:hover {
   max-width: 1200px;
 }
 
-
 /* Code blocks - PowerShell Solarized Theme */
 pre, code {
   background: #002b36 !important;
@@ -177,7 +176,7 @@ pre, code {
 }
 
 pre {
-  padding: 1.5rem !important;
+  padding: 2rem !important;  /* Increased padding for better spacing */
   overflow-x: auto !important;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
   margin: 1.5rem 0 !important;
@@ -212,7 +211,7 @@ code {
 
 .highlight .nv,   /* Variables */
 .highlight .vg {  /* Global variables */
-  color: #268bd2 !important;
+  color: #58c5f1 !important;  /* Changed from dark blue to bright cyan */
 }
 
 .highlight .n,    /* Names/Functions */
@@ -241,7 +240,7 @@ code {
 
 /* PowerShell specific highlighting */
 .highlight .na {  /* Parameter names */
-  color: #6c71c4 !important;
+  color: #8cc4ff !important;  /* Changed from dark purple to light blue */
 }
 
 .highlight .err { /* Errors */
