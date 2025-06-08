@@ -24,7 +24,7 @@ header_pages:
 
 # GitHub integration
 github_username: nyantoasty
-repository: nyantoasty/CheckIT-Documentation
+repository: nyantoasty/CheckIt-Documentation
 
 show_excerpts: false
 future: false
