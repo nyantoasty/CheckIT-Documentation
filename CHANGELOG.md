@@ -1,12 +1,9 @@
 ---
-title: Developer Guide
+title: Changelog
 layout: default
 ---
 
 <link rel="stylesheet" href="../assets/style.css">
-
-# CheckIT Developer Guide
-
 
 # CheckIT-Core Changelog    
     ## 2025-06-07 - Documentation Synchronization and Version Updates
