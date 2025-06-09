@@ -55,10 +55,6 @@ Invoke-NodeCommand -Nodes $nodes -ScriptBlock { Get-ComputerInfo } -DryRun
 Test-NodeConnection -Nodes $nodes -OnlineOnly
 Test-NodeConnection -Nodes $nodes  # Full WinRM/WSMan/Credentials test
 
-# Hardware stats
-Get-NodeStats -Nodes $nodes -Mode Quick
-Get-NodeDiskInfo -Nodes $nodes -Mode Full
-
 # Remote system tools
 Open-RemoteSystemTools -Node "PC123"  # Interactive menu
 Open-RemoteSystemTools -Node "PC123" -Tool ComputerMgmt
@@ -129,7 +125,6 @@ Start-Test -Self -TemplateName "Custom Test"  # Test local machine
 | **Remote tools** | Open-RemoteSystemTools | ✅ Ready | ✅ | ✅ | MMC, credentials |
 | **User sessions** | Get-Users | ✅ Ready | ✅ | ✅ | Process-Parallel |
 | **Hardware stats** | Get-NodeStats | ✅ Ready | ✅ | ✅ | Process-Parallel, WMI |
-| **Disk information** | Get-NodeDiskInfo | ✅ Ready | ✅ | ✅ | Process-Parallel, WMI |
 | **File explorer** | Open-RemoteExplorer | ✅ Ready | ✅ | ✅ | cmdkey, rundll32 |
 | **AD integration** | AD, Get-ADMembership | ✅ Ready | ✅ | ✅ | Active Directory module |
 | **Template system** | Manage-Templates | ✅ Ready | ✅ | ✅ | Global stores |
@@ -140,7 +135,6 @@ Start-Test -Self -TemplateName "Custom Test"  # Test local machine
 | **Store management** | Manage-Store | ✅ Ready | ✅ | ✅ | Global stores |
 | **General** | Add-ChangelogEntry | ✅ Ready | ✅ | ✅ | Standard patterns |
 | **General** | Generate-DocumentationAnalysisPrompt | ✅ Ready | ✅ | ✅ | Standard patterns |
-| **Full diagnostics** | Get-NodeDiagnostics | 🚧 Placeholder | ❌ | ❌ | Multiple dependencies |
 
 ## 🏗️ Implementation Status by Region
 
@@ -164,8 +158,6 @@ Start-Test -Self -TemplateName "Custom Test"  # Test local machine
 
 #### Diagnostics & System Tools (95% Complete)
 - **Connectivity Testing**: Test-NodeConnection with WinRM, WSMan, and credential validation
-- **Hardware Information**: Get-NodeStats with quick/full modes and comprehensive data
-- **Disk Information**: Get-NodeDiskInfo with volume and space analysis
 - **Remote Management**: Open-RemoteSystemTools (MMC), Open-RemoteExplorer (file shares)
 - **Access Testing**: Test-RemoteSystemAccess for credential validation
 
@@ -200,11 +192,6 @@ Start-Test -Self -TemplateName "Custom Test"  # Test local machine
 - **Configuration Validation**: SanityCheck for common issues
 - **Documentation**: Add-ChangelogEntry for change tracking
 
-### 🚧 In Progress (1 Function)
-
-| Function | Status | Reason | Alternative Solution |
-|----------|--------|--------|---------------------|
-| Get-NodeDiagnostics | Nearly complete, needs testing | Low priority - comprehensive function | Use Get-NodeStats + Test-NodeConnection + Get-NodeDiskInfo |
 
 ## 📖 Detailed Function Reference
 

@@ -54,7 +54,7 @@ Export-ModuleMember -Function @('YourNewFunction')
 | **Node management** | NodeList, New-NodeObject | ✅ Ready | Preserves Passman status |
 | **Credential handling** | Process-Parallel -UseCredentials | ✅ Ready | Automatic resolution, Passman integration |
 | **Template system** | Manage-Templates | ✅ Ready | Command, Test, and Codebase templates |
-| **Full diagnostics** | Get-NodeDiagnostics | 🚧 Placeholder | Use Get-NodeStats + Test-NodeConnection |
+
 
 ## ⚡ Most Common Patterns (80% of functions use these)
 
@@ -119,14 +119,11 @@ Set-Report -ReportName "MyReport" -Function $func -Data $results
 ### ✅ Complete & Ready (95% of Core Functions)
 
 - **Main Tools**: Get-Software, Get-CCMPackages, Invoke-NodeCommand (100%)
-- **Diagnostics**: Open-RemoteSystemTools, Test-RemoteSystemAccess, Get-NodeStats (95%)
+- **Diagnostics**: Open-RemoteSystemTools, Test-RemoteSystemAccess (100%)
 - **Infrastructure**: NodeList, Process-Parallel, Credential Management (100%)
 - **Excel & Reporting**: Export-ToExcel, Invoke-Pivotizer, Set-Report (100%)
 - **Templates**: Manage-Templates with Codebase support (100%)
 
-### 🚧 In Progress
-
-- `Get-NodeDiagnostics` (placeholder only - use Get-NodeStats + Test-NodeConnection)
 
 ## 🛠️ Development Checklist
 

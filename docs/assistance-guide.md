@@ -222,11 +222,11 @@ $auditTemplate = @{
 
 #### **Pattern 1: Iterative Development**
 ```
-Human: "I need to check disk space on lab computers"
-AI: Suggests Get-NodeDiskInfo function and basic usage
-Human: "That works, but I need only computers with <20% free space"
-AI: Adds filtering logic and alert thresholds
-Human: "Perfect, now export critical ones to Excel for ticket creation"
+Human: "I need to check CCM packages on lab computers"
+AI: Suggests Get-CCMPackages function and basic usage
+Human: "That works, but I need to see which computers don't have a specific package installed. Can I install the package too?."
+AI: Adds filtering logic and which options to select to install.
+Human: "Perfect, now export the updated install status of the computers to Excel to verify readiness for classes."
 AI: Integrates Export-ToExcel with filtered results
 ```
 

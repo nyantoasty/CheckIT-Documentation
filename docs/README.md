@@ -206,8 +206,6 @@ Export-ToExcel -Sheets @{
 ### Data Collection
 - `Get-Software` - Software inventory and compliance checking
 - `Get-CCMPackages` - SCCM package discovery and management
-- `Get-NodeStats` - Hardware and system information
-
 ### Analysis & Reporting
 - `Get-SoftwareSampleAnalysis` - Statistical software analysis across OUs
 - `Export-ToExcel` - Structured Excel reports with multiple worksheets
