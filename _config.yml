@@ -20,6 +20,7 @@ header_pages:
   - docs/developer-guide.md
   - docs/quick-reference.md
   - docs/troubleshooting.md
+  - docs/assistance-guide.md
   - CHANGELOG.md
 
 # GitHub integration
