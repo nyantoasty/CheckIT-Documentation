@@ -44,19 +44,18 @@ a:hover {
   color: white;
 }
 
-.hero-section h1 {
-  color: white;
-  border-bottom: none;
-  margin-bottom: 1rem;
+.hero-section {
+  text-align: center !important;
+  padding: 2rem 1rem !important;
+  margin-bottom: 2rem !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-.hero-section blockquote {
-  background: rgba(255, 255, 255, 0.1);
-  border-left: 4px solid white;
-  color: white;
-  font-style: italic;
-  margin: 1rem auto;
-  max-width: 600px;
+.hero-section * {
+  background: transparent !important;
+  border: none !important;
 }
 
 /* Status container and badges */
