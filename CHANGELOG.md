@@ -3,7 +3,7 @@ title: Changelog
 layout: default
 ---
 
-<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="./assets/style.css">
 
 # CheckIT-Core Changelog    
     ## 2025-06-07 - Documentation Synchronization and Version Updates
