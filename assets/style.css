@@ -406,3 +406,29 @@ table, th, td {
     margin-left: 0 !important;
   }
 }
+
+/* Force dark theme on all Jekyll content containers */
+.main-content,
+.page-content,
+.post-content,
+.content,
+.wrapper > *,
+article,
+main,
+.site-content {
+  background: #1a1f29 !important;
+  color: #e6e8eb !important;
+}
+
+/* Override any white backgrounds */
+body * {
+  background-color: inherit !important;
+}
+
+/* Specific Jekyll layout overrides */
+.post,
+.page,
+.home {
+  background: #1a1f29 !important;
+  color: #e6e8eb !important;
+}
