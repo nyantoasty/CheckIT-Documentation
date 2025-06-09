@@ -168,6 +168,26 @@ a:hover {
 
 /* PowerShell Solarized Syntax Highlighting - Enhanced Readability */
 
+/* Base code styling */
+pre, code {
+  background: #002b36 !important;
+  color: #839496 !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
+}
+
+pre {
+  padding: 0 !important;
+  overflow-x: auto !important;
+  margin: 0 !important;
+}
+
+code {
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.9rem !important;
+}
+
 /* Add margin to code blocks for better spacing */
 .highlight {
   background: #002b36 !important;
@@ -231,11 +251,10 @@ a:hover {
   color: #859900 !important;
 }
 
-.highlight .p {   /* Punctuation */
-.highlight .bp {  /* Built-in pseudo */
-.highlight .vc {  /* Variable class */
-.highlight .vg {  /* Variable global */
-.highlight .vi {  /* Variable instance */
+.highlight .p,    /* Punctuation */
+.highlight .bp,   /* Built-in pseudo */
+.highlight .vc,   /* Variable class */
+.highlight .vi,   /* Variable instance */
 .highlight .il {  /* Integer long */
   color: #93a1a1 !important;
 }
@@ -250,7 +269,15 @@ a:hover {
   background: none !important;
 }
 
-
+/* Inline code in regular text */
+p code, li code, td code, th code {
+  background: #073642 !important;
+  color: #93a1a1 !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.25rem !important;
+  border: none !important;
+  font-size: 0.875rem !important;
+}
 
 /* Tables - Ultra Comfortable Dark Theme */
 table {
