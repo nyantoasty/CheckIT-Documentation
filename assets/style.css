@@ -264,6 +264,10 @@ code {
   color: #a78bfa !important;  /* Light purple - easier on eyes */
 }
 
+.highlight .nt {  /* HTML/XML tags - but also PowerShell parameters */
+  color: #a78bfa !important;  /* Same as parameters for consistency */
+}
+
 .highlight .err { /* Errors */
   color: #dc322f !important;
   background: none !important;
