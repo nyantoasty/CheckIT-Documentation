@@ -4,6 +4,7 @@ layout: default
 ---
 
 <link rel="stylesheet" href="../assets/style.css">
+
 # CheckIT Developer Guide
 
 > Comprehensive development patterns, rules, and workflows for CheckIT-Core
