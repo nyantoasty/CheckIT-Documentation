@@ -19,25 +19,53 @@ layout: default
 
 ## 📚 Documentation
 
-- **[Developer Guide](docs/developer-guide.md)** - Core patterns, rules, and Big 3 patterns
-- **[Troubleshooting](docs/troubleshooting.md)** - Technical solutions and anti-patterns  
-- **[API Reference](docs/api-reference.md)** - Function status and usage examples
-- **[Assistance Guide](docs/assistance-guide.md)** - Development guidelines intended for AI and/or human collaboration
-- **[Implementation Status](docs/implementation-status.md)** - Current completion status
+- **[Developer Guide](docs/developer-guide.md)** - Enhanced patterns, template-driven development, and The Big 3 patterns
+- **[Troubleshooting](docs/troubleshooting.md)** - Solutions including template system troubleshooting and session automation
+- **[API Reference](docs/api-reference.md)** - Complete function library with enhanced template workflow system
+- **[Assistance Guide](docs/assistance-guide.md)** - Human-AI collaboration patterns for CheckIT development
+- **[Implementation Status](docs/implementation-status.md)** - Current completion status (100% complete - all 71 functions operational)
+- **[Quick Reference](docs/quick-reference.md)** - Essential patterns and rapid development guide
 
 ## 🚀 Features
 
-- **Centralized Node Management**: Domain computer inventory with AD integration
+- **Enhanced Template Workflow System**: Multi-template execution with Excel export and session automation
+- **Advanced Automation**: Three-tier confirmation system ($true, $false, "Auto") with session memory
+- **Centralized Node Management**: Domain computer inventory with AD integration and Passman status preservation
 - **Secure Authentication**: Passman integration with Windows profile-based credential checkout
-- **Parallel Processing**: High-performance operations across multiple computers (with resilience for offline nodes)
+- **Parallel Processing**: High-performance operations across multiple computers with enhanced job management
 - **Session Persistence**: Save and restore your work sessions, node lists, and preferences
-- **Password Security**: Passwords are never in plain text or stored on disk; please note that credentials will need to be checked out again if you end your powershell session
-- **Comprehensive Reporting**: Structured data collection with Excel export capabilities
-- **Template System**: Reusable patterns for common IT operations (Command, Test, and Codebase templates)
-- **Automated Documentation**: Changelog generation and cross-reference validation
-- **GUI & CLI Support**: Works in both interactive console and Windows Forms interface
+- **Password Security**: Passwords are never in plain text or stored on disk; credentials checked out per session
+- **Comprehensive Reporting**: Structured data collection with multi-sheet Excel export capabilities
+- **Template System**: Command, Test, and Codebase templates for common IT operations and development
+- **Documentation Automation**: Changelog generation, cross-reference validation, and AI-assisted analysis
+- **GUI & CLI Support**: Works in both interactive console and Windows Forms interface with enhanced confirmation patterns
 
-## � Session Management (Key Feature!)
+## 💫 Enhanced Template Workflow System (Key Feature!)
+
+**Execute multiple templates with seamless automation and Excel export:**
+
+```powershell
+# Multi-template execution with comprehensive Excel export
+Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "System_Audit" -ExportToExcel
+
+# Enhanced session automation - prompts once, remembers choice
+Invoke-TemplateWorkflow -Templates @("Get OS Info", "Check Disk Space") -Confirm "Auto"
+# User selects "Yes to All" → all subsequent templates auto-execute
+
+# Individual template execution
+Invoke-TemplateCommand -Nodes $nodes -TemplateName "Get OS Info" -Confirm:$false
+
+# Template management and development
+Manage-Templates -Type Command -Action List
+Manage-Templates -Type Codebase -Action Search  # Find development patterns
+```
+
+**Template Categories:**
+- **Command Templates**: Remote PowerShell commands (Get OS Info, Check Disk Space, List Services, etc.)
+- **Test Templates**: Interactive functionality tests with manual/automated steps
+- **Codebase Templates**: Function development templates and patterns for rapid development
+
+## 🎯 Session Management (Key Feature!)
 
 **Save your work and pick up where you left off:**
 
@@ -71,7 +99,7 @@ Manage-Store -Store Reports -Action Preview  # All your reports
 
 ## 🚀 Quick Start
 
-### Basic Session Workflow
+### Enhanced Template Workflow
 
 ```powershell
 # 1. Add computers to your working list
@@ -80,24 +108,26 @@ NodeList -Action Add -Nodes @("LAB01-PC01", "LAB01-PC02", "LAB01-PC03")
 # 2. Get Administrator credentials via Passman
 Passman -Nodes $global:nodeList
 
-# 3. Test what's online (quick check)
-Test-NodeConnection -Nodes $global:nodeList -OnlineOnly
+# 3. Execute template workflow with Excel export
+Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "Lab_Audit" -ExportToExcel
 
-# 4. Full connectivity and service test
-Test-NodeConnection -Nodes $global:nodeList
+# 4. Review results in Excel with individual sheets per template + summary
 ```
 
-### Data Collection Examples
+### Traditional Data Collection Workflow
 
 ```powershell
+# Test what's online (quick check)
+Test-NodeConnection -Nodes $global:nodeList -OnlineOnly
+
+# Full connectivity and service test
+Test-NodeConnection -Nodes $global:nodeList
+
 # Software inventory across all nodes
 Get-Software -Nodes $global:nodeList -Mode All -ReportName "Lab Software Audit"
 
 # SCCM package management
 Get-CCMPackages -Nodes $global:nodeList -Mode Interactive
-
-# Statistical analysis of software across OUs
-Get-SoftwareSampleAnalysis -BaseOU "Lab" -SampleSize 10 -Export
 ```
 
 ### Save Your Work
@@ -109,23 +139,40 @@ Save-CheckITDataCore -Path "C:\CheckIT\Lab_Refresh_2025.json"
 
 ## 🔧 Development & Maintenance
 
+### Enhanced Template-Driven Development
+```powershell
+# Get complete function template with all CheckIT patterns
+Manage-Templates -Type Codebase -Action Preview
+# Select "CheckIT Function Template" for complete development template
+
+# Search for existing patterns before building new functions
+Manage-Templates -Type Codebase -Action Search
+
+# Use template workflows for complex operations
+Invoke-TemplateWorkflow -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "Test" -ExportToExcel
+```
+
 ### Automated Documentation Updates
 ```powershell
 # When completing a new function, update all documentation automatically
-Add-ChangelogEntry -Summary "Implemented Get-NewFunction" -Type "Feature" -FunctionsAdded @("Get-NewFunction")
-```
+Add-ChangelogEntry -Summary "Enhanced Template Workflow System" -Type "Enhancement" -GenerateAIPrompt:$true
 
-### Template-Driven Development
-```powershell
-# Get complete function template with CheckIT patterns
-Manage-Templates -Type Codebase -Action Preview
+# Generate AI assistant prompt for comprehensive documentation analysis
+Generate-DocumentationAnalysisPrompt -Summary "Template System Updates" -Type "Enhancement"
 ```
 
 ## ⚠️ Implementation Notes
 
-While this module exports 67 functions, they are all fully implemented and production-ready. Use `Get-Command -Module CheckIT-Core` to verify function availability in your environment.
+This module exports **71 functions** that are all fully implemented and production-ready. CheckIT-Core is now **100% complete** with comprehensive template workflow system, enhanced automation, and enterprise-grade capabilities.
 
-For the most current implementation status, see [Implementation Status](docs/implementation-status.md).
+**Current Status**: Version 1.3.0 - Feature Complete
+- All 71 planned functions implemented and operational
+- Enhanced template workflow system fully functional
+- Advanced automation with session memory
+- Comprehensive Excel reporting with multi-sheet support
+- Complete documentation with AI-assisted maintenance
+
+For detailed implementation status, see [Implementation Status](docs/implementation-status.md).
 
 ## 💡 Tool Context & Comparison
 
@@ -134,26 +181,30 @@ For the most current implementation status, see [Implementation Status](docs/imp
 - **Enterprise tools** (System Center Configuration Manager, Collection Commander)
 
 **Similar to Collection Commander/Client Center for Configuration Manager, but:**
-- Focuses on departmental/lab environments
+- Focuses on departmental/lab environments with enhanced template workflows
 - Integrates with institutional credential management (Passman)
 - Emphasizes session persistence and workflow continuity
-- Designed for mixed GUI/CLI workflows
+- Designed for mixed GUI/CLI workflows with advanced automation
+- Provides template-driven development for rapid capability extension
 
 **When to use CheckIT vs Enterprise tools:**
-- **CheckIT**: Departmental labs, classrooms, ad-hoc management tasks
+- **CheckIT**: Departmental labs, classrooms, ad-hoc management tasks, template-driven workflows
 - **SCCM/Enterprise**: Large-scale deployments, policy management, enterprise reporting
 
 ## 🔄 Parallel Processing & Resilience
 
-**Strengths:**
+**Enhanced Strengths:**
 - Processes multiple computers simultaneously (default: 8 parallel operations)
+- Enhanced job completion detection prevents hanging at partial completion
+- Automatic timeout handling with comprehensive safety checks
 - Continues working even when some computers are offline
-- Automatic timeout handling prevents hanging on unresponsive systems
+- Session-wide automation with "Yes to All" / "No to All" support
 
-**Limitations to understand:**
-- Reports may be incomplete if many nodes are offline
-- Some operations require majority of nodes to be accessible for meaningful results
-- Best results when >80% of target nodes are online and accessible
+**Optimizations:**
+- Robust job management eliminates the 8/47 node hanging issue
+- Enhanced credential resolution with automatic Passman integration
+- Template workflows optimize batch operations with confirmation inheritance
+- Multi-method job completion detection ensures reliable processing
 
 **Resilience features:**
 ```powershell
@@ -163,80 +214,131 @@ Add-SkipNode -Node "BROKEN-PC01"
 # Test connectivity first to identify issues
 $online = Test-NodeConnection -Nodes $global:nodeList -OnlineOnly
 $workingNodes = $online | Where-Object { $_.Online -eq $true }
+
+# Use template workflows for comprehensive operations
+Invoke-TemplateWorkflow -Nodes $workingNodes -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "Filtered_Audit" -ExportToExcel
 ```
 
 ## 📖 Usage Examples
 
-### Example 1: Quick Lab Health Check
+### Example 1: Enhanced Template Workflow
 
 ```powershell
-# Fast online check
-$status = Test-NodeConnection -Nodes $global:nodeList -OnlineOnly
-$online = $status | Where-Object { $_.Online -eq $true }
+# Comprehensive system audit with Excel export
+Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @("Get OS Info", "Check Disk Space", "List Installed Apps") -WorkflowName "Complete_System_Audit" -ExportToExcel
 
-# Full diagnostic for online computers only  
-$fullCheck = Test-NodeConnection -Nodes $online.Node
+# Smart session automation - prompts once, remembers choice
+Invoke-TemplateWorkflow -Templates @("Get OS Info", "Check Disk Space") -Confirm "Auto"
+# Select "YA" (Yes to All) → all subsequent operations auto-proceed
+
+# Results: Excel file with individual sheets per template + summary sheet
 ```
 
-### Example 2: Software Compliance Check
+### Example 2: Software Compliance with Template Integration
 
 ```powershell
-# Check what's installed
+# Use template for software inventory
+Invoke-TemplateCommand -Nodes $global:nodeList -TemplateName "List Installed Apps" -Confirm:$false
+
+# Or traditional approach
 Get-Software -Nodes $global:nodeList -Mode Specific -SearchStrings @("Office", "Chrome") -ReportName "Compliance Check"
 
-# Export results
+# Export with multi-sheet support
 Export-ToExcel -Sheets @{
-    'Online_Status' = $status
-    'Software_Results' = $complianceResults
-} -Title "Lab Compliance Report"
+    'Template_Results' = $templateResults
+    'Traditional_Results' = $traditionalResults
+} -Title "Software Compliance Report"
+```
+
+### Example 3: Template-Driven Development
+
+```powershell
+# Search for existing capabilities before building new functions
+Manage-Templates -Type Command -Action List
+Manage-Templates -Type Codebase -Action Search
+
+# Get complete function development template
+Manage-Templates -Type Codebase -Action Preview
+# Select "CheckIT Function Template"
+
+# Test new function with template workflow
+Invoke-TemplateWorkflow -Templates @("Your New Template") -Confirm "Auto" -ExportToExcel
 ```
 
 ## 📚 Function Reference
 
+### Enhanced Template System
+- `Invoke-TemplateWorkflow` - Multi-template execution with Excel export and session automation
+- `Invoke-TemplateCommand` - Individual template execution with enhanced confirmation
+- `Manage-Templates` - Complete template management (Command, Test, Codebase)
+- `Ensure-Templates` - Built-in template loading and initialization
+
 ### Node & Session Management
-- `NodeList` - Manage your working computer list
-- `Save-CheckITDataCore` / `Load-CheckITDataCore` - Session persistence
-- `Test-NodeConnection` - Connectivity and service validation
+- `NodeList` - Manage your working computer list with Passman status preservation
+- `Save-CheckITDataCore` / `Load-CheckITDataCore` - Complete session persistence
+- `Test-NodeConnection` - Enhanced connectivity and service validation
 
 ### Authentication & Security  
 - `Passman` - Credential checkout from credential management system
-- `Get-ValidCred` - Check credential availability
+- `Get-ValidCred` / `Get-ValidCredStatus` - Enhanced credential availability checking
 - `Show-CredentialClipboard` - Secure credential access for manual tasks
 
-### Data Collection
-- `Get-Software` - Software inventory and compliance checking
-- `Get-CCMPackages` - SCCM package discovery and management
-### Analysis & Reporting
-- `Get-SoftwareSampleAnalysis` - Statistical software analysis across OUs
-- `Export-ToExcel` - Structured Excel reports with multiple worksheets
-- `Set-Report` - Store and manage generated reports
+### Data Collection & Analysis
+- `Get-Software` - Software inventory with parallel processing and comprehensive reporting
+- `Get-CCMPackages` - SCCM package discovery and interactive management
+- `Get-SoftwareSampleAnalysis` - Statistical software analysis across OUs with Excel export
 
-## ⚙️ Configuration & Limitations
+### Reporting & Export
+- `Export-ToExcel` - Multi-sheet Excel reports with no external dependencies
+- `Invoke-Pivotizer` - Dynamic pivot table and slicer generation
+- `Set-Report` - Comprehensive report management and storage
 
-### Current Capabilities
+### Documentation Automation (New)
+- `Add-ChangelogEntry` - Automated changelog maintenance with cross-reference updates
+- `Generate-DocumentationAnalysisPrompt` - AI-assisted documentation analysis and review
+
+## ⚙️ Configuration & Capabilities
+
+### Current Capabilities (100% Complete)
+- **Enhanced Template System**: ✅ Multi-template workflows with Excel export and session automation
 - **Core Functions**: ✅ Node management, credential handling, software inventory
-- **SCCM Integration**: ✅ Package discovery and basic management  
-- **Reporting**: ✅ Excel export with multiple worksheets
-- **Session Management**: ✅ Full save/load capability
+- **SCCM Integration**: ✅ Package discovery, interactive management, and deployment commands
+- **Advanced Reporting**: ✅ Multi-sheet Excel export, pivot tables, comprehensive analytics
+- **Session Management**: ✅ Complete save/load capability with preference preservation
+- **Documentation Automation**: ✅ Automated changelog and AI-assisted documentation analysis
 
-### Known Limitations
-- **Pivot Tables**: 🚧 Basic functionality available, advanced features in development
-- **Interactive Analysis**: 🚧 Limited compared to enterprise tools
-- **Offline Resilience**: ⚠️ Reports may be incomplete with many offline nodes
-- **Scale**: Designed for batches of <100 computers, not enterprise-scale deployments
+### Enhanced Features
+- **Session Automation**: Three-tier confirmation system with "Yes to All" / "No to All" support
+- **Template Categories**: Command templates for operations, Test templates for validation, Codebase templates for development
+- **Robust Job Management**: Enhanced parallel processing eliminates hanging job issues
+- **Credential Integration**: Seamless Passman integration with status preservation
+- **Multi-Sheet Excel**: Individual template sheets plus summary sheet for comprehensive reporting
 
 ### User Preferences
 
 ```powershell
 # Customize default behaviors
 Set-UserPreference -Function 'Export-ToExcel' -Key 'AutoOpen' -Value $true
-Set-UserPreference -Function 'Test-NodeConnection' -Key 'MaxParallel' -Value 4
+Set-UserPreference -Function 'Invoke-TemplateWorkflow' -Key 'DefaultConfirm' -Value "Auto"
 
 # Save preferences with your session
 Save-CheckITDataCore -Path "C:\CheckIT\MyPreferences.json"
 ```
 
 ## 🔍 Troubleshooting
+
+### Template System Issues
+```powershell
+# Verify templates are loaded
+Ensure-Templates -Force
+Manage-Templates -Type Command -Action List
+
+# Test template execution
+Invoke-TemplateCommand -TemplateName "Get OS Info" -Confirm:$false -PromptUser:$false
+
+# Debug template workflow
+Test-TemplateWorkflowExecution  # From troubleshooting guide
+```
 
 ### Authentication Issues
 ```powershell
@@ -245,15 +347,21 @@ Get-ValidCredStatus -Nodes $global:nodeList
 
 # Verify Passman connectivity
 SanityCheck  # Checks configuration and permissions
+
+# Reset credential store if needed
+Ensure-GlobalCredStore -SyncNodeList
 ```
 
-### Connectivity Problems  
+### Session & Automation Issues
 ```powershell
-# Quick online check first
-Test-NodeConnection -Nodes @("PROBLEM-PC") -OnlineOnly
+# Check session automation state
+$global:WorkflowAutoConfirm
 
-# Then full diagnostic
-Test-NodeConnection -Nodes @("PROBLEM-PC") -Verbose
+# Reset session automation
+$global:WorkflowAutoConfirm = @{}
+
+# Test enhanced confirmation
+Invoke-TemplateWorkflow -Templates @("Get OS Info") -Confirm "Auto"
 ```
 
 ### Session Recovery
@@ -268,13 +376,14 @@ Manage-Store -Store Reports -Action Preview
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Developer Guide](docs/developer-guide.md) for patterns and standards.
+We welcome contributions! Please see our [Developer Guide](docs/developer-guide.md) for enhanced patterns and template-driven development standards.
 
 ### Development Notes
-- Uses proven PowerShell patterns for reliability
-- Extensive error handling and timeout management
-- Both CLI and GUI compatible design
-- Template system for consistent development
+- Uses template-driven development for rapid, consistent function creation
+- Enhanced automation patterns for GUI and CLI integration
+- Comprehensive error handling and timeout management
+- Template system enables rapid capability extension
+- Documentation automation with AI-assisted analysis
 
 ## 📄 License
 
@@ -283,9 +392,13 @@ This project is licensed under the MIT License.
 ## 📞 Support
 
 - **Documentation**: [Developer Guide](docs/developer-guide.md)
+- **Template System**: [API Reference](docs/api-reference.md)
+- **Troubleshooting**: [Troubleshooting Guide](docs/troubleshooting.md)
 - **Issues**: Contact IT Department
 - **Training**: Available for departmental staff
 
 ---
 
-**Current Version**: 1.3.0 | **Functions Implemented**: 67 | **Completion**: 98%
+**Current Version**: 1.3.0 | **Functions Implemented**: 71 | **Completion**: 100% | **Status**: Production Ready
+
+**Key Achievements**: Enhanced template workflow system, advanced automation with session memory, comprehensive multi-sheet Excel reporting, complete documentation automation, and enterprise-grade reliability.
