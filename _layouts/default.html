@@ -13,16 +13,14 @@
         <a class="site-title" href="{{ site.baseurl }}/">CheckIT</a>
         <nav class="site-nav">
           <div class="nav-row">
-            <a href="{{ site.baseurl }}/docs/README" class="page-link">ℹ️ About</a>
-            <a href="{{ site.baseurl }}/docs/get-started" class="page-link">🚀 Get Started</a>
-            <a href="{{ site.baseurl }}/docs/api-reference" class="page-link">📘 API Reference</a>
-            <a href="{{ site.baseurl }}/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            {% for item in site.navigation.row1 %}
+              <a href="{{ site.baseurl }}{{ item.link }}" class="page-link">{{ item.icon }} {{ item.name }}</a>
+            {% endfor %}
           </div>
           <div class="nav-row">
-            <a href="{{ site.baseurl }}/docs/templateInfo" class="page-link">🧩 Template System</a>
-            <a href="{{ site.baseurl }}/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
-            <a href="{{ site.baseurl }}/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
-            <a href="{{ site.baseurl }}/CHANGELOG" class="page-link">📋 Changelog</a>
+            {% for item in site.navigation.row2 %}
+              <a href="{{ site.baseurl }}{{ item.link }}" class="page-link">{{ item.icon }} {{ item.name }}</a>
+            {% endfor %}
           </div>
         </nav>
       </div>
@@ -34,6 +32,7 @@
       </div>
     </main>
   </div>
+
   <script src="{{ site.baseurl }}/assets/js/code-blocks.js"></script>
 </body>
 </html>
