@@ -6,7 +6,7 @@ layout: default
 
 ---
 
-# CheckIT-Core Template System (v1.5.0)
+# Template System (v1.5.0)
 
 ## 🎯 Template Design Philosophy
 

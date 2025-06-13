@@ -6,7 +6,7 @@ layout: default
 
 ---
 
-# CheckIT Quick Reference
+# Quick Reference
 
 > Comprehensive guide to patterns, templates, and functions for development, troubleshooting, and documentation
 

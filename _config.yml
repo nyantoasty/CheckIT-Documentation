@@ -1,4 +1,4 @@
-title: CheckIT-Core Documentation
+title: CheckIT
 description: Professional PowerShell module for Windows computer management
 baseurl: "/CheckIT-Documentation"
 url: "https://nyantoasty.github.io"
@@ -15,12 +15,11 @@ highlighter: rouge
 # Navigation - matches the files you copied
 header_pages:
   - docs/README.md
-  - docs/templateInfo.md
-  - docs/api-reference.md
   - docs/quick-reference.md
+  - docs/api-reference.md
+  - docs/templateInfo.md
   - docs/troubleshooting.md
   - CHANGELOG.md
-  - index.md
 
 # GitHub integration
 github_username: nyantoasty

@@ -5,7 +5,7 @@ layout: default
 <link rel="stylesheet" href="assets/style.css">
 
 ---
-# CheckIT Core Internal Helper Functions
+# Internal Helper Functions
 
 > This document describes internal helper functions used within the CheckIT-Core module.
 > These functions are not exported and are only for internal use by other module functions.
