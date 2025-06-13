@@ -22,6 +22,11 @@ repository: nyantoasty/CheckIT-Documentation
 show_excerpts: false
 future: false
 
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    line_numbers: true
+
 # Custom variables for your site
 navigation:
   row1:

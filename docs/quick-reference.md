@@ -3,11 +3,6 @@ title: ⚡Quick Reference
 layout: docs-page
 ---
 
-<link rel="stylesheet" href="../assets/style.css">
-
----
-
-
 > Comprehensive guide to patterns, templates, and functions for development, troubleshooting, and documentation
 
 ## 🧭 Navigation & Assistance
@@ -22,7 +17,8 @@ layout: docs-page
 
 ### Quick Setup (Developers & Assistants)
 
-{% highlight powershell linenos %}# 1. Get complete function template
+```powershell
+# 1. Get complete function template
 Manage-Templates -Type Codebase -Action Preview  # Select "CheckIT Function Template"
 
 # 2. Use enhanced template workflows
@@ -30,7 +26,7 @@ Invoke-TemplateWorkflow -Nodes $nodes -Templates @("Get OS Info", "Check Disk Sp
 
 # 3. Export your function
 Export-ModuleMember -Function @('YourNewFunction')
-{% endhighlight %}
+```
 
 ## 🔥 Critical Rules (Never Violate)
 
@@ -51,7 +47,8 @@ Export-ModuleMember -Function @('YourNewFunction')
 
 ### Quick Template Usage
 
-{% highlight powershell linenos %}# Execute multiple templates with Excel export
+```powershell
+# Execute multiple templates with Excel export
 Invoke-TemplateWorkflow -Nodes $nodes -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "System_Audit" -ExportToExcel
 
 # Enhanced confirmation modes
@@ -64,18 +61,19 @@ Invoke-TemplateCommand -Nodes $nodes -TemplateName "Get OS Info" -Confirm:$false
 # Template management
 Manage-Templates -Type Command -Action List    # List command templates
 Manage-Templates -Type Codebase -Action Search # Find development patterns
-{% endhighlight %}
+```
 
 ### Enhanced Confirmation System
 
-{% highlight powershell linenos %}# Three-tier confirmation pattern:
+```powershell
+# Three-tier confirmation pattern:
 [object]$Confirm = $true   # $true, $false, or "Auto"
 
 # Session automation with YA/NA support
 if ($global:WorkflowAutoConfirm.ContainsKey('*')) {
     $shouldProceed = $global:WorkflowAutoConfirm['*']  # Uses session choice
 }
-{% endhighlight %}
+```
 
 ## 📊 Function Readiness Matrix
 
@@ -97,7 +95,8 @@ if ($global:WorkflowAutoConfirm.ContainsKey('*')) {
 
 ### 1. Enhanced Confirmation Pattern
 
-{% highlight powershell linenos %}# ✅ CORRECT: Three-tier confirmation with session memory
+```powershell
+# ✅ CORRECT: Three-tier confirmation with session memory
 function My-CheckITFunction {
     param([object]$Confirm = $true)  # $true, $false, or "Auto"
     
@@ -113,21 +112,23 @@ function My-CheckITFunction {
 
 # ❌ WRONG: Boolean-only confirmation
 [bool]$Confirm = $true  # Limits automation flexibility
-{% endhighlight %}
+```
 
 ### 2. Reporting Pattern (SEPARATE task logging from business reporting)
 
-{% highlight powershell linenos %}# ✅ CORRECT: Two separate calls
+```powershell
+# ✅ CORRECT: Two separate calls
 $results | Write-TaskLog -Function $function -TaskParams @{} | Out-Null
 Set-Report -ReportName $name -Function $function -Data $results | Out-Null
 
 # ❌ WRONG: Causes double reporting errors
 Set-Report -Task -TaskParams @{...}
-{% endhighlight %}
+```
 
 ### 3. Credential Pattern (Automatic credential management)
 
-{% highlight powershell linenos %}# ✅ CORRECT: Process-Parallel with -UseCredentials
+```powershell
+# ✅ CORRECT: Process-Parallel with -UseCredentials
 Process-Parallel -ScriptBlock { 
     param($node, $customParam, $credential, $fqdn)
     # $credential and $fqdn automatically available
@@ -136,24 +137,26 @@ Process-Parallel -ScriptBlock {
 
 # ❌ WRONG: Manual credential handling
 $cred = Get-Credential  # Blocks GUI, no Passman integration
-{% endhighlight %}
+```
 
 ## 🏗️ Core Architectural Patterns
 
 ### The Node Object Pattern
 
-{% highlight powershell linenos %}# ✅ CORRECT: Use New-NodeObject for all node operations
+```powershell
+# ✅ CORRECT: Use New-NodeObject for all node operations
 $node = New-NodeObject @{ Node = "PC123"; Group = "Lab"; Status = "Complete" }
 NodeList -Action Update -Nodes @($node) -CreateIfMissing:$false
 
 # ❌ WRONG: Direct manipulation
 $global:nodeList += @{ Node = "PC123" }  # Breaks type consistency
 $node.Status = "Complete"  # Doesn't update global store
-{% endhighlight %}
+```
 
 ### The Process-Parallel Pattern
 
-{% highlight powershell linenos %}# ✅ CORRECT: Automatic credential management
+```powershell
+# ✅ CORRECT: Automatic credential management
 $results = $nodes | Process-Parallel -ScriptBlock {
     param($node, $customParam, $credential, $fqdn)
     # $credential and $fqdn automatically populated with correct credentials
@@ -162,21 +165,23 @@ $results = $nodes | Process-Parallel -ScriptBlock {
 
 # ❌ WRONG: Manual credential management
 $cred = Get-Credential  # Blocks GUI, no Passman integration
-{% endhighlight %}
+```
 
 ### The Split Reporting Pattern
 
-{% highlight powershell linenos %}# ✅ CORRECT: Separate task logging from business reporting
+```powershell
+# ✅ CORRECT: Separate task logging from business reporting
 $results | Write-TaskLog -Function $function -TaskParams @{} | Out-Null
 Set-Report -ReportName $name -Function $function -Data $results | Out-Null
 
 # ❌ WRONG: Causes double reporting errors
 Set-Report -Task -TaskParams @{...}
-{% endhighlight %}
+```
 
 ### The Status Update Pattern
 
-{% highlight powershell linenos %}# ✅ CORRECT: Use TaskStatus for progress tracking
+```powershell
+# ✅ CORRECT: Use TaskStatus for progress tracking
 foreach ($node in $global:nodeList) {
     if ($nodeNames -contains $node.Node) {
         $node.TaskStatus = 'Pending'  # During processing
@@ -188,7 +193,7 @@ foreach ($node in $global:nodeList) {
 
 # ❌ WRONG: Missing status updates
 # No TaskStatus updates prevents GUI progress tracking
-{% endhighlight %}
+```
 
 ## 📊 Excel Reporting Best Practices
 
@@ -196,7 +201,8 @@ foreach ($node in $global:nodeList) {
 
 For maximum compatibility with Excel pivot tables and slicers:
 
-{% highlight powershell linenos %}# Step 1: Clean data during report creation
+```powershell
+# Step 1: Clean data during report creation
 Set-Report -ReportName "System Inventory" -Function "Get-SystemInfo" -Data $results -CleanData
 
 # Step 2: Export with automatic column name cleaning
@@ -206,7 +212,7 @@ $report.Data | Export-ToExcel -Title "System_Inventory"
 # Step 3: Add pivot tables and slicers (optional)
 $excelFile = $report.Data | Export-ToExcel -Title "System_Inventory" -PromptUser:$false
 Invoke-Pivotizer -ExcelPath $excelFile -SourceSheet "System_Inventory" -RowFields @("OS") -DataFields @("Count")
-{% endhighlight %}
+```
 
 ### Column Name Cleaning Rules
 
@@ -221,19 +227,21 @@ The CheckIT Excel export system automatically handles these Excel limitations:
 
 ### Template Workflow Excel Integration
 
-{% highlight powershell linenos %}# Best practice for template workflows with Excel
+```powershell
+# Best practice for template workflows with Excel
 Invoke-TemplateWorkflow -Nodes $nodes -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "System_Audit" -ExportToExcel
 
 # Add pivot tables afterward
 $result = Invoke-TemplateWorkflow -Nodes $nodes -Templates @("Get OS Info") -WorkflowName "OS_Report" -ExportToExcel
 Invoke-Pivotizer -ExcelPath $result.ExcelFile -SourceSheet "Get_OS_Info" -RowFields @("OS") -DataFields @("Count")
-{% endhighlight %}
+```
 
 ## 📋 Essential Function Calls
 
 ### Template Workflows
 
-{% highlight powershell linenos %}# Multi-template execution with Excel export
+```powershell
+# Multi-template execution with Excel export
 Invoke-TemplateWorkflow -Nodes $nodes -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "System_Audit" -ExportToExcel
 
 # Auto-execute without confirmation
@@ -241,11 +249,12 @@ Invoke-TemplateWorkflow -Templates @("Get OS Info") -Confirm:$false -ExportToExc
 
 # Smart session automation (prompts once, remembers choice)
 Invoke-TemplateWorkflow -Templates @("Get OS Info", "Check Disk Space") -Confirm "Auto"
-{% endhighlight %}
+```
 
 ### Documentation Functions
 
-{% highlight powershell linenos %}# Add standardized changelog entry
+```powershell
+# Add standardized changelog entry
 Add-ChangelogEntry -Summary "Added new feature" -Type "Feature" -Version "1.5.0" `
     -KeyChanges @("Added new template support", "Fixed report formatting") `
     -FilesChanged @("checkit-core.psm1", "templateInfo.md") -Impact "Medium"
@@ -253,22 +262,24 @@ Add-ChangelogEntry -Summary "Added new feature" -Type "Feature" -Version "1.5.0"
 # Generate documentation analysis prompt
 Generate-DocumentationAnalysisPrompt -Summary "Template update" -Type "Enhancement" `
     -FunctionsAdded @("New-TemplateFunction") -Impact "Documentation needs updating"
-{% endhighlight %}
+```
 
 ### SCCM Integration
 
-{% highlight powershell linenos %}# SCCM package management
+```powershell
+# SCCM package management
 Get-CCMPackages -Nodes $nodes -Mode Interactive
 Get-CCMPackages -Nodes $nodes -PackageFilter "*Office*" -Mode Discovery
 
 # Package deployment
 Invoke-CCMPackageDeployment -Nodes $nodes -Method Install -Mode Specific -SearchStrings @("Office")
 Get-AvailablePackages -SearchPattern "*Chrome*"
-{% endhighlight %}
+```
 
 ### Node & Credential Management
 
-{% highlight powershell linenos %}# Node management (always use these - never manipulate $global:nodeList directly)
+```powershell
+# Node management (always use these - never manipulate $global:nodeList directly)
 $node = New-NodeObject @{ Node = "PC123"; Group = "LabA"; Status = "Complete" }
 NodeList -Action Add -Nodes @("PC1","PC2") -PromptUser:$false
 NodeList -Action Update -Nodes @($updatedNode) -PromptUser:$false
@@ -277,11 +288,12 @@ NodeList -Action Update -Nodes @($updatedNode) -PromptUser:$false
 Ensure-GlobalCredStore -PromptUser:$false
 Get-ValidCredStatus -Nodes $nodes
 Passman -Nodes $nodes  # Retrieves credentials from Passman
-{% endhighlight %}
+```
 
 ### Exporting to Excel
 
-{% highlight powershell linenos %}# Excel export with pivot tables and slicers
+```powershell
+# Excel export with pivot tables and slicers
 Export-ToExcel -InputObject $results -Title "Analysis" 
 Invoke-Pivotizer -ExcelPath "C:\Transcripts\Analysis_*.xlsx" -SourceSheet "Sheet1" `
     -RowFields @("Status") -DataFields @("Count") -SlicerFields @("Department")
@@ -301,11 +313,12 @@ $sheets = @{
     "Summary" = $allResults
 }
 $excelFile = Export-ToExcel -Sheets $sheets -Title "SystemAudit" -PromptUser:$false
-{% endhighlight %}
+```
 
 ### Adding a Pivot Table or Slicers
 
-{% highlight powershell linenos %}# Template workflow with multi-sheet export, pivot tables and slicers
+```powershell
+# Template workflow with multi-sheet export, pivot tables and slicers
 $sheets = @{}
 # Individual template sheets from clean business data
 foreach ($templateName in $executedTemplates) {
@@ -319,7 +332,6 @@ $excelFile = Export-ToExcel -Sheets $sheets -Title $WorkflowName -PromptUser:$fa
 # Add pivot table and slicers to first data sheet
 Invoke-Pivotizer -ExcelPath $excelFile -SourceSheet ($sheets.Keys | Select-Object -First 1) `
     -RowFields @("Status", "Group") -DataFields @("Count") -SlicerFields @("Node", "Date")
-{% endhighlight %}
+```
 
 ---
-

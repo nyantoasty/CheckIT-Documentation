@@ -3,10 +3,6 @@ title: 🛠️ Internal Helper Functions
 layout: docs-page
 ---
 
-<link rel="stylesheet" href="../assets/style.css">
-
----
-
 > This document describes internal helper functions used within the CheckIT-Core module.
 > These functions are not exported and are only for internal use by other module functions.
 

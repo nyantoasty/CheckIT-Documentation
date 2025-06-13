@@ -1,56 +1,34 @@
 // Add copy buttons to code blocks
+
 document.addEventListener('DOMContentLoaded', function() {
-  // Set language attribute for syntax highlighting
-  const codeBlocks = document.querySelectorAll('div.highlight');
-  
-  codeBlocks.forEach(function(block) {
-    // Find the language from class name
-    const classes = block.className.split(' ');
-    let language = 'powershell'; // Default
+  // Select all code blocks - works with both highlight and regular markdown code blocks
+  const codeBlocks = document.querySelectorAll('pre.highlight, pre > code').forEach(function(block) {
+    // Get the parent pre tag if this is a code tag
+    const preBlock = block.tagName === 'CODE' ? block.parentElement : block;
     
-    for (const className of classes) {
-      if (className.startsWith('language-')) {
-        language = className.replace('language-', '');
-        break;
-      }
+    // Don't add button if it already exists
+    if (preBlock.querySelector('.copy-button')) {
+      return;
     }
     
-    // Set data attribute
-    block.setAttribute('data-language', language);
-    
-    // Create copy button
     const copyButton = document.createElement('button');
     copyButton.className = 'copy-button';
     copyButton.textContent = 'Copy';
     
     copyButton.addEventListener('click', function() {
-      // Get code from inside pre > code, but filter out line numbers
-      const pre = block.querySelector('pre');
-      const code = pre.innerText;
+      // Get text from either highlight or regular code block
+      const code = block.tagName === 'CODE' ? block.textContent : block.querySelector('code').textContent;
       
-      // Remove line numbers if present
-      const cleanCode = code.replace(/^\s*\d+\s+/gm, '');
-      
-      // Copy to clipboard
-      navigator.clipboard.writeText(cleanCode).then(function() {
+      navigator.clipboard.writeText(code).then(function() {
         copyButton.textContent = 'Copied!';
-        copyButton.classList.add('copied');
-        
-        setTimeout(function() {
-          copyButton.textContent = 'Copy';
-          copyButton.classList.remove('copied');
-        }, 2000);
-      })
-      .catch(function(err) {
-        console.error('Failed to copy: ', err);
-        copyButton.textContent = 'Error!';
-        
         setTimeout(function() {
           copyButton.textContent = 'Copy';
         }, 2000);
       });
     });
     
-    block.appendChild(copyButton);
+    // Position the button
+    preBlock.style.position = 'relative';
+    preBlock.appendChild(copyButton);
   });
 });

@@ -3,10 +3,6 @@ title: 🧩 Template System
 layout: docs-page
 ---
 
-<link rel="stylesheet" href="../assets/style.css">
-
----
-
 ## 🎯 Template Design Philosophy
 
 CheckIT templates follow a **"simple commands, powerful workflows"** approach that maximizes flexibility while maintaining ease of use:
@@ -18,7 +14,7 @@ CheckIT templates follow a **"simple commands, powerful workflows"** approach th
 - Automatic credential management via Process-Parallel
 - Consistent error handling and timeout management
 
-### ✅ Powerful Workflows 
+### ✅ Powerful Workflows
 
 - Combine multiple templates using `Invoke-TemplateWorkflow`
 - Automatic Excel export with separate sheets per template
@@ -29,31 +25,34 @@ CheckIT templates follow a **"simple commands, powerful workflows"** approach th
 
 Templates can leverage existing CheckIT functions for consistency:
 
-{% highlight powershell linenos %}# Template can call CheckIT functions for enhanced functionality
+```powershell
+# Template can call CheckIT functions for enhanced functionality
 $userResults = Get-Users -Nodes $env:COMPUTERNAME -PromptUser:$false
-{% endhighlight %}
+```
 
 ### 🆕 Advanced Template Workflows
 
 #### System Audit Workflow
 
-{% highlight powershell linenos %}Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @(
+```powershell
+Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @(
     "Get OS Info",
     "Get System Specs", 
     "Check Disk Space",
     "List Logged-On Users"
 ) -WorkflowName "Complete_System_Audit" -ExportToExcel
-{% endhighlight %}
+```
 
 #### SCCM Analysis Workflow
 
-{% highlight powershell linenos %}Invoke-TemplateWorkflow -Nodes $labNodes -Templates @(
+```powershell
+Invoke-TemplateWorkflow -Nodes $labNodes -Templates @(
     "Get SCCM Client Info",
     "Get CCM Packages",
     "Get SMS Installed Software",
     "Get CCM Software Metering"
 ) -WorkflowName "SCCM_Analysis" -ExportToExcel
-{% endhighlight %}
+```
 
 ## 🆕 Enhanced Software Discovery (v1.4.0)
 
@@ -74,7 +73,8 @@ CheckIT now provides the most comprehensive SCCM software discovery available:
 
 ### Real-World Usage
 
-{% highlight powershell linenos %}# Quick software inventory
+```powershell
+# Quick software inventory
 Invoke-TemplateCommand -TemplateName "Get SMS Installed Software" -Nodes $nodes
 
 # Complete software analysis workflow
@@ -83,7 +83,7 @@ Invoke-TemplateWorkflow -Templates @(
     "Get CCM Packages", 
     "Get CCM Software Metering"
 ) -WorkflowName "Software_Analysis" -ExportToExcel
-{% endhighlight %}
+```
 
 ## 🚀 Creating Your Own Templates
 
@@ -104,41 +104,45 @@ CheckIT supports three template types, each serving different purposes:
 
 **Purpose**: Remote PowerShell commands for data collection or system operations
 
-{% highlight powershell linenos %}# Create a new command template
+```powershell
+# Create a new command template
 Manage-Templates -Type Command -Action Add
 
 # Example: Custom software audit for your department
 # Template Name: "Department Software Audit"
 # Command: Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -match "YourDeptSoftware" } | Select-Object Name, Version
-{% endhighlight %}
+```
 
 #### 🧪 Test Templates  
 
 **Purpose**: Interactive validation workflows with manual and automated steps
 
-{% highlight powershell linenos %}# Create a new test template
+```powershell
+# Create a new test template
 Manage-Templates -Type Test -Action Add
 
 # Example: Lab computer checkout procedure
 # - Automated: Check network connectivity, services
 # - Manual: Verify peripherals, user login test
 # - Documentation: Issues found, technician notes
-{% endhighlight %}
+```
 
 #### 💻 Codebase Templates
 
 **Purpose**: Development patterns and function templates for building new CheckIT functions
 
-{% highlight powershell linenos %}# Browse development patterns
+```powershell
+# Browse development patterns
 Manage-Templates -Type Codebase -Action Search
 
 # Copy and modify existing patterns for your needs
 Manage-Templates -Type Codebase -Action Copy
-{% endhighlight %}
+```
 
 ### Template Management Commands
 
-{% highlight powershell linenos %}# List available templates by type
+```powershell
+# List available templates by type
 Manage-Templates -Type Command -Action List
 Manage-Templates -Type Test -Action List
 Manage-Templates -Type Codebase -Action List
@@ -151,18 +155,19 @@ Manage-Templates -Type Command -Action Copy
 
 # Edit your user templates
 Manage-Templates -Type Test -Action Edit
-{% endhighlight %}
+```
 
 ### Integration with Workflows
 
 Once created, your templates integrate seamlessly with CheckIT workflows:
 
-{% highlight powershell linenos %}# Use custom templates in workflows
+```powershell
+# Use custom templates in workflows
 Invoke-TemplateWorkflow -Templates @("Your Custom Template", "Get OS Info") -WorkflowName "Custom_Audit" -ExportToExcel
 
 # Execute individual custom templates
 Invoke-TemplateCommand -TemplateName "Your Custom Template" -Nodes $global:nodeList
-{% endhighlight %}
+```
 
 ## 📋 Built-in Command Templates (20 total)
 
@@ -308,4 +313,3 @@ Invoke-TemplateCommand -TemplateName "Your Custom Template" -Nodes $global:nodeL
 - Demonstrate proper separation of concerns (logging vs. reporting)
 
 ---
-

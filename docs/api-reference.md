@@ -182,7 +182,8 @@ layout: docs-page
 
 ### Template System & Workflows
 
-{% highlight powershell linenos %}# List available templates
+```powershell
+# List available templates
 Manage-Templates -Type Command -Action List
 
 # Execute a single template
@@ -199,11 +200,12 @@ Start-Test -Node "ComputerName" -TemplateName "Office Validation"
 
 # Search codebase templates for patterns
 Manage-Templates -Type Codebase -Action Search
-{% endhighlight %}
+```
 
 ### Node and Credential Management
 
-{% highlight powershell linenos %}# Add computers to NodeList
+```powershell
+# Add computers to NodeList
 NodeList -Action Add -Nodes @("PC1", "PC2", "PC3")
 
 # Create a node object with properties
@@ -223,11 +225,12 @@ Ensure-GlobalCredStore
 
 # Get credentials from Passman
 Passman -Nodes $nodes -WorkOrder "WO12345" -Reason "Software deployment"
-{% endhighlight %}
+```
 
 ### Remote Operations and Diagnostics
 
-{% highlight powershell linenos %}# Execute a command on multiple nodes
+```powershell
+# Execute a command on multiple nodes
 Invoke-NodeCommand -Nodes $nodes -Command "Get-Service | Where-Object { $_.Status -eq 'Running' }"
 
 # Run code with parallel execution
@@ -250,11 +253,12 @@ Open-RemoteExplorer -Node "PC123"
 
 # Test various connection methods
 Test-RemoteSystemAccess -Node "PC123"
-{% endhighlight %}
+```
 
 ### SCCM Integration
 
-{% highlight powershell linenos %}# Discover available packages
+```powershell
+# Discover available packages
 Get-AvailablePackages -SearchPattern "Office*"
 
 # Get package status across multiple machines
@@ -265,11 +269,12 @@ Get-CCMPackages -Nodes $nodes -Mode Interactive
 
 # Deploy a package to multiple machines
 Invoke-CCMPackageDeployment -Nodes $nodes -PackageName "Office 365" -Action Install
-{% endhighlight %}
+```
 
 ### Active Directory Integration
 
-{% highlight powershell linenos %}# Update node information from AD
+```powershell
+# Update node information from AD
 AD -Nodes $nodes
 
 # Get computer group memberships
@@ -280,11 +285,12 @@ $computers = Select-OUComputers -BaseOU "OU=Labs,DC=domain,DC=com"
 
 # Get OU summaries with computer counts
 Get-OUComputerSummary -BaseOU "OU=Department,DC=domain,DC=com"
-{% endhighlight %}
+```
 
 ### Reporting and Data Management
 
-{% highlight powershell linenos %}# Export data to Excel with multiple sheets
+```powershell
+# Export data to Excel with multiple sheets
 Export-ToExcel -Sheets @{ "Hardware" = $hardwareData; "Software" = $softwareData } -Title "System Audit"
 
 # Create pivot tables in an Excel file
@@ -304,7 +310,7 @@ Load-CheckITDataCore -Path "C:\Reports\CheckIT_Data.json"
 
 # Import data from Excel
 Import-CheckITData -Path "C:\Reports\Computers.xlsx"
-{% endhighlight %}
+```
 
 ## 🔍 Function Details
 
@@ -314,9 +320,10 @@ Import-CheckITData -Path "C:\Reports\Computers.xlsx"
 
 Executes a command template on one or more nodes with parallel processing.
 
-{% highlight powershell linenos %}Invoke-TemplateCommand -Nodes $nodes -TemplateName "Get OS Info"
+```powershell
+Invoke-TemplateCommand -Nodes $nodes -TemplateName "Get OS Info"
 Invoke-TemplateCommand -TemplateName "List"  # Shows available templates
-{% endhighlight %}
+```
 
 **Parameters:**
 
@@ -336,8 +343,9 @@ Invoke-TemplateCommand -TemplateName "List"  # Shows available templates
 
 Executes multiple templates in sequence with consolidated reporting and Excel export.
 
-{% highlight powershell linenos %}Invoke-TemplateWorkflow -Nodes $nodes -Templates @("Get OS Info", "Check Disk Space") -ExportToExcel
-{% endhighlight %}
+```powershell
+Invoke-TemplateWorkflow -Nodes $nodes -Templates @("Get OS Info", "Check Disk Space") -ExportToExcel
+```
 
 **Parameters:**
 
@@ -354,10 +362,11 @@ Executes multiple templates in sequence with consolidated reporting and Excel ex
 
 Complete template management for Command, Test, and Codebase templates.
 
-{% highlight powershell linenos %}Manage-Templates -Type Command -Action List
+```powershell
+Manage-Templates -Type Command -Action List
 Manage-Templates -Type Codebase -Action Search -SearchTerm "credential"
 Manage-Templates -Type Test -Action Add
-{% endhighlight %}
+```
 
 **Parameters:**
 
@@ -374,11 +383,12 @@ Manage-Templates -Type Test -Action Add
 
 Central function for node list management with comprehensive operations.
 
-{% highlight powershell linenos %}NodeList -Action Add -Nodes @("PC1", "PC2", "PC3")
+```powershell
+NodeList -Action Add -Nodes @("PC1", "PC2", "PC3")
 NodeList -Action Update -Nodes $updatedNodes
 NodeList -Action Remove -Nodes @("PC3")
 NodeList -Action SyncWithCredStore  # Synchronizes with credential store
-{% endhighlight %}
+```
 
 **Parameters:**
 
@@ -393,8 +403,9 @@ NodeList -Action SyncWithCredStore  # Synchronizes with credential store
 
 Creates a standardized node object with consistent properties.
 
-{% highlight powershell linenos %}$node = New-NodeObject @{ Node = "PC123"; Group = "Lab"; Description = "Test machine" }
-{% endhighlight %}
+```powershell
+$node = New-NodeObject @{ Node = "PC123"; Group = "Lab"; Description = "Test machine" }
+```
 
 **Parameters:**
 
@@ -408,11 +419,12 @@ Creates a standardized node object with consistent properties.
 
 Enterprise-grade parallel processing engine with credential support and job management.
 
-{% highlight powershell linenos %}$results = $nodes | Process-Parallel -ScriptBlock {
+```powershell
+$results = $nodes | Process-Parallel -ScriptBlock {
     param($node, $credential, $fqdn)
     # Remote commands using $credential and $fqdn
 }
-{% endhighlight %}
+```
 
 **Parameters:**
 
@@ -431,8 +443,9 @@ Enterprise-grade parallel processing engine with credential support and job mana
 
 Executes commands on remote nodes with comprehensive error handling and reporting.
 
-{% highlight powershell linenos %}Invoke-NodeCommand -Nodes $nodes -Command "Get-Service | Where-Object { $_.Status -eq 'Running' }"
-{% endhighlight %}
+```powershell
+Invoke-NodeCommand -Nodes $nodes -Command "Get-Service | Where-Object { $_.Status -eq 'Running' }"
+```
 
 **Parameters:**
 
@@ -453,9 +466,10 @@ Executes commands on remote nodes with comprehensive error handling and reportin
 
 Comprehensive SCCM package discovery and analysis with multiple execution modes.
 
-{% highlight powershell linenos %}Get-CCMPackages -Nodes $nodes -Mode Interactive
+```powershell
+Get-CCMPackages -Nodes $nodes -Mode Interactive
 Get-CCMPackages -Nodes $nodes -PackageFilter "Office*" -Mode Discovery
-{% endhighlight %}
+```
 
 **Parameters:**
 
@@ -471,8 +485,9 @@ Get-CCMPackages -Nodes $nodes -PackageFilter "Office*" -Mode Discovery
 
 Interactive package deployment with pre/post auditing and multiple deployment methods.
 
-{% highlight powershell linenos %}Invoke-CCMPackageDeployment -Nodes $nodes -PackageName "Office 365" -Action Install
-{% endhighlight %}
+```powershell
+Invoke-CCMPackageDeployment -Nodes $nodes -PackageName "Office 365" -Action Install
+```
 
 **Parameters:**
 
@@ -493,12 +508,13 @@ Interactive package deployment with pre/post auditing and multiple deployment me
 
 Gets credentials and FQDN for a node with automatic caching and validation.
 
-{% highlight powershell linenos %}$credInfo = Get-NodeCredAndFQDN -Node "PC123"
+```powershell
+$credInfo = Get-NodeCredAndFQDN -Node "PC123"
 if ($credInfo.Status -eq "OK") {
     $credential = $credInfo.Credential
     $fqdn = $credInfo.FQDN
 }
-{% endhighlight %}
+```
 
 **Parameters:**
 
@@ -511,8 +527,9 @@ if ($credInfo.Status -eq "OK") {
 
 Retrieves credentials from Passman credential manager with work order validation.
 
-{% highlight powershell linenos %}Passman -Nodes $nodes -WorkOrder "WO12345" -Reason "Software deployment"
-{% endhighlight %}
+```powershell
+Passman -Nodes $nodes -WorkOrder "WO12345" -Reason "Software deployment"
+```
 
 **Parameters:**
 
@@ -530,9 +547,10 @@ Retrieves credentials from Passman credential manager with work order validation
 
 Exports data to Excel with formatting and multi-sheet support.
 
-{% highlight powershell linenos %}Export-ToExcel -InputObject $data -Title "Audit Report"
+```powershell
+Export-ToExcel -InputObject $data -Title "Audit Report"
 Export-ToExcel -Sheets @{ "Hardware" = $hwData; "Software" = $swData } -Path "C:\Reports\Audit.xlsx"
-{% endhighlight %}
+```
 
 **Parameters:**
 
@@ -550,8 +568,9 @@ Export-ToExcel -Sheets @{ "Hardware" = $hwData; "Software" = $swData } -Path "C:
 
 Adds or updates a report in the global report store with validation.
 
-{% highlight powershell linenos %}Set-Report -ReportName "Software Audit" -Function "Get-Software" -Data $results -Groups @("Lab Computers")
-{% endhighlight %}
+```powershell
+Set-Report -ReportName "Software Audit" -Function "Get-Software" -Data $results -Groups @("Lab Computers")
+```
 
 **Parameters:**
 
@@ -572,8 +591,9 @@ Adds or updates a report in the global report store with validation.
 
 Writes entries to the task log with standardized format and metadata.
 
-{% highlight powershell linenos %}$results | Write-TaskLog -Function "AuditSoftware" -TaskParams @{ Source = "Manual Audit" }
-{% endhighlight %}
+```powershell
+$results | Write-TaskLog -Function "AuditSoftware" -TaskParams @{ Source = "Manual Audit" }
+```
 
 **Parameters:**
 
@@ -587,4 +607,3 @@ Writes entries to the task log with standardized format and metadata.
 - `Groups`: Group categories for the entries
 
 **Returns:** Task log entries created
-
