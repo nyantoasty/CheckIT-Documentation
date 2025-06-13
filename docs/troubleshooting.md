@@ -1,6 +1,6 @@
 ---
 title: 🚨 Troubleshooting
-layout: default
+layout: docs-page
 ---
 
 <link rel="stylesheet" href="../assets/style.css">
@@ -752,7 +752,5 @@ try {
 - [Implementation Status](implementation-status.md) - Current completion status including template system
 - [API Reference](api-reference.md) - Complete function library with enhanced features
 - [Main README](../README.md) - Project overview with enhanced capabilities
-
-**Last Updated**: 2025-06-09 | **Enhanced**: Template workflow troubleshooting and session automation patterns
 
 ---

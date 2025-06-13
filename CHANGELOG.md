@@ -1,6 +1,6 @@
 ---
-title: Changelog
-layout: default
+title: 🆕 Changelog
+layout: docs-page
 ---
 
 <link rel="stylesheet" href="assets/style.css">

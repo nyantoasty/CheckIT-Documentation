@@ -1,6 +1,6 @@
 ---
 title: ⚡Quick Reference
-layout: default
+layout: docs-page
 ---
 
 <link rel="stylesheet" href="../assets/style.css">
@@ -349,4 +349,4 @@ Invoke-Pivotizer -ExcelPath $excelFile -SourceSheet ($sheets.Keys | Select-Objec
 - [Troubleshooting](https://nyantoasty.github.io/CheckIT-Documentation/docs/troubleshooting.html) - Solutions including template system troubleshooting
 - [ChatModes Reference](https://nyantoasty.github.io/CheckIT-Documentation/docs/chatmodes.html) - Using specialized ChatModes for development assistance
 
-**Last Updated**: 2025-06-12 | **Enhanced**: Template system with 34 templates, improved documentation integration | **Status**: Beta v1.5.0 (open to request)
+---

@@ -1,0 +1,52 @@
+---
+layout: default
+---
+
+<div class="docs-header">
+  <div class="icon-container">
+    {% if page.icon %}
+      <span class="page-icon">{{ page.icon }}</span>
+    {% else %}
+      <span class="page-icon">🔧</span>
+    {% endif %}
+  </div>
+  
+  <div class="title-container">
+    <h1>{{ page.title }}</h1>
+    {% if page.subtitle %}
+      <p class="page-subtitle">{{ page.subtitle }}</p>
+    {% endif %}
+  </div>
+  
+  <div class="status-container">
+    <span class="version-pill">Version 1.5.0</span>
+    <span class="status-pill">Beta (open to request)</span>
+  </div>
+</div>
+
+<div class="page-content">
+  {{ content }}
+</div>
+
+<div class="docs-footer">
+  <div class="footer-nav">
+    <a href="{{ site.baseurl }}/docs/README">ℹ️ About</a>
+    <a href="{{ site.baseurl }}/get-started">🚀 Get Started</a>
+    <a href="{{ site.baseurl }}/docs/api-reference">📘 API Reference</a>
+    <a href="{{ site.baseurl }}/docs/quick-reference">⚡ Quick Reference</a>
+    <a href="{{ site.baseurl }}/docs/templateInfo">🧩 Template System</a>
+    <a href="{{ site.baseurl }}/docs/troubleshooting">🔍 Troubleshooting</a>
+    <a href="{{ site.baseurl }}/docs/internal-helpers">🔧 Internal Helper Functions</a>
+    <a href="{{ site.baseurl }}/CHANGELOG">📋 Changelog</a>
+  </div>
+  
+  <div class="footer-info">
+    <div class="footer-badge-container">
+      <span class="footer-badge">v{{ site.data.site_info.version }}</span>
+      <span class="footer-badge status">{{ site.data.site_info.status }}</span>
+      <span class="footer-badge">{{ site.data.site_info.function_count }} Functions</span>
+    </div>
+    <p>CheckIT-Core • <a href="{{ site.data.site_info.repository_url }}">Repository</a> • Maintained by {{ site.data.site_info.maintainer }} • {{ site.data.site_info.license }} License</p>
+    <p class="footer-updated">Last updated: {{ site.data.site_info.lastupdated }}</p>
+  </div>
+</div>

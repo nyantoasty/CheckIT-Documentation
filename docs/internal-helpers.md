@@ -1,6 +1,6 @@
 ---
 title: 🛠️ Internal Helper Functions
-layout: default
+layout: docs-page
 ---
 
 <link rel="stylesheet" href="../assets/style.css">
@@ -58,3 +58,5 @@ layout: default
 - These functions should never be exported in the module manifest
 - When adding or modifying helper functions, update this documentation file
 - Helper function names should clearly indicate their internal status (e.g., prefix with "Internal-")
+
+---

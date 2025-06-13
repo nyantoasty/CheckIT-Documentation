@@ -1,6 +1,6 @@
 ---
 title: 🔧 API Reference
-layout: default
+layout: docs-page
 ---
 
 <link rel="stylesheet" href="../assets/style.css">

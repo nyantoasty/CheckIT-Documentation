@@ -576,3 +576,211 @@ a {
   white-space: pre-wrap !important;
   word-break: break-word !important;
 }
+
+/* Documentation Page Layout Components */
+.docs-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #374151;
+}
+
+.icon-container {
+  margin-right: 1rem;
+}
+
+.page-icon {
+  font-size: 2.5rem;
+  color: #3b82f6;
+}
+
+.title-container {
+  flex: 1;
+}
+
+.title-container h1 {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: 2.2rem;
+  color: #3b82f6;
+}
+
+.page-subtitle {
+  margin: 0.25rem 0 0;
+  color: #9ca3af;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.status-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.version-pill, .status-pill {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  color: white;
+}
+
+.version-pill {
+  background-color: #1f2937;
+}
+
+.status-pill {
+  background-color: #f59e0b;
+}
+
+/* Enhanced Footer Styling */
+.docs-footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #374151;
+  text-align: center;
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer-nav a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.35rem 0.65rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.footer-nav a:hover {
+  color: #60a5fa;
+  background-color: rgba(59, 130, 246, 0.1);
+  text-decoration: none;
+}
+
+/* Footer info section styling */
+.footer-info {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+.footer-badge-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background-color: #1f2937;
+  color: white;
+}
+
+.footer-badge.status {
+  background-color: #3b82f6;
+}
+
+.footer-info a {
+  color: #3b82f6;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-info a:hover {
+  text-decoration: underline;
+}
+
+.footer-updated {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-nav {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .footer-badge-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+/* Home Page Specific Styling */
+.home-hero {
+  text-align: center;
+  padding: 3rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.hero-icon {
+  font-size: 3rem;
+  color: #3b82f6;
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  color: #3b82f6;
+  margin: 0 0 1rem;
+  padding: 0;
+  border: none;
+}
+
+.hero-description {
+  color: #9ca3af;
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto 1.5rem;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background-color: #1f2937;
+  color: white;
+}
+
+.hero-badge:nth-child(2) {
+  background-color: #f59e0b;
+}
+
+.hero-badge:nth-child(3) {
+  background-color: #10b981;
+}

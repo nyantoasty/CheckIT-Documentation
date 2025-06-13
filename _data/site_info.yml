@@ -1,0 +1,8 @@
+version: "1.5.0"
+status: "Open Beta"
+function_count: "75+"
+repository_url: "https://nyantoasty.github.io/CheckIT-Documentation/"
+maintainer: "KJA"
+license: "MIT"
+lastupdated: "2025-06-13"
+enhanced: "Template system with 34 templates, improved documentation integration"

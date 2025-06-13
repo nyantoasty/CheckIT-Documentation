@@ -1,6 +1,6 @@
 ---
-title: Template System
-layout: default
+title: 🧩 Template System
+layout: docs-page
 ---
 
 <link rel="stylesheet" href="../assets/style.css">
@@ -318,14 +318,4 @@ Invoke-TemplateCommand -TemplateName "Your Custom Template" -Nodes $global:nodeL
 - Support credential management and parallel processing
 - Demonstrate proper separation of concerns (logging vs. reporting)
 
-The templates cover comprehensive system administration scenarios from basic information gathering to complex troubleshooting workflows, making CheckIT-Core a powerful tool for IT management and diagnostics.
-
-
-
-
-
-
-
-
-
-
+---

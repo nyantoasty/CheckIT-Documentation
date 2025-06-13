@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: docs-page
 title: 🚀 Get Started
 ---
 
@@ -140,3 +140,5 @@ For more detailed documentation:
 ---
 
 **Need help?** Contact KJA for assistance with installation or usage questions.
+
+---

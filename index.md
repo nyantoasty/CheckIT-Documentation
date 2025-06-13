@@ -1,22 +1,12 @@
 ---
-layout: home
+layout: home-page
 title: CheckIT Home
+icon: 🏠
+description: Custom PowerShell module for Windows computer management, diagnostics, and reporting in domain environments
+
 ---
 
 <link rel="stylesheet" href="assets/style.css">
-
-<div class="hero-section">
-  <h1>🔧 CheckIT-Core Documentation</h1>
-  <blockquote>
-    Professional PowerShell module for Windows computer management, diagnostics, and reporting in domain environments.
-  </blockquote>
-  
-  <div class="status-container">
-    <span class="status-badge status-version">Version 1.5.0</span>
-    <span class="status-badge status-progress">75+ Functions</span>
-    <span class="status-badge status-production">Beta (open to request)</span>
-  </div>
-</div>
 
 <div class="docs-grid">
   <div class="doc-card">
@@ -47,9 +37,9 @@ title: CheckIT Home
 <div class="feature-card">
   <h2>🗝️ Key Features</h2>
   
-  **Template Workflow System** • **Session Automation** • **Centralized Management**<br>
-  **Secure Authentication** • **Excel Reporting** • **Session Persistence**<br>
-  **Parallel Processing** • **Active Directory Integration** • **Documentation Automation**
+  Template Workflow System • Session Automation • Centralized Management<br>
+  Secure Authentication • Excel Reporting • Session Persistence<br>
+  Parallel Processing • Active Directory Integration • Documentation Automation
   
   <p>Perfect for managing labs, classrooms, and departmental computers in domain environments.</p>
 </div>
@@ -94,5 +84,3 @@ Manage-Templates -Type Codebase -Action Search</code></pre>
 </div>
 
 ---
-
-**Repository**: [CheckIT (Private)](https://github.com/nyantoasty/CheckIT) | **License**: MIT | **Maintained by**: KJA | **Status**: Beta v1.5.0 (open to request)
