@@ -34,7 +34,7 @@ navigation:
       link: /docs/README
       icon: ℹ️
     - name: Get Started
-      link: /get-started
+      link: /docs/get-started
       icon: 🚀
     - name: API Reference
       link: /docs/api-reference
@@ -42,10 +42,10 @@ navigation:
     - name: Quick Reference
       link: /docs/quick-reference
       icon: ⚡
-  row2:
     - name: Template System
       link: /docs/templateInfo
       icon: 🧩
+  row2:
     - name: Troubleshooting
       link: /docs/troubleshooting
       icon: 🔍

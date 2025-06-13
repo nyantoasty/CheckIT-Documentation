@@ -9,7 +9,7 @@ subtitle: Custom PowerShell toolkit for Windows environment management
 ## 📚 Documentation
 
 - **[ℹ️ About](README.md)** - Complete overview of CheckIT capabilities
-- **[🚀 Get Started](../get-started.md)** - Installation and initial setup
+- **[🚀 Get Started](/get-started.md)** - Installation and initial setup
 - **[📘 API Reference](api-reference.md)** - Complete function library (75+ functions)
 - **[⚡ Quick Reference](quick-reference.md)** - Essential patterns and workflows
 - **[🧩 Template System](templateInfo.md)** - Detailed template capabilities (30+ templates)
