@@ -756,105 +756,91 @@ table code {
   }
 }
 /***********************************
- * TERMINAL-STYLE CODE BLOCKS
+ * WINDOWS-STYLE CODE BLOCKS
  ***********************************/
 
 /* Outer container with teal background */
 .code-example {
-  background: #002b36 !important;
-  border-radius: 0.5rem !important;
+  background: #002b36 !important; /* Dark teal background */
+  border-radius: 0.4rem !important;
   margin: 1.5rem 0 !important;
   padding: 0.75rem !important;
   position: relative !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* Terminal-like code block */
+/* Clean terminal code block - Windows style */
 .highlight {
   margin: 0 !important;
   position: relative !important;
-  border-radius: 0.4rem !important;
+  border-radius: 0.3rem !important;
   overflow: hidden !important;
   background: #1a1f29 !important; /* Dark terminal background */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
-  border: 1px solid rgba(30, 30, 40, 0.5) !important; /* Subtle border */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(30, 30, 40, 0.5) !important;
 }
 
-/* Terminal header bar */
+/* Windows-style titlebar */
 .highlight::before {
   content: attr(data-language);
   display: flex !important;
   align-items: center !important;
-  background: linear-gradient(to bottom, #2c313a, #242832) !important;
-  color: #9da5b4 !important;
-  padding: 0.35rem 1rem !important;
+  background: linear-gradient(to bottom, #2c313a, #222630) !important;
+  color: #d1d5db !important;
   font-size: 0.75rem !important;
   font-weight: 500 !important;
-  letter-spacing: 0.025em !important;
+  padding: 0.5rem 1rem !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3) !important;
   text-transform: uppercase !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2) !important;
-  height: 1.5rem !important;
+  letter-spacing: 0.025em !important;
+  text-align: left !important;
+  justify-content: flex-start !important; /* Left align title */
+  height: auto !important;
 }
 
-/* Add terminal window controls */
+/* Remove terminal control buttons - no Mac buttons */
 .highlight::after {
-  content: '';
-  position: absolute !important;
-  top: 0.5rem !important;
-  left: 0.75rem !important;
-  width: 0.65rem !important;
-  height: 0.65rem !important;
-  background: #ff5f56 !important; /* Red circle */
-  border-radius: 50% !important;
-  box-shadow: 
-    1.25rem 0 0 #ffbd2e, /* Yellow circle */
-    2.5rem 0 0 #27c93f /* Green circle */
-    !important;
-  z-index: 1 !important;
+  display: none !important;
 }
 
-/* Move the language indicator to the center */
-.highlight[data-language]::before {
-  justify-content: center !important;
-  padding-left: 4rem !important; /* Make room for circles */
-}
-
-/* Code content area with proper terminal spacing */
+/* Code content area with proper spacing */
 .highlight pre {
-  padding: 0.6rem 0.5rem !important;
+  padding: 0.75rem 0.5rem !important;
   margin: 0 !important;
   background: transparent !important;
   overflow-x: auto !important;
-  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace !important;
+  font-family: 'Consolas', 'Menlo', 'Monaco', monospace !important;
+  font-size: 0.9rem !important;
 }
 
-/* Tighter line numbers styling that looks like terminal gutter */
+/* Tighter line numbers styling */
 .highlight .lineno {
   color: #586e75 !important;
   display: inline-block !important;
-  padding: 0 0.4rem 0 0.25rem !important; /* Reduced padding */
-  margin-right: 0.4rem !important;
+  padding: 0 0.4rem 0 0.5rem !important;
+  margin-right: 0.3rem !important;
   border-right: 1px solid rgba(100, 110, 130, 0.3) !important;
   text-align: right !important;
-  min-width: 1rem !important;
+  min-width: 1.5rem !important;
   user-select: none !important;
-  opacity: 0.6 !important;
+  opacity: 0.7 !important;
 }
 
-/* Move code text close to the line numbers */
+/* Move code text closer to line numbers */
 .highlight code {
   padding-left: 0 !important;
   margin-left: 0 !important;
   tab-size: 2 !important;
 }
 
-/* Button styling to match terminal look */
+/* Windows-style copy button */
 .copy-button {
   position: absolute !important;
-  top: 0.35rem !important;
+  top: 0.4rem !important;
   right: 0.5rem !important;
-  background: rgba(70, 80, 95, 0.5) !important;
-  color: #cbd5e0 !important;
-  border: none !important;
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #d1d5db !important;
+  border: 1px solid rgba(99, 102, 241, 0.2) !important;
   border-radius: 0.2rem !important;
   padding: 0.15rem 0.6rem !important;
   font-size: 0.7rem !important;
@@ -862,22 +848,21 @@ table code {
   cursor: pointer !important;
   transition: all 0.2s !important;
   z-index: 5 !important;
-  height: 1.1rem !important;
-  line-height: 1 !important;
 }
 
 .copy-button:hover {
-  background: rgba(66, 153, 225, 0.6) !important;
+  background: rgba(59, 130, 246, 0.2) !important;
   color: white !important;
 }
 
 /* Success state for copy button */
 .copy-button.copied {
-  background: rgba(72, 187, 120, 0.6) !important;
-  color: white !important;
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  color: #d1d5db !important;
 }
 
-/* Fix any nested elements that might be creating extra padding */
+/* Fix nested elements that create duplicate toolbars */
 .highlight > pre,
 .highlight > div, 
 .highlight td.code,
@@ -890,19 +875,29 @@ table code {
   padding: 0 !important;
 }
 
-/* Terminal-like scrollbar */
+/* Remove any duplicate headers or elements */
+.highlight .rouge-table,
+.highlight div:first-child:not(pre),
+.highlight div.highlight {
+  background: transparent !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Terminal-like scrollbar - Windows style */
 .highlight pre::-webkit-scrollbar {
   width: 8px !important;
   height: 8px !important;
 }
 
 .highlight pre::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2) !important;
-  border-radius: 4px !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 0 !important;
 }
 
 .highlight pre::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1) !important;
+  background: rgba(0, 0, 0, 0.05) !important;
 }
 
 /* Ensure code is properly spaced */
@@ -912,20 +907,32 @@ table code {
   margin: 0 !important;
 }
 
-/* Fix code keywords and syntax highlighting for terminal look */
-.highlight .kd, .highlight .k {
-  color: #c678dd !important; /* Keywords */
+/* Syntax highlighting for PowerShell - solarized colors */
+.highlight .c1 {
+  color: #586e75 !important; /* Comments */
+  font-style: italic !important;
 }
 
-.highlight .s2, .highlight .s1, .highlight .s {
-  color: #98c379 !important; /* Strings */
+.highlight .k, .highlight .kd, .highlight .kc {
+  color: #cb4b16 !important; /* Keywords */
+}
+
+.highlight .s, .highlight .s2, .highlight .s1 {
+  color: #2aa198 !important; /* Strings */
+}
+
+.highlight .nb, .highlight .nf {
+  color: #268bd2 !important; /* Function names */
+}
+
+.highlight .nv, .highlight .no {
+  color: #859900 !important; /* Variables */
 }
 
 .highlight .mi, .highlight .mf {
-  color: #d19a66 !important; /* Numbers */
+  color: #d33682 !important; /* Numbers */
 }
 
-.highlight .c1, .highlight .cm {
-  color: #5c6370 !important; /* Comments */
-  font-style: italic !important;
+.highlight .o, .highlight .p {
+  color: #839496 !important; /* Operators and punctuation */
 }
