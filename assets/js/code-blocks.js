@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Clean up code block structure and fix styling
+  // Main function to fix code blocks
   function fixCodeBlocks() {
     // Find all code blocks
     const blocks = document.querySelectorAll('div.highlight');
@@ -93,38 +93,28 @@ document.addEventListener('DOMContentLoaded', function() {
         rows.forEach(row => {
           row.style.display = 'table-row';
           row.style.width = '100%';
-          row.style.boxShadow = 'none'; // Remove any shadow
         });
         
-        // Fix line number column - LEFT aligned numbers with fixed width
+        // Fix line number column
         const gutterCell = block.querySelector('.rouge-gutter');
         if (gutterCell) {
-          gutterCell.style.background = 'transparent';
-          gutterCell.style.border = 'none';
-          gutterCell.style.borderRight = '1px solid rgba(100, 110, 130, 0.4)';
-          gutterCell.style.padding = '1rem 0 1rem 0.25rem'; // Reduced left padding
-          gutterCell.style.verticalAlign = 'top';
-          gutterCell.style.width = '2.5rem'; // Slightly smaller width
-          gutterCell.style.minWidth = '2.5rem';
-          gutterCell.style.maxWidth = '2.5rem';
-          gutterCell.style.display = 'table-cell';
-          gutterCell.style.position = 'relative';
+          gutterCell.style.width = '3rem';
+          gutterCell.style.minWidth = '3rem';
+          gutterCell.style.maxWidth = '3rem';
           gutterCell.style.boxSizing = 'border-box';
-          gutterCell.style.textAlign = 'left'; // LEFT aligned
-          gutterCell.style.paddingRight = '0.25rem';
-          gutterCell.style.boxShadow = 'none'; // Remove any shadow
+          gutterCell.style.textAlign = 'right';
+          gutterCell.style.paddingRight = '0.75rem';
+          gutterCell.style.paddingLeft = '0.5rem';
+          gutterCell.style.verticalAlign = 'top';
         }
         
-        // Fix code column - bring closer to gutter
+        // Fix code column
         const codeCell = block.querySelector('.rouge-code');
         if (codeCell) {
           codeCell.style.width = 'auto';
           codeCell.style.boxSizing = 'border-box';
-          codeCell.style.paddingLeft = '0.5rem'; // Reduced padding to be closer to gutter
+          codeCell.style.paddingLeft = '1rem';
           codeCell.style.verticalAlign = 'top';
-          codeCell.style.textAlign = 'left';
-          codeCell.style.borderLeft = 'none';
-          codeCell.style.boxShadow = 'none'; // Remove any shadow
         }
       }
       
@@ -136,9 +126,6 @@ document.addEventListener('DOMContentLoaded', function() {
         preElement.style.whiteSpace = 'pre';
         preElement.style.overflowX = 'auto';
         preElement.style.width = '100%';
-        preElement.style.textAlign = 'left';
-        preElement.style.boxShadow = 'none'; // Remove any shadow
-        preElement.style.background = 'transparent'; // Remove any background
       }
       
       // Fix code element
@@ -146,145 +133,148 @@ document.addEventListener('DOMContentLoaded', function() {
       if (codeElement) {
         codeElement.style.display = 'inline-block';
         codeElement.style.minWidth = '100%';
-        codeElement.style.textAlign = 'left';
-        codeElement.style.boxShadow = 'none'; // Remove any shadow
       }
-      
-      // Fix line numbers - LEFT align them
-      const lineNumbers = block.querySelectorAll('.lineno');
-      lineNumbers.forEach(num => {
-        num.style.textAlign = 'left';
-        num.style.paddingRight = '0.25rem';
-        num.style.width = '2rem';
-        num.style.display = 'inline-block';
-        num.style.boxShadow = 'none'; // Remove any shadow
-      });
     });
   }
-  
-  // Special function focused on fixing index.md code blocks alignment
-  function fixIndexCodeBlocks() {
-    // Target specifically the code blocks in quick-start-card
-    const indexBlocks = document.querySelectorAll('.quick-start-card .code-example .highlight');
+
+  // Direct fix for index.md - targeting the specific structure
+  function fixIndexMdCodeBlocks() {
+    // Directly modify the specific code blocks in index.md structure
+    const codeBlocks = document.querySelectorAll('.quick-start-card .highlight');
     
-    indexBlocks.forEach(function(block) {
-      // Remove shadows
-      block.style.boxShadow = 'none';
+    if (codeBlocks.length > 0) {
+      console.log("Found index code blocks to fix:", codeBlocks.length);
       
-      // Remove any unwanted left padding on the block itself
-      block.style.paddingLeft = '0';
-      block.style.marginLeft = '0';
-      
-      // Fix table layout
-      const table = block.querySelector('table');
-      if (table) {
-        table.style.width = '100%';
-        table.style.tableLayout = 'fixed';
-        table.style.borderCollapse = 'collapse';
-        table.style.margin = '0';
-        table.style.padding = '0';
-        table.style.boxShadow = 'none'; // Remove shadow
+      codeBlocks.forEach(function(block, index) {
+        console.log(`Fixing index code block ${index + 1}`);
         
-        // Ensure line numbers are properly aligned - LEFT ALIGNED
-        const gutterCell = block.querySelector('.rouge-gutter');
-        if (gutterCell) {
-          gutterCell.style.background = 'transparent';
-          gutterCell.style.border = 'none';
-          gutterCell.style.borderRight = '1px solid rgba(100, 110, 130, 0.4)';
-          gutterCell.style.padding = '1rem 0 1rem 0.25rem'; // Less left padding
-          gutterCell.style.verticalAlign = 'top';
-          gutterCell.style.width = '2.5rem'; // Slightly smaller width
-          gutterCell.style.minWidth = '2.5rem';
-          gutterCell.style.maxWidth = '2.5rem';
-          gutterCell.style.display = 'table-cell';
-          gutterCell.style.position = 'relative';
-          gutterCell.style.boxSizing = 'border-box';
-          gutterCell.style.textAlign = 'left'; // LEFT aligned
-          gutterCell.style.paddingRight = '0.25rem';
-          gutterCell.style.boxShadow = 'none'; // Remove shadow
-          gutterCell.style.marginLeft = '0';
-        }
+        // Clear any existing styles that might interfere
+        block.style = "";
+        block.removeAttribute("style");
+
+        // Reset any margin/padding of the highlight block itself
+        block.style.margin = "0";
+        block.style.padding = "0";
         
-        // Ensure code cell uses remaining width with proper left alignment - CLOSER TO GUTTER
-        const codeCell = block.querySelector('.rouge-code');
-        if (codeCell) {
-          codeCell.style.width = 'auto';
-          codeCell.style.boxSizing = 'border-box';
-          codeCell.style.paddingLeft = '0.5rem'; // Less padding for closer code
-          codeCell.style.verticalAlign = 'top';
-          codeCell.style.textAlign = 'left';
-          codeCell.style.borderLeft = 'none';
-          codeCell.style.boxShadow = 'none'; // Remove shadow
+        // Manually rebuild the internal structure if needed
+        let table = block.querySelector('table');
+        if (!table) {
+          console.log("Table not found in code block, structure may be incorrect");
+          return;
         }
-      }
-      
-      // Fix pre element - ensure left alignment and no shadow
-      const preElement = block.querySelector('pre');
-      if (preElement) {
-        preElement.style.margin = '0';
-        preElement.style.padding = '0';
-        preElement.style.whiteSpace = 'pre';
-        preElement.style.overflowX = 'auto';
-        preElement.style.width = '100%';
-        preElement.style.textAlign = 'left';
-        preElement.style.paddingLeft = '0';
-        preElement.style.marginLeft = '0';
-        preElement.style.boxShadow = 'none'; // Remove shadow
-        preElement.style.background = 'transparent'; // Remove background
-      }
-      
-      // Fix line numbers - LEFT ALIGNED
-      const lineNumbers = block.querySelectorAll('.lineno');
-      lineNumbers.forEach(num => {
-        num.style.textAlign = 'left';
-        num.style.paddingRight = '0.25rem';
-        num.style.width = '2rem';
-        num.style.display = 'inline-block';
-        num.style.boxShadow = 'none'; // Remove shadow
+
+        // Fix table and cell alignment
+        table.style = ""; // Clear any styles
+        table.style.width = "100%";
+        table.style.borderCollapse = "collapse";
+        table.style.tableLayout = "fixed";
+        
+        // Make sure column widths are explicitly set
+        const gutterCell = table.querySelector('.rouge-gutter');
+        const codeCell = table.querySelector('.rouge-code');
+        
+        if (gutterCell && codeCell) {
+          // Reset the cells first
+          gutterCell.style = "";
+          codeCell.style = "";
+          
+          // Set fixed width for gutter
+          gutterCell.style.width = "40px";
+          gutterCell.style.minWidth = "40px";
+          gutterCell.style.maxWidth = "40px";
+          gutterCell.style.paddingRight = "5px";
+          gutterCell.style.borderRight = "1px solid rgba(100, 110, 130, 0.4)";
+          gutterCell.style.textAlign = "right";
+          gutterCell.style.verticalAlign = "top";
+          
+          // Code cell takes remaining space
+          codeCell.style.width = "auto";
+          codeCell.style.paddingLeft = "10px";
+          codeCell.style.verticalAlign = "top";
+          
+          // Make the line numbers more compact
+          const lineNumbers = gutterCell.querySelectorAll('.lineno');
+          lineNumbers.forEach(num => {
+            num.style = "";
+            num.style.display = "block";
+            num.style.textAlign = "right";
+            num.style.width = "100%";
+            num.style.paddingRight = "5px";
+          });
+          
+          // Fix any pre/code elements inside
+          const preElements = block.querySelectorAll('pre');
+          preElements.forEach(pre => {
+            pre.style = "";
+            pre.style.margin = "0";
+            pre.style.padding = "0";
+            pre.style.overflow = "auto";
+          });
+          
+          const codeElements = block.querySelectorAll('code');
+          codeElements.forEach(code => {
+            code.style = "";
+            code.style.whiteSpace = "pre";
+            code.style.display = "block";
+          });
+          
+          // Fix whitespace and indentation in the code block
+          const spans = codeCell.querySelectorAll('span');
+          spans.forEach(span => {
+            if (span.innerHTML.startsWith('  ')) {
+              span.innerHTML = span.innerHTML.replace(/^\s+/, '');
+            }
+          });
+          
+          console.log(`Fixed index code block ${index + 1}`);
+        } else {
+          console.log("Could not find gutter or code cells");
+        }
       });
-    });
+    } else {
+      console.log("No index code blocks found to fix");
+    }
     
-    // Fix extra indentation in the code-example containers
+    // Fix the code-example containers
     const codeExamples = document.querySelectorAll('.quick-start-card .code-example');
-    codeExamples.forEach(example => {
-      example.style.paddingLeft = '0';
-      example.style.marginLeft = '0';
-      example.style.boxShadow = 'none'; // Remove shadow
+    codeExamples.forEach((example, i) => {
+      example.style = "";
+      example.style.padding = "0";
+      example.style.margin = "0";
+      console.log(`Fixed code example container ${i + 1}`);
     });
     
-    // Remove any pre-applied styles causing shadows
-    document.querySelectorAll('.quick-start-card pre, .quick-start-card pre *').forEach(el => {
-      el.style.boxShadow = 'none';
-      el.style.background = 'transparent';
+    // Fix any extra padding in index.md highlighted block
+    document.querySelectorAll('.quick-start-card .highlight').forEach((el, i) => {
+      if (getComputedStyle(el).paddingLeft !== "0px") {
+        el.style.paddingLeft = "0";
+        console.log(`Fixed padding on highlight block ${i + 1}`);
+      }
     });
   }
   
   // Run all fixing functions
   function applyAllFixes() {
+    console.log("Applying code block fixes");
     fixCodeBlocks();
-    fixIndexCodeBlocks();
     
-    // Force left alignment of first lines in code blocks and remove shadow
+    // Apply index-specific fixes with extra logging
+    console.log("Applying index-specific fixes");
+    fixIndexMdCodeBlocks();
+    
+    // Force extra fixes with a delay to ensure they apply after any other processing
     setTimeout(() => {
-      document.querySelectorAll('.quick-start-card .highlight pre code span:first-child').forEach(span => {
-        span.style.paddingLeft = '0';
-        span.style.marginLeft = '0';
-        span.style.boxShadow = 'none';
-      });
-      
-      // Remove any shadow-causing styles
-      document.querySelectorAll('.shadow, [style*="shadow"]').forEach(el => {
-        el.style.boxShadow = 'none';
-      });
-    }, 200);
+      console.log("Applying delayed fixes");
+      fixIndexMdCodeBlocks();
+    }, 500);
   }
   
-  // Run fixes at multiple points to ensure they apply
+  // Run fixes immediately
   applyAllFixes();
   
-  // Run fixes after a short delay
-  setTimeout(applyAllFixes, 500);
-  
   // Also run when window fully loads
-  window.addEventListener('load', applyAllFixes);
+  window.addEventListener('load', () => {
+    console.log("Window loaded, reapplying fixes");
+    applyAllFixes();
+  });
 });
