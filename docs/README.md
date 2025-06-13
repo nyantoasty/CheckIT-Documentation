@@ -120,9 +120,7 @@ cd "CheckIT-Core-v1.5.0"
 
 ## 📞 Support
 
-- **Issues**: Contact IT Department
+- **Issues**: Contact KJA
 - **Documentation**: See API Reference, Quick Reference and Troubleshooting Guide
 
 ---
-
-**Current Version**: 1.5.0 | **Functions**: 75+ | **Status**: Beta v1.5.0 (open to request)

@@ -7,8 +7,6 @@ layout: docs-page
 
 ---
 
-# Template System (v1.5.0)
-
 ## 🎯 Template Design Philosophy
 
 CheckIT templates follow a **"simple commands, powerful workflows"** approach that maximizes flexibility while maintaining ease of use:

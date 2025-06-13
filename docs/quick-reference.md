@@ -340,13 +340,3 @@ Invoke-Pivotizer -ExcelPath $excelFile -SourceSheet ($sheets.Keys | Select-Objec
 ```
 
 ---
-
-📖 **Full Documentation**
-
-- [Developer Guide](https://nyantoasty.github.io/CheckIT-Documentation/docs/developer-guide.html) - Enhanced patterns and template-driven development
-- [API Reference](https://nyantoasty.github.io/CheckIT-Documentation/docs/api-reference.html) - Complete function library with template workflow system
-- [Assistance Guide](https://nyantoasty.github.io/CheckIT-Documentation/docs/assistance-guide.html) - Human-AI collaboration with template workflows
-- [Troubleshooting](https://nyantoasty.github.io/CheckIT-Documentation/docs/troubleshooting.html) - Solutions including template system troubleshooting
-- [ChatModes Reference](https://nyantoasty.github.io/CheckIT-Documentation/docs/chatmodes.html) - Using specialized ChatModes for development assistance
-
----
