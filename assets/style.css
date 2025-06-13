@@ -635,7 +635,7 @@ table code {
   }
 }
 /***********************************
- * CODE STYLING & SYNTAX HIGHLIGHTING - FIXED VERSION
+ * CODE STYLING & SYNTAX HIGHLIGHTING - IMPROVED SCROLLBAR VERSION
  ***********************************/
 
 /* Outer container with teal background */
@@ -665,20 +665,6 @@ table code {
   text-align: left !important;
 }
 
-/* Eliminate all potential nested containers within code blocks */
-.highlight,
-.highlight pre,
-.highlight code,
-.highlight div,
-.code-example > div:not(.highlight),
-div.highlight {
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  background: transparent !important; 
-}
-
 /* Style only the main visible code container */
 .highlight {
   background: linear-gradient(to bottom, #2a2f3a 0%, #242936 100%) !important;
@@ -686,6 +672,8 @@ div.highlight {
   overflow: hidden !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
   border: 1px solid rgba(30, 34, 45, 0.6) !important;
+  width: 100% !important;
+  margin: 0 !important;
 }
 
 /* Code content area with proper spacing */
@@ -697,6 +685,7 @@ div.highlight {
   font-size: 0.9rem !important;
   color: #d1d5db !important;
   font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
+  white-space: pre !important; /* Return to pre formatting */
 }
 
 /* Force full width on all nested elements */
@@ -713,7 +702,7 @@ div.highlight {
 /* Ensure code cells take full width */
 .highlight td.rouge-code {
   width: 100% !important;
-  padding: 1rem !important;
+  padding: 0 1rem !important;
   background: transparent !important;
 }
 
@@ -758,43 +747,105 @@ div.highlight {
   border-color: rgba(99, 102, 241, 0.4) !important;
 }
 
-/* Code wrapping - prevent horizontal scrolling */
-.highlight pre {
-  white-space: pre-wrap !important;
-  word-wrap: break-word !important;
-  word-break: break-word !important;
-  overflow-wrap: break-word !important;
-  overflow-x: hidden !important; /* Hide horizontal scrollbar */
+/* Nicer scrollbars for code blocks */
+.highlight pre::-webkit-scrollbar {
+  height: 8px !important;
+  background-color: rgba(30, 34, 45, 0.2) !important;
 }
 
-.highlight code {
-  white-space: pre-wrap !important;
-  word-wrap: break-word !important;
-  word-break: break-word !important;
-  overflow-wrap: break-word !important;
+.highlight pre::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3) !important;
+  border-radius: 4px !important;
 }
 
-/* Ensure code content has enough space */
-.highlight > pre,
-.highlight .rouge-table pre {
-  padding: 1rem !important;
-  background: transparent !important;
-  font-size: 0.9rem !important;
-  color: #d1d5db !important;
-  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
-  max-width: 100% !important;
+.highlight pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5) !important;
 }
 
-/* Adjust line number spacing for wrapped code */
-.highlight .lineno {
+.highlight pre::-webkit-scrollbar-track {
+  background: rgba(30, 34, 45, 0.2) !important;
+  border-radius: 4px !important;
+}
+
+/* Restore syntax highlighting colors */
+.highlight .c, .highlight .c1, .highlight .cm {
   color: #586e75 !important;
-  display: inline-block !important;
-  padding: 0 0.5rem 0 0.25rem !important;
-  margin-right: 0.5rem !important;
-  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
-  text-align: right !important;
-  min-width: 1rem !important;
-  user-select: none !important;
-  opacity: 0.6 !important;
-  vertical-align: top !important; /* Align to top for multi-line wrapping */
+  font-style: italic !important;
+}
+
+.highlight .k, .highlight .kd, .highlight .kt {
+  color: #fb923c !important;
+  font-weight: bold !important;
+}
+
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb {
+  color: #2aa198 !important;
+}
+
+.highlight .nv, .highlight .vg {
+  color: #7dd3fc !important;
+}
+
+.highlight .n, .highlight .nf {
+  color: #93a1a1 !important;
+}
+
+.highlight .nb {
+  color: #fbbf24 !important;
+}
+
+.highlight .m, .highlight .mi, .highlight .mf {
+  color: #d33682 !important;
+}
+
+.highlight .o, .highlight .ow {
+  color: #859900 !important;
+}
+
+.highlight .p, .highlight .bp, .highlight .vc, .highlight .vi, .highlight .il {
+  color: #93a1a1 !important;
+}
+
+.highlight .na {
+  color: #a78bfa !important;
+}
+
+.highlight .nt {
+  color: #a78bfa !important;
+}
+
+.highlight .err {
+  color: #dc322f !important;
+  background: none !important;
+}
+
+/* PowerShell specific syntax highlighting */
+.highlight .nx {
+  color: #7dd3fc !important; /* PowerShell cmdlet names */
+}
+
+.highlight .nf {
+  color: #93c5fd !important; /* PowerShell functions */
+}
+
+.highlight .nb {
+  color: #fbbf24 !important; /* PowerShell built-ins */
+}
+
+/* Fix double highlighting for nested divs */
+.code-example .highlight div {
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important; 
+}
+
+/* Make sure inline code looks good */
+p code, li code, td code, th code {
+  background: #073642 !important;
+  color: #93a1a1 !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.25rem !important;
+  border: none !important;
+  font-size: 0.875rem !important;
 }
