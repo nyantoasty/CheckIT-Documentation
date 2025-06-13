@@ -962,3 +962,97 @@ html body .quick-start-card .code-example {
   padding: 0 !important;
   margin: 0 !important;
 }
+
+/* Make index.md code blocks match other code blocks */
+.quick-start-card .code-example {
+  background: linear-gradient(135deg, #054a5c 0%, #12313b 100%);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  position: relative;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+}
+
+.quick-start-card .code-example::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0.75rem;
+  left: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f3f4f6;
+  opacity: 0.8;
+  letter-spacing: 0.05em;
+}
+
+.quick-start-card .highlight {
+  background: #1e2936;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  box-shadow: none !important;
+}
+
+.quick-start-card .highlight table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+.quick-start-card .highlight td.rouge-gutter {
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  text-align: right !important;
+  padding-right: 10px !important;
+  vertical-align: top !important;
+  background: transparent !important;
+}
+
+.quick-start-card .highlight td.rouge-code {
+  padding-left: 10px !important;
+  vertical-align: top !important;
+  background: transparent !important;
+}
+
+.quick-start-card .highlight .lineno {
+  color: rgba(255, 255, 255, 0.5) !important;
+  text-align: right !important;
+}
+
+.quick-start-card .highlight pre {
+  margin: 0;
+  padding: 10px 0;
+  background: transparent !important;
+}
+
+.quick-start-card .highlight .copy-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick-start-card .highlight .copy-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Remove second dark background */
+.quick-start-card .highlight,
+.quick-start-card .highlight pre,
+.quick-start-card .highlight code,
+.quick-start-card .highlight table,
+.quick-start-card .highlight td {
+  background: transparent !important;
+  box-shadow: none !important;
+}
