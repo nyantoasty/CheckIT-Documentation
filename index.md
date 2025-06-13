@@ -85,7 +85,7 @@ Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @("Get OS Info", "Che
 # List available templates
 Manage-Templates -Type Command -Action List
 
-    # Search for development patterns
+# Search for development patterns
 Manage-Templates -Type Codebase -Action Search
 {% endhighlight %}
   </div>
