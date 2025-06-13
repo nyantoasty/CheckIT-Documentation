@@ -414,6 +414,7 @@ p, li, td, th {
   margin-top: 0;
   color: #3b82f6;
 }
+
 /***********************************
  * TABLE STYLING
  ***********************************/
@@ -634,29 +635,70 @@ table code {
   }
 }
 
-/* Fix code block container */
+/***********************************
+ * CODE STYLING & SYNTAX HIGHLIGHTING - COMBINED VERSION
+ ***********************************/
+
+/* Base code styling */
+pre, code {
+  color: #839496 !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
+}
+
+pre {
+  overflow-x: auto !important;
+  margin: 0 !important;
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+code {
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.9rem !important;
+}
+
+/* Inline code styling */
+p code, li code, td code, th code {
+  background: #073642 !important;
+  color: #93a1a1 !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.25rem !important;
+  border: none !important;
+  font-size: 0.875rem !important;
+}
+
+/* Make sure code stays within bounds */
+pre code {
+  white-space: pre-wrap !important;
+  word-break: break-word !important;
+}
+
+/* Outer container with proper background */
 .code-example {
-  background: #1a1f29 !important; /* Match the main background color */
+  background: #1a1f29 !important; /* Match site background */
   border-radius: 0.4rem !important;
   margin: 1.5rem 0 !important;
-  padding: 0 !important; /* Remove padding that creates the gap */
+  padding: 0 !important; /* Remove padding */
   position: relative !important;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15) !important;
   overflow: hidden !important;
 }
 
-/* Remove the separate highlight styling that creates the nested appearance */
+/* Code block container */
 .highlight {
   margin: 0 !important;
   position: relative !important;
-  border-radius: 0 !important; /* Remove border radius from inner element */
+  border-radius: 0 !important; /* Remove inner radius */
   overflow: hidden !important;
-  background: #1a1f29 !important; /* Match the code-example background */
-  box-shadow: none !important; /* Remove inner shadow */
-  border: none !important; /* Remove inner border */
+  background: #1a1f29 !important; /* Match outer container */
+  box-shadow: none !important; /* Remove shadow */
+  border: none !important; /* Remove border */
 }
 
-/* Simplify the titlebar */
+/* Clean titlebar - spans full width */
 .code-example::before {
   content: attr(data-language);
   display: block !important;
@@ -669,10 +711,10 @@ table code {
   text-transform: uppercase !important;
   letter-spacing: 0.025em !important;
   text-align: left !important;
-  width: 100% !important; /* Ensure it spans the full width */
+  width: 100% !important;
 }
 
-/* Fix code content area */
+/* Code content area with proper spacing */
 .highlight pre {
   padding: 1rem !important;
   margin: 0 !important;
@@ -682,7 +724,7 @@ table code {
   font-size: 0.9rem !important;
 }
 
-/* Adjust line numbers styling */
+/* Tighter line numbers styling with visible separator */
 .highlight .lineno {
   color: #586e75 !important;
   display: inline-block !important;
@@ -695,11 +737,19 @@ table code {
   opacity: 0.7 !important;
 }
 
-/* Position copy button correctly */
+/* Move code text closer to line numbers */
+.highlight code {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  tab-size: 2 !important;
+  background: transparent !important;
+}
+
+/* Windows-style copy button */
 .copy-button {
   position: absolute !important;
-  top: 0.25rem !important;
-  right: 0.5rem !important;
+  top: 0.4rem !important;
+  right: 0.85rem !important;
   background: rgba(59, 130, 246, 0.1) !important;
   color: #d1d5db !important;
   border: 1px solid rgba(99, 102, 241, 0.2) !important;
@@ -710,4 +760,92 @@ table code {
   cursor: pointer !important;
   transition: all 0.2s !important;
   z-index: 15 !important;
+}
+
+/* Remove ALL nested elements that cause duplication */
+.highlight::before,
+.highlight::after {
+  content: none !important;
+}
+
+.highlight table.rouge-table,
+.highlight div.highlight,
+.highlight div:not(pre),
+.highlight > div, 
+.highlight td.code,
+.highlight tbody,
+.highlight tr {
+  background: transparent !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Fix code display in rouge table */
+.rouge-table {
+  display: block !important;
+  width: 100% !important;
+  overflow: auto !important;
+}
+
+.rouge-table td.rouge-code {
+  padding-left: 0 !important;
+}
+
+/* Properly align code text */
+.highlight .code pre {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Syntax highlighting colors */
+.highlight .c, .highlight .c1, .highlight .cm {
+  color: #586e75 !important;
+  font-style: italic !important;
+}
+
+.highlight .k, .highlight .kd, .highlight .kt {
+  color: #fb923c !important;
+  font-weight: bold !important;
+}
+
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb {
+  color: #2aa198 !important;
+}
+
+.highlight .nv, .highlight .vg {
+  color: #7dd3fc !important;
+}
+
+.highlight .n, .highlight .nf {
+  color: #93a1a1 !important;
+}
+
+.highlight .nb {
+  color: #fbbf24 !important;
+}
+
+.highlight .m, .highlight .mi, .highlight .mf {
+  color: #d33682 !important;
+}
+
+.highlight .o, .highlight .ow {
+  color: #859900 !important;
+}
+
+.highlight .p, .highlight .bp, .highlight .vc, .highlight .vi, .highlight .il {
+  color: #93a1a1 !important;
+}
+
+.highlight .na {
+  color: #a78bfa !important;
+}
+
+.highlight .nt {
+  color: #a78bfa !important;
+}
+
+.highlight .err {
+  color: #dc322f !important;
+  background: none !important;
 }
