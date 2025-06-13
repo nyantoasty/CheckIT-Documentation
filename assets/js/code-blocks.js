@@ -77,6 +77,45 @@ document.addEventListener('DOMContentLoaded', function() {
           }, 2000);
         });
       });
+      
+      // Fix the table layout and styling
+      const table = block.querySelector('table');
+      if (table) {
+        table.style.width = '100%';
+        table.style.tableLayout = 'fixed';
+      }
+      
+      // Fix code cell width and background
+      const codeCell = block.querySelector('.rouge-code');
+      if (codeCell) {
+        codeCell.style.width = '100%';
+        codeCell.style.boxSizing = 'border-box';
+        codeCell.style.padding = '1rem 2rem 1rem 0.75rem';
+      }
+      
+      // Fix gutter column width
+      const gutterCell = block.querySelector('.rouge-gutter');
+      if (gutterCell) {
+        gutterCell.style.width = '3rem';
+        gutterCell.style.minWidth = '3rem';
+        gutterCell.style.maxWidth = '3rem';
+        gutterCell.style.boxSizing = 'border-box';
+      }
+      
+      // Ensure code spans full width
+      const codeElement = block.querySelector('code');
+      if (codeElement) {
+        codeElement.style.width = '100%';
+        codeElement.style.display = 'inline-block';
+      }
+      
+      // Fix pre element
+      const preElement = block.querySelector('pre');
+      if (preElement) {
+        preElement.style.width = '100%';
+        preElement.style.overflowX = 'auto';
+        preElement.style.whiteSpace = 'pre';
+      }
     });
   }
   
@@ -133,22 +172,125 @@ document.addEventListener('DOMContentLoaded', function() {
           }, 2000);
         });
       });
+      
+      // Also fix the styling for index code blocks
+      const table = highlight.querySelector('table');
+      if (table) {
+        table.style.width = '100%';
+        table.style.tableLayout = 'fixed';
+      }
+      
+      const codeCell = highlight.querySelector('.rouge-code');
+      if (codeCell) {
+        codeCell.style.width = '100%';
+        codeCell.style.boxSizing = 'border-box';
+        codeCell.style.padding = '1rem 2rem 1rem 0.75rem';
+      }
+      
+      const gutterCell = highlight.querySelector('.rouge-gutter');
+      if (gutterCell) {
+        gutterCell.style.width = '3rem';
+        gutterCell.style.minWidth = '3rem';
+        gutterCell.style.maxWidth = '3rem';
+        gutterCell.style.boxSizing = 'border-box';
+      }
+      
+      const codeElement = highlight.querySelector('code');
+      if (codeElement) {
+        codeElement.style.width = '100%';
+        codeElement.style.display = 'inline-block';
+      }
+      
+      const preElement = highlight.querySelector('pre');
+      if (preElement) {
+        preElement.style.width = '100%';
+        preElement.style.overflowX = 'auto';
+        preElement.style.whiteSpace = 'pre';
+      }
+    });
+  }
+  
+  // Fix specifically for index.md code blocks
+  function fixIndexCodeBlocks() {
+    // Target all code blocks in the index page
+    const indexBlocks = document.querySelectorAll('.quick-start-card .highlight');
+    
+    indexBlocks.forEach(function(block) {
+      // Fix highlight container
+      block.style.width = '100%';
+      block.style.display = 'block';
+      block.style.overflow = 'hidden';
+      
+      // Fix table layout
+      const table = block.querySelector('table');
+      if (table) {
+        table.style.width = '100%';
+        table.style.tableLayout = 'fixed';
+        table.style.display = 'table';
+      }
+      
+      // Fix table rows
+      const rows = block.querySelectorAll('tr');
+      rows.forEach(row => {
+        row.style.display = 'table-row';
+        row.style.width = '100%';
+      });
+      
+      // Fix code column width and background
+      const codeCell = block.querySelector('.rouge-code');
+      if (codeCell) {
+        codeCell.style.width = '100%';
+        codeCell.style.boxSizing = 'border-box';
+        codeCell.style.padding = '1rem 2rem 1rem 0.75rem';
+        codeCell.style.display = 'table-cell';
+        codeCell.style.background = 'transparent';
+      }
+      
+      // Fix gutter column width
+      const gutterCell = block.querySelector('.rouge-gutter');
+      if (gutterCell) {
+        gutterCell.style.width = '3rem';
+        gutterCell.style.minWidth = '3rem';
+        gutterCell.style.maxWidth = '3rem';
+        gutterCell.style.boxSizing = 'border-box';
+        gutterCell.style.display = 'table-cell';
+      }
+      
+      // Ensure code spans full width
+      const codeElement = block.querySelector('code');
+      if (codeElement) {
+        codeElement.style.width = '100%';
+        codeElement.style.display = 'inline-block';
+        codeElement.style.background = 'transparent';
+      }
+      
+      // Fix pre element
+      const preElement = block.querySelector('pre');
+      if (preElement) {
+        preElement.style.width = '100%';
+        preElement.style.overflowX = 'auto';
+        preElement.style.whiteSpace = 'pre';
+        preElement.style.background = 'transparent';
+      }
     });
   }
   
   // Run immediately and again after DOM fully loaded to catch all blocks
   fixCodeBlocks();
   addCopyButtonsToIndexCodeExamples();
+  fixIndexCodeBlocks();
   
   // Run again after a delay to catch any dynamically loaded content
   setTimeout(() => {
     fixCodeBlocks();
     addCopyButtonsToIndexCodeExamples();
+    fixIndexCodeBlocks();
   }, 500);
   
   // Also run when window loads to catch everything
   window.addEventListener('load', () => {
     fixCodeBlocks();
     addCopyButtonsToIndexCodeExamples();
+    fixIndexCodeBlocks();
   });
 });

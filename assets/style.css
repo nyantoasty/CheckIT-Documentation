@@ -699,22 +699,30 @@ table code {
   table-layout: fixed !important;
 }
 
-.highlight tbody,
-.highlight tr {
+.highlight tbody {
   border: none !important;
   background: transparent !important;
   display: table-row-group !important;
   width: 100% !important;
 }
 
-/* Line number column with fixed width */
+/* Force background to span full width */
+.highlight tr {
+  width: 100% !important;
+  display: table-row !important;
+  background: transparent !important;
+}
+
+/* Fix line number column width */
 .highlight td.rouge-gutter {
   background: transparent !important;
   border: none !important;
   border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
   padding: 1rem 0 1rem 1rem !important;
   vertical-align: top !important;
-  width: 3rem !important;
+  width: 3rem !important; /* Fixed width */
+  min-width: 3rem !important; /* Ensure minimum width */
+  max-width: 3rem !important; /* Ensure maximum width */
   display: table-cell !important;
   position: relative !important;
   box-sizing: border-box !important;
@@ -726,7 +734,7 @@ table code {
   border: none !important;
   padding: 1rem 2rem 1rem 0.75rem !important; /* Increased right padding */
   vertical-align: top !important;
-  width: auto !important;
+  width: 100% !important;
   display: table-cell !important;
   box-sizing: border-box !important;
 }
@@ -746,12 +754,17 @@ table code {
 /* Fix for nested divs and tables */
 .highlight pre,
 .highlight code,
-.highlight div,
-.highlight > div {
-  background: transparent !important; 
+.highlight div {
+  background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   margin: 0 !important;
+}
+
+/* Fix any potential issues with nested divs */
+.highlight > div {
+  width: 100% !important;
+  background: transparent !important;
 }
 
 /* Code content styling */
@@ -768,12 +781,14 @@ table code {
 }
 
 /* Code text with min-width to prevent horizontal overflow */
+/* Ensure code spans full width */
 .highlight code {
   background: transparent !important;
   padding: 0 !important;
   margin: 0 !important;
-  display: block !important; 
-  min-width: auto !important;
+  display: inline-block !important; /* Changed from block to inline-block */
+  width: 100% !important; /* Force full width */
+  min-width: 100% !important;
 }
 
 /* Windows-style copy button */
@@ -882,11 +897,13 @@ table code {
 /* Fix for index.md specific code blocks */
 .quick-start-card .code-example .highlight {
   width: 100% !important;
+  display: block !important;;
 }
 
 /* Remove extra spacing in code blocks */
 .quick-start-card .code-example .highlight pre {
   overflow-x: hidden !important;
+  width: 100% !important;
 }
 
 /* Fix for any potential overlapping elements */
