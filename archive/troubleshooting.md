@@ -5,6 +5,8 @@ layout: default
 
 <link rel="stylesheet" href="../assets/style.css">
 
+# CheckIT Troubleshooting Guide
+
 > Solutions, fixes, and anti-patterns for CheckIT-Core development and deployment
 
 ## 🔥 Instant Troubleshooting Table
@@ -61,7 +63,6 @@ if ($isCommandTemplate) {
     $result = Invoke-TemplateCommand -TemplateName $templateName -Confirm:$templateConfirm
 }
 ```
-
 
 #### Problem: Excel Export Creates Empty Sheets
 ```powershell
@@ -622,39 +623,6 @@ Write-Host "Testing session automation: $($global:WorkflowAutoConfirm['*'])"
 # Clear session automation
 $global:WorkflowAutoConfirm.Remove('*')
 Write-Host "Session automation cleared"
-```
-### Pivot tables or slicers don't work correctly
-
-**Problem:** Excel pivot tables or slicers fail to work or show errors.
-
-**Cause:** Excel has strict requirements for column names in pivot tables and slicers:
-- Names must be 31 characters or fewer
-- No special characters allowed
-- No spaces (can cause issues)
-- Column names must be unique
-
-**Solution:** Use the built-in column cleaning workflow:
-
-```powershell
-# Solution 1: Use CleanData when creating reports
-Set-Report -ReportName "Report" -Function "Get-Data" -Data $results -CleanData
-
-# Solution 2: Use Invoke-TemplateWorkflow with ExportToExcel
-Invoke-TemplateWorkflow -Nodes $nodes -Templates @("Template") -WorkflowName "Report" -ExportToExcel
-```
-
-### Missing data in exported sheets
-
-**Problem:** Some data appears missing or shows as "Complex Object" in Excel sheets.
-
-**Cause:** Excel can't properly display complex nested objects or arrays.
-
-**Solution:** Use Convert-ReportData to flatten nested data:
-
-```powershell
-# Convert complex objects to simple strings before export
-$cleanResults = Convert-ReportData -RawData $results -SourceFunction "YourFunction"
-$cleanResults | Export-ToExcel -Title "Clean_Report"
 ```
 
 ### Excel Export Recovery

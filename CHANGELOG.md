@@ -5,14 +5,115 @@ layout: default
 
 <link rel="stylesheet" href="assets/style.css">
 
-# CheckIT-Core Changelog    
+---
+
+## 2025-06-12 - Enhanced Documentation Workflow
+
+**Type:** Enhancement
+**Version:** 1.5.2
+
+**Key Changes:**
+
+- Added comprehensive documentation validation to Fix-Documentation.ps1
+- Created new scripts to test documentation completeness and quality
+- Added README synchronization checks to ensure accurate feature representation
+- Implemented automated changelog entry creation for documentation updates
+
+**Files Changed:**
+
+- `Fix-Documentation.ps1` - Enhanced documentation workflow
+- `Test-DocumentationCompleteness.ps1` - New documentation validation script
+- `Check-ReadmeSync.ps1` - New README consistency check script
+- `Add-DocumentationChangelogEntry.ps1` - New changelog entry generator
+
+**Impact:** Low - Improved developer experience and documentation consistency with no user-facing changes
+
+---
+
+## 2025-06-14 - Improved Documentation Structure
+
+**Type:** Documentation
+**Version:** 1.5.1
+
+**Key Changes:**
+
+- Moved detailed inline documentation to external help files
+- Created comprehensive help for Generate-DocumentationAnalysisPrompt
+- Created comprehensive help for Add-ChangelogEntry
+- Added script to regenerate XML help files
+- Fixed lint errors in documentation
+
+**Files Changed:**
+
+- `checkit-core.psm1`
+- `docs/help/Generate-DocumentationAnalysisPrompt.md`
+- `docs/help/Add-ChangelogEntry.md`
+- `en-US/checkit-core-help.xml`
+- `Update-HelpFiles.ps1`
+
+**Impact:** Improved code maintainability and help system consistency while preserving comprehensive documentation
+
+---
+
+## 2025-06-14 - Improved Excel Export with Automatic Column Name Sanitization
+
+**Type:** Enhancement
+**Version:** 1.5.1
+
+**Key Changes:**
+
+- Enhanced Export-ToExcel with automatic column name cleaning for Excel pivot compatibility
+- Added Clean-ExcelColumnName function for sanitizing Excel column names (removes special characters, trims to 31 chars, deduplicates, replaces spaces)
+- Updated Invoke-Pivotizer documentation with column name requirements
+- Added column name cleaning for sheet names and table names in Excel exports
+- Enhanced documentation for Excel pivot tables and slicers
+- Added best practices for Excel reporting in quick-reference guide
+
+**Files Changed:**
+
+- `checkit-core.psm1`
+- `docs/help/Export-ToExcel.md`
+- `docs/help/Convert-ReportData.md`
+- `docs/help/Invoke-Pivotizer.md`
+- `docs/quick-reference.md`
+- `docs/troubleshooting.md`
+- `examples/ExcelReporting.ps1`
+- `examples/TroubleshootExcelPivots.ps1`
+
+**Impact:** Significantly improves Excel export reliability by automatically ensuring column names are compatible with Excel pivot tables and slicers, eliminating common causes of Excel export and pivot table failures.
+
+---
+
+## 2025-06-12 - Enhanced Excel Reporting with Pivot Tables and Slicers
+
+**Type:** Enhancement
+**Version:** 1.5.0
+
+**Key Changes:**
+
+- Added pivot table and slicer support to Excel exports
+- Enhanced `Invoke-Pivotizer` function with interactive filtering
+- Improved multi-sheet Excel exports with clean business data separation
+- Added Excel column name sanitization for better compatibility
+- Enhanced error handling for Excel operations
+
+**Files Changed:**
+
+- `checkit-core.psm1`
+- `docs/help/Invoke-Pivotizer.md`
+- `docs/quick-reference.md`
+
+**Impact:** Enables more powerful data analysis in Excel exports with interactive filtering and visualization
+
+---
 
 ## 2025-06-09 - Enhanced Template Workflow System and Complete Documentation Update
 
 **Type:** Enhancement
-**Version:** 1.3.0
+**Version:** 1.4.0
 
 **Key Changes:**
+
 - Enhanced template workflow system with multi-template execution and Excel export integration
 - Implemented three-tier confirmation system ($true, $false, "Auto") with session memory and YA/NA support
 - Added comprehensive template auto-detection for Command vs Test templates with proper inheritance
@@ -27,6 +128,7 @@ layout: default
 - Enhanced Implementation Status to reflect production-ready status with comprehensive completion metrics
 
 **Files Changed:**
+
 - `checkit-core.psm1`
 - `docs/README.md`
 - `docs/api-reference.md`
@@ -38,6 +140,7 @@ layout: default
 - `CHANGELOG.md`
 
 **Functions Completed:**
+
 - `Invoke-TemplateWorkflow`
 - `Invoke-TemplateCommand`
 - `Manage-Templates`
@@ -49,40 +152,42 @@ layout: default
 
 ---
 
-
 ## 2025-06-07 - Documentation Synchronization and Version Updates
-    
+
     **Type:** Documentation
     **Version:** 1.3.0
     
     **Key Changes:**
     - Updated version references from 1.2.0 to 1.3.0 across all files
+
 - Added Add-ChangelogEntry and Generate-DocumentationAnalysisPrompt to function lists
 - Enhanced template system documentation with Codebase template type
 - Added implementation status verification guidance
 - Fixed cross-references to use new docs/ structure
 - Added development workflow examples using new functions
-    
+
     **Files Changed:**
-    - `README.md`
+  - `README.md`
 - `docs/api-reference.md`
 - `docs/implementation-status.md`
 - `docs/quick-reference.md`
-    
+
     **Functions Completed:**
 - `Add-ChangelogEntry`
 - `Generate-DocumentationAnalysisPrompt`
 
 **Impact:** Documentation now accurately reflects v1.3.0 capabilities and new automation features. Users have clear guidance on function availability and development workflows.
-    
+
     ---
+
 ## 2025-06-07 - Major Documentation Restructure and Module Manifest Creation
-    
+
     **Type:** Enhancement
     **Version:** 1.3.0
     
     **Key Changes:**
     - Created comprehensive docs/ directory structure with specialized guides
+
 - Archived original guidelines to maintain development history
 - Added professional README.md with feature overview and usage examples
 - Created complete checkit-core.psd1 module manifest with all 67 functions exported
@@ -90,9 +195,9 @@ layout: default
 - Enhanced AI-assisted development workflow with comprehensive collaboration guide
 - Updated module version to 1.3.0 reflecting near-completion status
 - Added session management documentation and troubleshooting guides
-    
+
     **Files Changed:**
-    - `README.md`
+  - `README.md`
 - `checkit-core.psd1`
 - `checkit-core.psm1`
 - `docs/assistance-guide.md`
@@ -102,19 +207,21 @@ layout: default
 - `docs/quick-reference.md`
 - `docs/troubleshooting.md`
 - `archive/Checkit-Guidelines.md`
-    
+
     **Functions Added:**
 - `Add-ChangelogEntry`
 - `Generate-DocumentationAnalysisPrompt`
 
 **Impact:** CheckIT-Core now has professional-grade documentation structure, complete module manifest, and automated documentation maintenance. This establishes the foundation for final release preparation and provides comprehensive guidance for both human developers and AI assistants.
-    
+
     ---
+
 ## 2025-06-06 - Process-Parallel Enhanced Job Management and CCM Evaluation Fix
 
 **Type:** Enhancement
 
 **Key Changes:**
+
 - Enhanced Process-Parallel while loop with robust job completion detection using multiple methods
 - Added comprehensive timeout handling (10-minute job timeout, 15-minute maximum wait)
 - Implemented safety checks to prevent infinite loops in job processing
@@ -125,11 +232,13 @@ layout: default
 - Standardized result processing and normalization across all execution paths
 
 **Files Changed:**
+
 - `checkit-core.psm1`
 
 **Impact:** Process-Parallel now reliably processes all jobs to completion, eliminating the 8/47 node hanging issue. CCM package evaluation now uses proven CIM-first, WMI-fallback pattern for maximum compatibility. Enhanced error handling prevents legitimate CCM data from being classified as errors, improving Get-CCMPackages accuracy.
 
 ---
+
 ## 2025-06-06 - Process-Parallel and Core Functions Enhancement
 
 **Type:** Enhancement
@@ -457,6 +566,3 @@ layout: default
 **Impact:** Guidelines now provide accurate roadmap for development with realistic assessment of current state and clear priorities for completion.
 
 ---
-
-
-
