@@ -6,7 +6,11 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.6;
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
+
+
 
 h1, h2, h3, h4, h5, h6 {
   color: #e6e8eb;
@@ -90,7 +94,7 @@ a:hover {
 /* Documentation grid */
 .docs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
   margin: 2rem 0;
 }
@@ -132,12 +136,13 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Feature card */
-.feature-card {
-  background: #242936;
-  border: 1px solid #374151;
+/* Feature card centered with better padding */
+.feature-card, 
+.highlight-card,
+.quick-start-card {
+  background: linear-gradient(135deg, #1a1f29 0%, #242936 100%);
   border-radius: 0.75rem;
-  padding: 1.5rem;
+  padding: 1.75rem;
   margin: 2rem 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
 }
@@ -147,25 +152,28 @@ a:hover {
   color: #3b82f6;
 }
 
+/* Site container with nice background gradient */
+.site-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #1a1f29, #111827);
+}
+
 /* Improved Header Navigation Styling */
 .site-header {
-  background: #1a1f29 !important;
-  border-bottom: 1px solid #374151 !important;
-  padding: 0.5rem 0 !important;
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 1000 !important;
+  padding: 1rem 0;
+  background-color: rgba(17, 24, 39, 0.8); /* slightly transparent */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #374151;
 }
 
 .site-header .wrapper {
-  display: flex !important;
-  justify-content: flex-start !important;
-  align-items: center !important;
-  flex-wrap: nowrap !important;
-  overflow-x: auto !important;
-  padding: 0 1rem !important;
-  max-width: 100% !important;
-  scrollbar-width: thin !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow: visible;
 }
 
 /* Site title styling */
@@ -179,14 +187,14 @@ a:hover {
   background: rgba(59, 130, 246, 0.1) !important;
 }
 
-/* Ensure navigation is always visible and scrollable horizontally */
+/* Navigation links styling - prevent horizontal scrolling */
 .site-nav {
-  display: flex !important;
-  align-items: center !important;
-  overflow-x: auto !important;
-  flex-wrap: nowrap !important;
-  scrollbar-width: thin !important;
-  padding-bottom: 0.5rem !important;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  overflow: visible; /* Remove scrollbar */
 }
 
 /* Navigation links styling */
@@ -222,18 +230,21 @@ a:hover {
 
 /* Mobile responsive navigation - transform to a scrollable row instead of column */
 @media (max-width: 768px) {
+  .wrapper {
+    padding: 0 1rem;
+  }
+  
+  .docs-grid {
+    grid-template-columns: 1fr;
+  }
+  
   .site-header .wrapper {
     justify-content: flex-start !important;
     padding: 0 0.5rem !important;
   }
   
   .site-nav {
-    flex-direction: row !important; /* Keep as row */
-    align-items: center !important;
-    justify-content: flex-start !important;
-    overflow-x: auto !important;
-    width: 100% !important;
-    -webkit-overflow-scrolling: touch !important;
+    margin-top: 0;
   }
   
   .site-nav .page-link {
@@ -248,22 +259,12 @@ a:hover {
   }
 }
 
-/* Custom scrollbars for the navigation */
 .site-nav::-webkit-scrollbar,
 .site-header .wrapper::-webkit-scrollbar {
-  height: 3px !important;
+  display: none;
 }
 
-.site-nav::-webkit-scrollbar-track,
-.site-header .wrapper::-webkit-scrollbar-track {
-  background: rgba(75, 85, 99, 0.1) !important;
-}
 
-.site-nav::-webkit-scrollbar-thumb,
-.site-header .wrapper::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.5) !important;
-  border-radius: 3px !important;
-}
 
 /* PowerShell Solarized Syntax Highlighting - Enhanced Readability */
 
@@ -562,7 +563,7 @@ p, li, td, th {
 .wrapper,
 .main-content,
 .page-content {
-  overflow-x: hidden !important;
+  padding: 2rem 0;
 }
 
 /* Long URLs and code references */
@@ -783,4 +784,58 @@ a {
 
 .hero-badge:nth-child(3) {
   background-color: #10b981;
+}
+
+/* Center feature list text */
+.feature-list {
+  text-align: center;
+  line-height: 1.8;
+  margin: 1.5rem 0;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Centered headings for cards */
+.feature-card h2,
+.highlight-card h2,
+.quick-start-card h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #3b82f6;
+}
+
+/* Better spacing for new features grid */
+.new-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.feature-item {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  border-left: 3px solid #3b82f6;
+}
+
+.feature-item h4 {
+  margin-top: 0;
+  color: #3b82f6;
+}
+
+/* Code examples with better margins */
+.code-example {
+  margin: 1.5rem 0;
+}
+
+/* Code examples with better highlighting */
+.code-example pre {
+  border-radius: 0.5rem;
+}
+
+/* Make sure code stays within bounds */
+pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
 }

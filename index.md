@@ -3,10 +3,7 @@ layout: home-page
 title: CheckIT Home
 icon: 🏠
 description: Custom PowerShell module for Windows computer management, diagnostics, and reporting in domain environments
-
 ---
-
-<link rel="stylesheet" href="assets/style.css">
 
 <div class="docs-grid">
   <div class="doc-card">
@@ -37,9 +34,11 @@ description: Custom PowerShell module for Windows computer management, diagnosti
 <div class="feature-card">
   <h2>🗝️ Key Features</h2>
   
-  Template Workflow System • Session Automation • Centralized Management<br>
-  Secure Authentication • Excel Reporting • Session Persistence<br>
-  Parallel Processing • Active Directory Integration • Documentation Automation
+  <p class="feature-list">
+    Template Workflow System • Session Automation • Centralized Management<br>
+    Secure Authentication • Excel Reporting • Session Persistence<br>
+    Parallel Processing • Active Directory Integration • Documentation Automation
+  </p>
   
   <p>Perfect for managing labs, classrooms, and departmental computers in domain environments.</p>
 </div>
@@ -68,7 +67,6 @@ description: Custom PowerShell module for Windows computer management, diagnosti
   
   <div class="code-example">
     <h4>Template Workflow</h4>
-
     <pre><code># Multi-template execution with Excel export
 Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "System_Audit" -ExportToExcel</code></pre>
   </div>
@@ -82,5 +80,3 @@ Manage-Templates -Type Command -Action List
 Manage-Templates -Type Codebase -Action Search</code></pre>
   </div>
 </div>
-
----
