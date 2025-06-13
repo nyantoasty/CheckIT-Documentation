@@ -1,5 +1,5 @@
 ---
-title: API Reference (v1.5.0)
+title: API Reference
 layout: default
 ---
 
