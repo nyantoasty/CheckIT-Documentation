@@ -1,17 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("DOM Content Loaded - Starting code block setup");
+  console.log("DOM Content Loaded - Setting up code blocks");
 
-  // Fix all code blocks
+  // Process all code blocks
   function setupCodeBlocks() {
-    // Find all code blocks
     const blocks = document.querySelectorAll('div.highlight, figure.highlight');
     console.log(`Found ${blocks.length} total highlight blocks`);
     
     blocks.forEach(function(block, index) {
-      // Check if block is already in a code-example container
+      console.log(`Processing block ${index + 1}`);
+      
+      // Check if already in a code-example container
       let codeExample = block.parentElement;
       if (!codeExample.classList.contains('code-example')) {
-        // Create wrapper if not exists
+        console.log(`Creating container for block ${index + 1}`);
         codeExample = document.createElement('div');
         codeExample.className = 'code-example';
         block.parentNode.insertBefore(codeExample, block);
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
       // Determine language
-      let language = 'POWERSHELL'; // Default
+      let language = 'POWERSHELL';
       const classes = block.className.split(' ');
       for (const className of classes) {
         if (className.startsWith('language-')) {
@@ -29,15 +30,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       codeExample.setAttribute('data-language', language);
       
-      // Add copy button if not already present
+      // Add copy button if not present
       if (!codeExample.querySelector('.copy-button')) {
+        console.log(`Adding copy button to block ${index + 1}`);
         const copyButton = document.createElement('button');
         copyButton.className = 'copy-button';
         copyButton.innerHTML = 'Copy';
         codeExample.appendChild(copyButton);
         
+        // Set up copy functionality
         copyButton.addEventListener('click', function() {
-          // Get code text without line numbers
+          // Get code without line numbers
           let codeText;
           const codeElement = block.querySelector('.rouge-code');
           
@@ -47,22 +50,19 @@ document.addEventListener('DOMContentLoaded', function() {
             codeText = block.innerText;
           }
           
-          // Clean up the code
-          codeText = codeText.replace(/^\s*\d+\s+/gm, ''); // Remove line numbers
+          codeText = codeText.replace(/^\s*\d+\s+/gm, '');
           
           // Copy to clipboard
           navigator.clipboard.writeText(codeText).then(function() {
             copyButton.innerHTML = 'Copied!';
-            copyButton.classList.add('copied');
             
             setTimeout(function() {
               copyButton.innerHTML = 'Copy';
-              copyButton.classList.remove('copied');
             }, 2000);
           })
           .catch(function(err) {
-            console.error('Failed to copy: ', err);
-            copyButton.innerHTML = 'Error!';
+            console.error('Failed to copy:', err);
+            copyButton.innerHTML = 'Error';
             
             setTimeout(function() {
               copyButton.innerHTML = 'Copy';
@@ -72,10 +72,13 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-  
-  // Run immediately
+
+  // Run at multiple points to ensure everything is processed
   setupCodeBlocks();
   
-  // Also run when window fully loads
-  window.addEventListener('load', setupCodeBlocks);
+  // Also run on window load
+  window.addEventListener('load', function() {
+    console.log("Window loaded, re-applying formatting");
+    setupCodeBlocks();
+  });
 });

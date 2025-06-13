@@ -634,346 +634,40 @@ table code {
     font-size: 1.8rem;
   }
 }
+/* Inline code styling */
+code:not(.highlight code) {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #93c5fd !important;
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 0.25rem !important;
+  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
+  font-size: 0.9em !important;
+  white-space: nowrap !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Function name styling (special case for PowerShell functions) */
+code:not(.highlight code):contains("-") {
+  color: #93c5fd !important;
+  font-weight: 500 !important;
+}
+
 /***********************************
- * CODE STYLING & SYNTAX HIGHLIGHTING - FINAL FIXED VERSION
+ * CODE BLOCK STYLING - CLEAN IMPLEMENTATION
  ***********************************/
 
-/* Outer container with teal background */
+/* Code block outer container */
 .code-example {
-  background: linear-gradient(135deg, #0d3d4d 0%, #0a2732 100%) !important;
-  border-radius: 0.75rem !important;
-  margin: 1.5rem 0 !important;
-  padding: 1rem !important;
-  position: relative !important;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(30, 70, 85, 0.4) !important;
-}
-
-/* Title bar in the outer teal container */
-.code-example::before {
-  content: attr(data-language);
-  display: block !important;
-  background: transparent !important;
-  color: #d1d5db !important;
-  font-size: 0.75rem !important;
-  font-weight: 500 !important;
-  padding: 0.25rem 0.75rem !important;
-  margin-bottom: 0.5rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  text-align: left !important;
-}
-
-/* Style for code section headings inside code-example */
-.code-example h4 {
-  color: #d1d5db !important;
-  font-size: 0.9rem !important;
-  margin: 0 0 0.75rem 0 !important;
-  padding: 0 !important;
-  border: none !important;
-}
-
-/* Main code block container */
-.highlight {
-  background: linear-gradient(to bottom, #2a2f3a 0%, #242936 100%) !important;
-  border-radius: 0.5rem !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(30, 34, 45, 0.6) !important;
-  width: 100% !important;
-  margin: 0 !important;
-  box-shadow: none !important;
-  box-sizing: border-box !important;
-}
-
-/* Code table layout fixes */
-.highlight table,
-.highlight .rouge-table {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  width: 100% !important;
-  border-collapse: collapse !important;
-  background: transparent !important;
-  display: table !important;
-  table-layout: fixed !important;
-}
-
-.highlight tbody {
-  border: none !important;
-  background: transparent !important;
-  display: table-row-group !important;
-  width: 100% !important;
-}
-
-/* Force background to span full width */
-.highlight tr {
-  width: 100% !important;
-  display: table-row !important;
-  background: transparent !important;
-}
-
-/* Fix line number column width */
-.highlight td.rouge-gutter {
-  background: transparent !important;
-  border: none !important;
-  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
-  padding: 1rem 0 1rem 1rem !important;
-  vertical-align: top !important;
-  width: 3rem !important; /* Fixed width */
-  min-width: 3rem !important; /* Ensure minimum width */
-  max-width: 3rem !important; /* Ensure maximum width */
-  display: table-cell !important;
-  position: relative !important;
-  box-sizing: border-box !important;
-}
-
-/* Code column that takes remaining width */
-.highlight td.rouge-code {
-  background: transparent !important;
-  border: none !important;
-  padding: 1rem 2rem 1rem 0.75rem !important; /* Increased right padding */
-  vertical-align: top !important;
-  width: 100% !important;
-  display: table-cell !important;
-  box-sizing: border-box !important;
-}
-
-/* Individual line numbers */
-.highlight .lineno {
-  color: #586e75 !important;
-  display: inline-block !important;
-  padding: 0 0.5rem 0 0 !important;
-  text-align: right !important;
-  min-width: 1rem !important;
-  user-select: none !important;
-  opacity: 0.6 !important;
-  background: transparent !important;
-}
-
-/* Fix for nested divs and tables */
-.highlight pre,
-.highlight code,
-.highlight div {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  margin: 0 !important;
-}
-
-/* Fix any potential issues with nested divs */
-.highlight > div {
-  width: 100% !important;
-  background: transparent !important;
-}
-
-/* Code content styling */
-.highlight pre {
-  background: transparent !important;
-  overflow-x: auto !important;
-  font-size: 0.9rem !important;
-  color: #d1d5db !important;
-  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
-  white-space: pre !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: block !important;
-}
-
-/* Code text with min-width to prevent horizontal overflow */
-/* Ensure code spans full width */
-.highlight code {
-  background: transparent !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  display: inline-block !important; /* Changed from block to inline-block */
-  width: 100% !important; /* Force full width */
-  min-width: 100% !important;
-}
-
-/* Windows-style copy button */
-.copy-button {
-  position: absolute !important;
-  top: 0.5rem !important;
-  right: 1rem !important;
-  background: rgba(59, 130, 246, 0.15) !important;
-  color: #e5e7eb !important;
-  border: 1px solid rgba(99, 102, 241, 0.3) !important;
-  border-radius: 0.25rem !important;
-  padding: 0.2rem 0.75rem !important;
-  font-size: 0.7rem !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: all 0.2s !important;
-  z-index: 15 !important;
-}
-
-.copy-button:hover {
-  background: rgba(59, 130, 246, 0.25) !important;
-  border-color: rgba(99, 102, 241, 0.4) !important;
-}
-
-/* Nicer scrollbars for code blocks */
-.highlight pre::-webkit-scrollbar {
-  height: 8px !important;
-  background-color: rgba(30, 34, 45, 0.2) !important;
-}
-
-.highlight pre::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.3) !important;
-  border-radius: 4px !important;
-}
-
-.highlight pre::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.5) !important;
-}
-
-.highlight pre::-webkit-scrollbar-track {
-  background: rgba(30, 34, 45, 0.2) !important;
-  border-radius: 4px !important;
-}
-
-/* Syntax highlighting colors */
-.highlight .c, .highlight .c1, .highlight .cm {
-  color: #586e75 !important;
-  font-style: italic !important;
-}
-
-.highlight .k, .highlight .kd, .highlight .kt {
-  color: #fb923c !important;
-  font-weight: bold !important;
-}
-
-.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb {
-  color: #2aa198 !important;
-}
-
-.highlight .nv, .highlight .vg {
-  color: #7dd3fc !important;
-}
-
-.highlight .n {
-  color: #93a1a1 !important;
-}
-
-.highlight .nb {
-  color: #fbbf24 !important;
-}
-
-.highlight .m, .highlight .mi, .highlight .mf {
-  color: #d33682 !important;
-}
-
-.highlight .o, .highlight .ow {
-  color: #859900 !important;
-}
-
-.highlight .p, .highlight .bp, .highlight .vc, .highlight .vi, .highlight .il {
-  color: #93a1a1 !important;
-}
-
-.highlight .na {
-  color: #a78bfa !important;
-}
-
-.highlight .nt {
-  color: #a78bfa !important;
-}
-
-.highlight .err {
-  color: #dc322f !important;
-  background: none !important;
-}
-
-/* PowerShell specific syntax highlighting */
-.highlight .nx {
-  color: #7dd3fc !important; /* PowerShell cmdlet names */
-}
-
-.highlight .nf {
-  color: #93c5fd !important; /* PowerShell functions */
-}
-
-/* Fix for index.md specific code blocks */
-.quick-start-card .code-example .highlight {
-  width: 100% !important;
-  display: block !important;;
-}
-
-/* Remove extra spacing in code blocks */
-.quick-start-card .code-example .highlight pre {
-  overflow-x: hidden !important;
-  width: 100% !important;
-}
-
-/* Fix for any potential overlapping elements */
-.code-example * {
-  box-sizing: border-box !important;
-}
-/* Override Jekyll-generated code block styling - HIGH PRIORITY */
-.quick-start-card figure.highlight {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  background: transparent !important;
-}
-
-.quick-start-card .highlight table.rouge-table {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  width: 100% !important;
-  table-layout: fixed !important;
-  border-collapse: collapse !important;
-}
-
-.quick-start-card .highlight td.rouge-gutter {
-  width: 40px !important;
-  min-width: 40px !important;
-  max-width: 40px !important;
-  padding-right: 10px !important;
-  text-align: right !important;
-  vertical-align: top !important;
-  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
-  background-color: transparent !important;
-}
-
-.quick-start-card .highlight td.rouge-code {
-  padding-left: 10px !important;
-  background-color: transparent !important;
-}
-
-.quick-start-card .highlight pre {
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  overflow-x: auto !important;
-}
-
-.quick-start-card .highlight .lineno {
-  color: rgba(150, 150, 150, 0.8) !important;
-  text-align: right !important;
-  padding-right: 5px !important;
-  user-select: none !important;
-}
-
-/* Extra specificity to ensure these rules take precedence */
-html body .quick-start-card .code-example {
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-/* Make index.md code blocks match other code blocks */
-.quick-start-card .code-example {
-  background: linear-gradient(135deg, #054a5c 0%, #12313b 100%);
-  border-radius: 0.75rem;
-  padding: 1rem;
   position: relative;
   margin: 1.5rem 0;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #054a5c 0%, #12313b 100%);
+  padding: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
 }
 
-.quick-start-card .code-example::before {
+/* Language label */
+.code-example::before {
   content: attr(data-language);
   position: absolute;
   top: 0.75rem;
@@ -985,51 +679,62 @@ html body .quick-start-card .code-example {
   letter-spacing: 0.05em;
 }
 
-.quick-start-card .highlight {
-  background: #1e2936;
+/* Code block container */
+.highlight {
+  background: transparent;
   border-radius: 0.5rem;
   margin-top: 1.5rem;
   overflow: hidden;
-  box-shadow: none !important;
 }
 
-.quick-start-card .highlight table {
+/* Code table layout */
+.highlight table,
+.highlight .rouge-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 0 !important;
-  background: transparent !important;
+  margin: 0;
+  padding: 0;
+  background: transparent;
 }
 
-.quick-start-card .highlight td.rouge-gutter {
-  width: 40px !important;
-  min-width: 40px !important;
-  max-width: 40px !important;
-  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
-  color: rgba(255, 255, 255, 0.5) !important;
-  text-align: right !important;
-  padding-right: 10px !important;
-  vertical-align: top !important;
-  background: transparent !important;
+/* Line number cell */
+.highlight td.rouge-gutter {
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  border-right: 1px solid rgba(100, 110, 130, 0.4);
+  color: rgba(255, 255, 255, 0.5);
+  text-align: right;
+  padding-right: 10px;
+  vertical-align: top;
+  background: transparent;
 }
 
-.quick-start-card .highlight td.rouge-code {
-  padding-left: 10px !important;
-  vertical-align: top !important;
-  background: transparent !important;
+/* Code content cell */
+.highlight td.rouge-code {
+  padding-left: 10px;
+  vertical-align: top;
+  background: transparent;
 }
 
-.quick-start-card .highlight .lineno {
-  color: rgba(255, 255, 255, 0.5) !important;
-  text-align: right !important;
+/* Line number */
+.highlight .lineno {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: right;
+  padding-right: 5px;
+  user-select: none;
 }
 
-.quick-start-card .highlight pre {
+/* Pre block */
+.highlight pre {
   margin: 0;
   padding: 10px 0;
-  background: transparent !important;
+  background: transparent;
+  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
 }
 
-.quick-start-card .highlight .copy-button {
+/* Copy button */
+.copy-button {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
@@ -1041,18 +746,54 @@ html body .quick-start-card .code-example {
   border-radius: 0.25rem;
   cursor: pointer;
   transition: all 0.2s;
+  z-index: 10;
 }
 
-.quick-start-card .highlight .copy-button:hover {
+.copy-button:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Remove second dark background */
-.quick-start-card .highlight,
-.quick-start-card .highlight pre,
-.quick-start-card .highlight code,
-.quick-start-card .highlight table,
-.quick-start-card .highlight td {
-  background: transparent !important;
+/* Remove any backgrounds that create a "second layer" */
+.highlight,
+.highlight tr,
+.highlight td,
+.highlight pre,
+.highlight code,
+.highlight span {
+  background-color: transparent !important;
   box-shadow: none !important;
+}
+
+/* PowerShell syntax highlighting */
+.highlight .c, .highlight .c1, .highlight .cm { color: #586e75; font-style: italic; } /* Comments */
+.highlight .k, .highlight .kd, .highlight .kt { color: #fb923c; font-weight: bold; } /* Keywords */
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb { color: #2aa198; } /* Strings */
+.highlight .nv, .highlight .vg { color: #7dd3fc; } /* Variables */
+.highlight .nb { color: #fbbf24; } /* Built-in names */
+.highlight .nx { color: #7dd3fc; } /* PowerShell cmdlet names */
+.highlight .nf { color: #93c5fd; } /* PowerShell functions */
+.highlight .p { color: #93a1a1; } /* Punctuation */
+
+/* Fix headings inside code examples */
+.code-example h4 {
+  color: #d1d5db;
+  font-size: 0.9rem;
+  margin: 0 0 0.75rem 0;
+  padding: 0;
+  border: none;
+}
+
+/* Fix scrollbars */
+.highlight pre::-webkit-scrollbar {
+  height: 8px;
+  background-color: rgba(30, 34, 45, 0.2);
+}
+
+.highlight pre::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 4px;
+}
+
+.highlight pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
 }
