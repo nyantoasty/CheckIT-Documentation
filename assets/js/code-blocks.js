@@ -44,6 +44,14 @@ document.addEventListener('DOMContentLoaded', function() {
       copyButton.style.zIndex = '15';
       codeExample.appendChild(copyButton);
       
+      // Make sure all code blocks have correct wrapping styles
+      const preElements = block.querySelectorAll('pre');
+      preElements.forEach(pre => {
+        pre.style.whiteSpace = 'pre-wrap';
+        pre.style.wordWrap = 'break-word';
+        pre.style.overflowX = 'hidden';
+      });
+      
       copyButton.addEventListener('click', function() {
         // Get code text without line numbers
         let codeText;
@@ -80,6 +88,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Run after a slight delay to ensure all elements are loaded
-  setTimeout(fixCodeBlocks, 100);
+  // Run immediately and again after DOM fully loaded to catch all blocks
+  fixCodeBlocks();
+  
+  // Run again after a delay to catch any dynamically loaded content
+  setTimeout(fixCodeBlocks, 500);
+  
+  // Also run when window loads to catch everything
+  window.addEventListener('load', fixCodeBlocks);
 });

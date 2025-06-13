@@ -65,7 +65,7 @@ description: Custom PowerShell module for Windows computer management, diagnosti
 <div class="quick-start-card">
   <h2>⚡ Quick Start Examples</h2>
   
-  <div class="code-example">
+  <div class="code-example" data-language="POWERSHELL">
     <h4>Template Workflow</h4>
     {% highlight powershell linenos %}
 # Multi-template execution with Excel export
@@ -73,7 +73,7 @@ Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @("Get OS Info", "Che
 {% endhighlight %}
   </div>
   
-  <div class="code-example">
+  <div class="code-example" data-language="POWERSHELL">
     <h4>Template Management</h4>
     {% highlight powershell linenos %}
 # List available templates

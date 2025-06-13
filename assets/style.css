@@ -757,3 +757,44 @@ div.highlight {
   background: rgba(59, 130, 246, 0.25) !important;
   border-color: rgba(99, 102, 241, 0.4) !important;
 }
+
+/* Code wrapping - prevent horizontal scrolling */
+.highlight pre {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  overflow-x: hidden !important; /* Hide horizontal scrollbar */
+}
+
+.highlight code {
+  white-space: pre-wrap !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Ensure code content has enough space */
+.highlight > pre,
+.highlight .rouge-table pre {
+  padding: 1rem !important;
+  background: transparent !important;
+  font-size: 0.9rem !important;
+  color: #d1d5db !important;
+  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
+  max-width: 100% !important;
+}
+
+/* Adjust line number spacing for wrapped code */
+.highlight .lineno {
+  color: #586e75 !important;
+  display: inline-block !important;
+  padding: 0 0.5rem 0 0.25rem !important;
+  margin-right: 0.5rem !important;
+  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
+  text-align: right !important;
+  min-width: 1rem !important;
+  user-select: none !important;
+  opacity: 0.6 !important;
+  vertical-align: top !important; /* Align to top for multi-line wrapping */
+}
