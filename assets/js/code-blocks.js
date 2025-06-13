@@ -93,35 +93,38 @@ document.addEventListener('DOMContentLoaded', function() {
         rows.forEach(row => {
           row.style.display = 'table-row';
           row.style.width = '100%';
+          row.style.boxShadow = 'none'; // Remove any shadow
         });
         
-        // Fix line number column
+        // Fix line number column - LEFT aligned numbers with fixed width
         const gutterCell = block.querySelector('.rouge-gutter');
         if (gutterCell) {
           gutterCell.style.background = 'transparent';
           gutterCell.style.border = 'none';
           gutterCell.style.borderRight = '1px solid rgba(100, 110, 130, 0.4)';
-          gutterCell.style.padding = '1rem 0 1rem 1rem';
+          gutterCell.style.padding = '1rem 0 1rem 0.25rem'; // Reduced left padding
           gutterCell.style.verticalAlign = 'top';
-          gutterCell.style.width = '3rem';
-          gutterCell.style.minWidth = '3rem';
-          gutterCell.style.maxWidth = '3rem';
+          gutterCell.style.width = '2.5rem'; // Slightly smaller width
+          gutterCell.style.minWidth = '2.5rem';
+          gutterCell.style.maxWidth = '2.5rem';
           gutterCell.style.display = 'table-cell';
           gutterCell.style.position = 'relative';
           gutterCell.style.boxSizing = 'border-box';
-          gutterCell.style.textAlign = 'right';
-          gutterCell.style.paddingRight = '0.75rem';
+          gutterCell.style.textAlign = 'left'; // LEFT aligned
+          gutterCell.style.paddingRight = '0.25rem';
+          gutterCell.style.boxShadow = 'none'; // Remove any shadow
         }
         
-        // Fix code column
+        // Fix code column - bring closer to gutter
         const codeCell = block.querySelector('.rouge-code');
         if (codeCell) {
           codeCell.style.width = 'auto';
           codeCell.style.boxSizing = 'border-box';
-          codeCell.style.paddingLeft = '1rem';
+          codeCell.style.paddingLeft = '0.5rem'; // Reduced padding to be closer to gutter
           codeCell.style.verticalAlign = 'top';
           codeCell.style.textAlign = 'left';
           codeCell.style.borderLeft = 'none';
+          codeCell.style.boxShadow = 'none'; // Remove any shadow
         }
       }
       
@@ -134,6 +137,8 @@ document.addEventListener('DOMContentLoaded', function() {
         preElement.style.overflowX = 'auto';
         preElement.style.width = '100%';
         preElement.style.textAlign = 'left';
+        preElement.style.boxShadow = 'none'; // Remove any shadow
+        preElement.style.background = 'transparent'; // Remove any background
       }
       
       // Fix code element
@@ -142,7 +147,18 @@ document.addEventListener('DOMContentLoaded', function() {
         codeElement.style.display = 'inline-block';
         codeElement.style.minWidth = '100%';
         codeElement.style.textAlign = 'left';
+        codeElement.style.boxShadow = 'none'; // Remove any shadow
       }
+      
+      // Fix line numbers - LEFT align them
+      const lineNumbers = block.querySelectorAll('.lineno');
+      lineNumbers.forEach(num => {
+        num.style.textAlign = 'left';
+        num.style.paddingRight = '0.25rem';
+        num.style.width = '2rem';
+        num.style.display = 'inline-block';
+        num.style.boxShadow = 'none'; // Remove any shadow
+      });
     });
   }
   
@@ -152,6 +168,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const indexBlocks = document.querySelectorAll('.quick-start-card .code-example .highlight');
     
     indexBlocks.forEach(function(block) {
+      // Remove shadows
+      block.style.boxShadow = 'none';
+      
       // Remove any unwanted left padding on the block itself
       block.style.paddingLeft = '0';
       block.style.marginLeft = '0';
@@ -164,40 +183,42 @@ document.addEventListener('DOMContentLoaded', function() {
         table.style.borderCollapse = 'collapse';
         table.style.margin = '0';
         table.style.padding = '0';
+        table.style.boxShadow = 'none'; // Remove shadow
         
-        // Ensure line numbers are properly aligned
+        // Ensure line numbers are properly aligned - LEFT ALIGNED
         const gutterCell = block.querySelector('.rouge-gutter');
         if (gutterCell) {
           gutterCell.style.background = 'transparent';
           gutterCell.style.border = 'none';
           gutterCell.style.borderRight = '1px solid rgba(100, 110, 130, 0.4)';
-          gutterCell.style.padding = '1rem 0 1rem 1rem';
+          gutterCell.style.padding = '1rem 0 1rem 0.25rem'; // Less left padding
           gutterCell.style.verticalAlign = 'top';
-          gutterCell.style.width = '3rem';
-          gutterCell.style.minWidth = '3rem';
-          gutterCell.style.maxWidth = '3rem';
+          gutterCell.style.width = '2.5rem'; // Slightly smaller width
+          gutterCell.style.minWidth = '2.5rem';
+          gutterCell.style.maxWidth = '2.5rem';
           gutterCell.style.display = 'table-cell';
           gutterCell.style.position = 'relative';
           gutterCell.style.boxSizing = 'border-box';
-          gutterCell.style.textAlign = 'right';
-          gutterCell.style.paddingRight = '0.75rem';
-          gutterCell.style.paddingLeft = '0';
+          gutterCell.style.textAlign = 'left'; // LEFT aligned
+          gutterCell.style.paddingRight = '0.25rem';
+          gutterCell.style.boxShadow = 'none'; // Remove shadow
           gutterCell.style.marginLeft = '0';
         }
         
-        // Ensure code cell uses remaining width with proper left alignment
+        // Ensure code cell uses remaining width with proper left alignment - CLOSER TO GUTTER
         const codeCell = block.querySelector('.rouge-code');
         if (codeCell) {
           codeCell.style.width = 'auto';
           codeCell.style.boxSizing = 'border-box';
-          codeCell.style.paddingLeft = '1rem';
+          codeCell.style.paddingLeft = '0.5rem'; // Less padding for closer code
           codeCell.style.verticalAlign = 'top';
           codeCell.style.textAlign = 'left';
           codeCell.style.borderLeft = 'none';
+          codeCell.style.boxShadow = 'none'; // Remove shadow
         }
       }
       
-      // Fix pre element - ensure left alignment
+      // Fix pre element - ensure left alignment and no shadow
       const preElement = block.querySelector('pre');
       if (preElement) {
         preElement.style.margin = '0';
@@ -208,32 +229,18 @@ document.addEventListener('DOMContentLoaded', function() {
         preElement.style.textAlign = 'left';
         preElement.style.paddingLeft = '0';
         preElement.style.marginLeft = '0';
+        preElement.style.boxShadow = 'none'; // Remove shadow
+        preElement.style.background = 'transparent'; // Remove background
       }
       
-      // Ensure code element is aligned left
-      const codeElement = block.querySelector('code');
-      if (codeElement) {
-        codeElement.style.display = 'inline-block';
-        codeElement.style.minWidth = '100%';
-        codeElement.style.textAlign = 'left';
-        codeElement.style.paddingLeft = '0';
-        codeElement.style.marginLeft = '0';
-      }
-      
-      // Fix line numbers - ensure they don't push content right
+      // Fix line numbers - LEFT ALIGNED
       const lineNumbers = block.querySelectorAll('.lineno');
       lineNumbers.forEach(num => {
-        num.style.textAlign = 'right';
-        num.style.paddingRight = '0.5rem';
+        num.style.textAlign = 'left';
+        num.style.paddingRight = '0.25rem';
         num.style.width = '2rem';
         num.style.display = 'inline-block';
-      });
-      
-      // Fix all spans to ensure they don't have extra padding
-      const spans = block.querySelectorAll('span');
-      spans.forEach(span => {
-        span.style.paddingLeft = '0';
-        span.style.marginLeft = '0';
+        num.style.boxShadow = 'none'; // Remove shadow
       });
     });
     
@@ -242,6 +249,13 @@ document.addEventListener('DOMContentLoaded', function() {
     codeExamples.forEach(example => {
       example.style.paddingLeft = '0';
       example.style.marginLeft = '0';
+      example.style.boxShadow = 'none'; // Remove shadow
+    });
+    
+    // Remove any pre-applied styles causing shadows
+    document.querySelectorAll('.quick-start-card pre, .quick-start-card pre *').forEach(el => {
+      el.style.boxShadow = 'none';
+      el.style.background = 'transparent';
     });
   }
   
@@ -250,11 +264,17 @@ document.addEventListener('DOMContentLoaded', function() {
     fixCodeBlocks();
     fixIndexCodeBlocks();
     
-    // Force left alignment of first lines in code blocks - apply after a short delay
+    // Force left alignment of first lines in code blocks and remove shadow
     setTimeout(() => {
       document.querySelectorAll('.quick-start-card .highlight pre code span:first-child').forEach(span => {
         span.style.paddingLeft = '0';
         span.style.marginLeft = '0';
+        span.style.boxShadow = 'none';
+      });
+      
+      // Remove any shadow-causing styles
+      document.querySelectorAll('.shadow, [style*="shadow"]').forEach(el => {
+        el.style.boxShadow = 'none';
       });
     }, 200);
   }
