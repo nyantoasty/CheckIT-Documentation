@@ -20,10 +20,16 @@ title: CheckIT Home
 
 <div class="docs-grid">
   <div class="doc-card">
-    <h3>📖 Project Overview</h3>
+    <h3>📖 About</h3>
     <p>Complete feature overview, enhanced template workflow system, installation guide, and usage examples.</p>
     <a href="docs/README" class="card-link">View Documentation →</a>
   </div>
+
+ <div class="doc-card">
+    <h3>🚀 Get Started</h3>
+    <p>Request access, installation instructions, and getting started guide.</p>
+    <a href="get-started" class="card-link">Access Guide →</a>
+  </div> 
   
   <div class="doc-card">
     <h3>🔧 API Reference</h3>

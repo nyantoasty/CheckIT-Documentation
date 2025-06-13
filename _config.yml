@@ -14,6 +14,7 @@ highlighter: rouge
 
 # Navigation - matches the files you copied
 header_pages:
+  - docs/get-started.md
   - docs/README.md
   - docs/quick-reference.md
   - docs/api-reference.md
