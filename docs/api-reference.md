@@ -3,7 +3,7 @@ title: API Reference (v1.5.0)
 layout: default
 ---
 
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 
 ---
 

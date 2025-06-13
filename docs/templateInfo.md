@@ -3,7 +3,7 @@ title: Template System
 layout: default
 ---
 
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 
 ---
 
