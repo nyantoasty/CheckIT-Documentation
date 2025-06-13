@@ -727,7 +727,7 @@ table code {
 .highlight td.rouge-code {
   background: transparent !important;
   border: none !important;
-  padding: 1rem 1rem 1rem 0.75rem !important;
+  padding: 1rem 1.5rem 1rem 0.75rem !important;
   vertical-align: top !important;
   width: calc(100% - 2rem) !important;
 }
@@ -753,7 +753,7 @@ table code {
   font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
   white-space: pre !important;
   margin: 0 !important;
-  padding: 0 !important;
+  padding: 0 0.5rem 0 0 !important;
 }
 
 /* Code text */

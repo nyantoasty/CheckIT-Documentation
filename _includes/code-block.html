@@ -1,12 +1,154 @@
-{% assign lang = include.lang | default: 'powershell' %}
-{% assign caption = include.caption | default: '' %}
-
-<div class="code-example" data-language="{{ lang | upcase }}">
-  {% if caption != '' %}
-  <h4>{{ caption }}</h4>
-  {% endif %}
-  {% highlight {{ lang }} linenos %}
-{{ include.code }}
-  {% endhighlight %}
-  <button class="copy-button">Copy</button>
-</div>
+document.addEventListener('DOMContentLoaded', function() {
+  // Clean up code block structure and fix styling
+  function fixCodeBlocks() {
+    // Find all code blocks
+    const blocks = document.querySelectorAll('div.highlight');
+    
+    blocks.forEach(function(block) {
+      // Find language from class
+      const classes = block.className.split(' ');
+      let language = 'POWERSHELL'; // Default
+      
+      for (const className of classes) {
+        if (className.startsWith('language-')) {
+          language = className.replace('language-', '').toUpperCase();
+          break;
+        }
+      }
+      
+      // Check if this block is already properly wrapped
+      let codeExample = block.parentElement;
+      if (!codeExample.classList.contains('code-example')) {
+        // Create wrapper if not exists
+        codeExample = document.createElement('div');
+        codeExample.className = 'code-example';
+        block.parentNode.insertBefore(codeExample, block);
+        codeExample.appendChild(block);
+      }
+      
+      // Set data attribute on wrapper, not on highlight div
+      codeExample.setAttribute('data-language', language);
+      
+      // Remove any existing headers/duplicate elements
+      const existingHeaders = block.querySelectorAll('[data-language]');
+      existingHeaders.forEach(header => header.removeAttribute('data-language'));
+      
+      // Remove any existing copy buttons
+      const existingButtons = codeExample.querySelectorAll('.copy-button');
+      existingButtons.forEach(button => button.remove());
+      
+      // Add copy button
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.innerHTML = 'Copy';
+      copyButton.style.zIndex = '15';
+      codeExample.appendChild(copyButton);
+      
+      copyButton.addEventListener('click', function() {
+        // Get code text without line numbers
+        let codeText;
+        const codeElement = block.querySelector('.rouge-code');
+        
+        if (codeElement) {
+          codeText = codeElement.innerText;
+        } else {
+          codeText = block.innerText;
+        }
+        
+        // Clean up the code
+        codeText = codeText.replace(/^\s*\d+\s+/gm, ''); // Remove line numbers
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(codeText).then(function() {
+          copyButton.innerHTML = 'Copied!';
+          copyButton.classList.add('copied');
+          
+          setTimeout(function() {
+            copyButton.innerHTML = 'Copy';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        })
+        .catch(function(err) {
+          console.error('Failed to copy: ', err);
+          copyButton.innerHTML = 'Error!';
+          
+          setTimeout(function() {
+            copyButton.innerHTML = 'Copy';
+          }, 2000);
+        });
+      });
+    });
+  }
+  
+  // Also ensure buttons are added to pre-existing code-example blocks in index.md
+  function addCopyButtonsToIndexCodeExamples() {
+    // Target specifically the code-example blocks in quick-start-card on index page
+    const indexCodeBlocks = document.querySelectorAll('.quick-start-card .code-example');
+    
+    indexCodeBlocks.forEach(function(codeExample) {
+      // Check if it already has a copy button
+      if (codeExample.querySelector('.copy-button')) {
+        return; // Skip if already has button
+      }
+      
+      const highlight = codeExample.querySelector('.highlight');
+      if (!highlight) return;
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.innerHTML = 'Copy';
+      copyButton.style.zIndex = '15';
+      codeExample.appendChild(copyButton);
+      
+      copyButton.addEventListener('click', function() {
+        // Get code text without line numbers
+        let codeText;
+        const codeElement = highlight.querySelector('.rouge-code');
+        
+        if (codeElement) {
+          codeText = codeElement.innerText;
+        } else {
+          codeText = highlight.innerText;
+        }
+        
+        // Clean up the code
+        codeText = codeText.replace(/^\s*\d+\s+/gm, ''); // Remove line numbers
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(codeText).then(function() {
+          copyButton.innerHTML = 'Copied!';
+          copyButton.classList.add('copied');
+          
+          setTimeout(function() {
+            copyButton.innerHTML = 'Copy';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        })
+        .catch(function(err) {
+          console.error('Failed to copy: ', err);
+          copyButton.innerHTML = 'Error!';
+          
+          setTimeout(function() {
+            copyButton.innerHTML = 'Copy';
+          }, 2000);
+        });
+      });
+    });
+  }
+  
+  // Run immediately and again after DOM fully loaded to catch all blocks
+  fixCodeBlocks();
+  addCopyButtonsToIndexCodeExamples();
+  
+  // Run again after a delay to catch any dynamically loaded content
+  setTimeout(() => {
+    fixCodeBlocks();
+    addCopyButtonsToIndexCodeExamples();
+  }, 500);
+  
+  // Also run when window loads to catch everything
+  window.addEventListener('load', () => {
+    fixCodeBlocks();
+    addCopyButtonsToIndexCodeExamples();
+  });
+});
