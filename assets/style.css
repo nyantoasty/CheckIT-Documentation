@@ -635,7 +635,7 @@ table code {
   }
 }
 /***********************************
- * CODE STYLING & SYNTAX HIGHLIGHTING - FIXED VERSION
+ * CODE STYLING & SYNTAX HIGHLIGHTING - FINAL FIXED VERSION
  ***********************************/
 
 /* Outer container with teal background */
@@ -682,7 +682,65 @@ table code {
   border: 1px solid rgba(30, 34, 45, 0.6) !important;
   width: 100% !important;
   margin: 0 !important;
-  box-shadow: none !important; /* Remove shadow */
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Code table layout fixes */
+.highlight table,
+.highlight .rouge-table {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  width: 100% !important;
+  border-collapse: collapse !important;
+  background: transparent !important;
+  display: table !important;
+  table-layout: fixed !important;
+}
+
+.highlight tbody,
+.highlight tr {
+  border: none !important;
+  background: transparent !important;
+  display: table-row-group !important;
+  width: 100% !important;
+}
+
+/* Line number column with fixed width */
+.highlight td.rouge-gutter {
+  background: transparent !important;
+  border: none !important;
+  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
+  padding: 1rem 0 1rem 1rem !important;
+  vertical-align: top !important;
+  width: 3rem !important;
+  display: table-cell !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+/* Code column that takes remaining width */
+.highlight td.rouge-code {
+  background: transparent !important;
+  border: none !important;
+  padding: 1rem 2rem 1rem 0.75rem !important; /* Increased right padding */
+  vertical-align: top !important;
+  width: auto !important;
+  display: table-cell !important;
+  box-sizing: border-box !important;
+}
+
+/* Individual line numbers */
+.highlight .lineno {
+  color: #586e75 !important;
+  display: inline-block !important;
+  padding: 0 0.5rem 0 0 !important;
+  text-align: right !important;
+  min-width: 1rem !important;
+  user-select: none !important;
+  opacity: 0.6 !important;
+  background: transparent !important;
 }
 
 /* Fix for nested divs and tables */
@@ -696,54 +754,6 @@ table code {
   margin: 0 !important;
 }
 
-/* Code table layout fixes */
-.highlight table,
-.highlight .rouge-table {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  width: 100% !important;
-  border-collapse: collapse !important;
-  background: transparent !important;
-}
-
-.highlight tbody,
-.highlight tr {
-  border: none !important;
-  background: transparent !important;
-}
-
-/* Line number column */
-.highlight td.rouge-gutter {
-  background: transparent !important;
-  border: none !important;
-  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
-  padding: 1rem 0 1rem 1rem !important;
-  vertical-align: top !important;
-  width: 2rem !important;
-}
-
-/* Code column */
-.highlight td.rouge-code {
-  background: transparent !important;
-  border: none !important;
-  padding: 1rem 1.5rem 1rem 0.75rem !important;
-  vertical-align: top !important;
-  width: calc(100% - 2rem) !important;
-}
-
-/* Individual line numbers */
-.highlight .lineno {
-  color: #586e75 !important;
-  display: inline-block !important;
-  padding: 0 0.5rem 0 0 !important;
-  text-align: right !important;
-  min-width: 1rem !important;
-  user-select: none !important;
-  opacity: 0.6 !important;
-  background: transparent !important; /* Remove highlight */
-}
-
 /* Code content styling */
 .highlight pre {
   background: transparent !important;
@@ -753,13 +763,17 @@ table code {
   font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
   white-space: pre !important;
   margin: 0 !important;
-  padding: 0 0.5rem 0 0 !important;
+  padding: 0 !important;
+  display: block !important;
 }
 
-/* Code text */
+/* Code text with min-width to prevent horizontal overflow */
 .highlight code {
   background: transparent !important;
   padding: 0 !important;
+  margin: 0 !important;
+  display: block !important; 
+  min-width: auto !important;
 }
 
 /* Windows-style copy button */
@@ -804,7 +818,7 @@ table code {
   border-radius: 4px !important;
 }
 
-/* Syntax highlighting colors - maintaining all your color definitions */
+/* Syntax highlighting colors */
 .highlight .c, .highlight .c1, .highlight .cm {
   color: #586e75 !important;
   font-style: italic !important;
@@ -865,29 +879,17 @@ table code {
   color: #93c5fd !important; /* PowerShell functions */
 }
 
-/* Fix code spacing and alignment in mixed HTML/markdown content */
-.quick-start-card .code-example {
-  margin: 1.5rem 0 !important;
+/* Fix for index.md specific code blocks */
+.quick-start-card .code-example .highlight {
+  width: 100% !important;
 }
 
-/* Fix for specific structure in index.md */
-.quick-start-card h4 {
-  margin-top: 0 !important;
+/* Remove extra spacing in code blocks */
+.quick-start-card .code-example .highlight pre {
+  overflow-x: hidden !important;
 }
 
-/* Ensure consistent inline code look */
-p code, li code, td code, th code {
-  background: #073642 !important;
-  color: #93a1a1 !important;
-  padding: 0.25rem 0.5rem !important;
-  border-radius: 0.25rem !important;
-  border: none !important;
-  font-size: 0.875rem !important;
-}
-
-/* Fix for weird alignment in certain code blocks */
-.highlight td {
-  vertical-align: top !important;
-  display: table-cell !important;
-  background: transparent !important;
+/* Fix for any potential overlapping elements */
+.code-example * {
+  box-sizing: border-box !important;
 }
