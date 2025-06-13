@@ -635,7 +635,7 @@ table code {
   }
 }
 /***********************************
- * CODE STYLING & SYNTAX HIGHLIGHTING - IMPROVED SCROLLBAR VERSION
+ * CODE STYLING & SYNTAX HIGHLIGHTING - FIXED VERSION
  ***********************************/
 
 /* Outer container with teal background */
@@ -665,64 +665,101 @@ table code {
   text-align: left !important;
 }
 
-/* Style only the main visible code container */
+/* Style for code section headings inside code-example */
+.code-example h4 {
+  color: #d1d5db !important;
+  font-size: 0.9rem !important;
+  margin: 0 0 0.75rem 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* Main code block container */
 .highlight {
   background: linear-gradient(to bottom, #2a2f3a 0%, #242936 100%) !important;
   border-radius: 0.5rem !important;
   overflow: hidden !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
   border: 1px solid rgba(30, 34, 45, 0.6) !important;
   width: 100% !important;
   margin: 0 !important;
+  box-shadow: none !important; /* Remove shadow */
 }
 
-/* Code content area with proper spacing */
-.highlight > pre,
-.highlight .rouge-table pre {
-  padding: 1rem !important;
+/* Fix for nested divs and tables */
+.highlight pre,
+.highlight code,
+.highlight div,
+.highlight > div {
+  background: transparent !important; 
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
+/* Code table layout fixes */
+.highlight table,
+.highlight .rouge-table {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  width: 100% !important;
+  border-collapse: collapse !important;
+  background: transparent !important;
+}
+
+.highlight tbody,
+.highlight tr {
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Line number column */
+.highlight td.rouge-gutter {
+  background: transparent !important;
+  border: none !important;
+  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
+  padding: 1rem 0 1rem 1rem !important;
+  vertical-align: top !important;
+  width: 2rem !important;
+}
+
+/* Code column */
+.highlight td.rouge-code {
+  background: transparent !important;
+  border: none !important;
+  padding: 1rem 1rem 1rem 0.75rem !important;
+  vertical-align: top !important;
+  width: calc(100% - 2rem) !important;
+}
+
+/* Individual line numbers */
+.highlight .lineno {
+  color: #586e75 !important;
+  display: inline-block !important;
+  padding: 0 0.5rem 0 0 !important;
+  text-align: right !important;
+  min-width: 1rem !important;
+  user-select: none !important;
+  opacity: 0.6 !important;
+  background: transparent !important; /* Remove highlight */
+}
+
+/* Code content styling */
+.highlight pre {
   background: transparent !important;
   overflow-x: auto !important;
   font-size: 0.9rem !important;
   color: #d1d5db !important;
   font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
-  white-space: pre !important; /* Return to pre formatting */
+  white-space: pre !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* Force full width on all nested elements */
-.highlight table,
-.highlight .rouge-table,
-.highlight tbody,
-.highlight tr {
-  width: 100% !important;
-  display: block !important;
+/* Code text */
+.highlight code {
   background: transparent !important;
-  border: none !important;
-}
-
-/* Ensure code cells take full width */
-.highlight td.rouge-code {
-  width: 100% !important;
-  padding: 0 1rem !important;
-  background: transparent !important;
-}
-
-/* Ensure line number column doesn't take up space */
-.highlight td.rouge-gutter {
-  position: absolute !important;
-  padding: 1rem 0 !important;
-}
-
-/* Line numbers styling */
-.highlight .lineno {
-  color: #586e75 !important;
-  display: inline-block !important;
-  padding: 0 0.5rem 0 0.25rem !important;
-  margin-right: 0.5rem !important;
-  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
-  text-align: right !important;
-  min-width: 1rem !important;
-  user-select: none !important;
-  opacity: 0.6 !important;
+  padding: 0 !important;
 }
 
 /* Windows-style copy button */
@@ -767,7 +804,7 @@ table code {
   border-radius: 4px !important;
 }
 
-/* Restore syntax highlighting colors */
+/* Syntax highlighting colors - maintaining all your color definitions */
 .highlight .c, .highlight .c1, .highlight .cm {
   color: #586e75 !important;
   font-style: italic !important;
@@ -786,7 +823,7 @@ table code {
   color: #7dd3fc !important;
 }
 
-.highlight .n, .highlight .nf {
+.highlight .n {
   color: #93a1a1 !important;
 }
 
@@ -828,19 +865,17 @@ table code {
   color: #93c5fd !important; /* PowerShell functions */
 }
 
-.highlight .nb {
-  color: #fbbf24 !important; /* PowerShell built-ins */
+/* Fix code spacing and alignment in mixed HTML/markdown content */
+.quick-start-card .code-example {
+  margin: 1.5rem 0 !important;
 }
 
-/* Fix double highlighting for nested divs */
-.code-example .highlight div {
-  background: transparent !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important; 
+/* Fix for specific structure in index.md */
+.quick-start-card h4 {
+  margin-top: 0 !important;
 }
 
-/* Make sure inline code looks good */
+/* Ensure consistent inline code look */
 p code, li code, td code, th code {
   background: #073642 !important;
   color: #93a1a1 !important;
@@ -848,4 +883,11 @@ p code, li code, td code, th code {
   border-radius: 0.25rem !important;
   border: none !important;
   font-size: 0.875rem !important;
+}
+
+/* Fix for weird alignment in certain code blocks */
+.highlight td {
+  vertical-align: top !important;
+  display: table-cell !important;
+  background: transparent !important;
 }
