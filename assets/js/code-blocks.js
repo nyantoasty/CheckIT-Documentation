@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       });
       
-      // Fix table structure for proper alignment with fixed widths for line numbers
+      // Fix table structure for proper alignment
       const table = block.querySelector('table');
       if (table) {
         // Apply proper styles to table
@@ -95,22 +95,17 @@ document.addEventListener('DOMContentLoaded', function() {
           row.style.width = '100%';
         });
         
-        // Fix line number column - use exact values from your CSS suggestion
+        // Fix line number column
         const gutterCell = block.querySelector('.rouge-gutter');
         if (gutterCell) {
-          gutterCell.style.background = 'transparent';
-          gutterCell.style.border = 'none';
-          gutterCell.style.borderRight = '1px solid rgba(100, 110, 130, 0.4)';
-          gutterCell.style.padding = '1rem 0 1rem 1rem';
-          gutterCell.style.verticalAlign = 'top';
           gutterCell.style.width = '3rem';
           gutterCell.style.minWidth = '3rem';
           gutterCell.style.maxWidth = '3rem';
-          gutterCell.style.display = 'table-cell';
-          gutterCell.style.position = 'relative';
           gutterCell.style.boxSizing = 'border-box';
           gutterCell.style.textAlign = 'right';
           gutterCell.style.paddingRight = '0.75rem';
+          gutterCell.style.paddingLeft = '0.5rem';
+          gutterCell.style.verticalAlign = 'top';
         }
         
         // Fix code column
@@ -120,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
           codeCell.style.boxSizing = 'border-box';
           codeCell.style.paddingLeft = '1rem';
           codeCell.style.verticalAlign = 'top';
-          codeCell.style.borderLeft = 'none';
         }
       }
       
@@ -140,19 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
         codeElement.style.display = 'inline-block';
         codeElement.style.minWidth = '100%';
       }
-      
-      // Fix line numbers
-      const lineNumbers = block.querySelectorAll('.lineno');
-      lineNumbers.forEach(num => {
-        num.style.textAlign = 'right';
-        num.style.paddingRight = '0.5rem';
-        num.style.width = '2rem';
-        num.style.display = 'inline-block';
-      });
     });
   }
   
-  // Special function to fix index.md code blocks - focus on alignment
+  // Special function to fix index.md code blocks
   function fixIndexCodeBlocks() {
     // Target specifically the code blocks in quick-start-card
     const indexBlocks = document.querySelectorAll('.quick-start-card .code-example .highlight');
@@ -165,22 +150,15 @@ document.addEventListener('DOMContentLoaded', function() {
         table.style.tableLayout = 'fixed';
         table.style.borderCollapse = 'collapse';
         
-        // Ensure line numbers are properly aligned - use exact values from your CSS
+        // Ensure line numbers are properly aligned
         const gutterCell = block.querySelector('.rouge-gutter');
         if (gutterCell) {
-          gutterCell.style.background = 'transparent';
-          gutterCell.style.border = 'none';
-          gutterCell.style.borderRight = '1px solid rgba(100, 110, 130, 0.4)';
-          gutterCell.style.padding = '1rem 0 1rem 1rem';
-          gutterCell.style.verticalAlign = 'top';
           gutterCell.style.width = '3rem';
           gutterCell.style.minWidth = '3rem';
           gutterCell.style.maxWidth = '3rem';
-          gutterCell.style.display = 'table-cell';
-          gutterCell.style.position = 'relative';
-          gutterCell.style.boxSizing = 'border-box';
-          gutterCell.style.textAlign = 'right';
           gutterCell.style.paddingRight = '0.75rem';
+          gutterCell.style.textAlign = 'right';
+          gutterCell.style.verticalAlign = 'top';
         }
         
         // Ensure code cell uses remaining width
@@ -189,11 +167,10 @@ document.addEventListener('DOMContentLoaded', function() {
           codeCell.style.width = 'auto';
           codeCell.style.paddingLeft = '1rem';
           codeCell.style.verticalAlign = 'top';
-          codeCell.style.borderLeft = 'none';
         }
       }
       
-      // Fix line numbers consistently
+      // Fix line numbers
       const lineNumbers = block.querySelectorAll('.lineno');
       lineNumbers.forEach(num => {
         num.style.textAlign = 'right';
