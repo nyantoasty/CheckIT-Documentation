@@ -7,7 +7,7 @@ layout: docs-page
 
 ---
 
-> Professional PowerShell module for Windows computer management, diagnostics, and reporting in domain environments. Designed for IT departments managing labs, classrooms, and departmental computers.
+> Custom PowerShell module for Windows computer management, diagnostics, and reporting in domain environments. Designed for IT departments managing labs, classrooms, and departmental computers.
 
 ## 📋 Table of Contents
 
