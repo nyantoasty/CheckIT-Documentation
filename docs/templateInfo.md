@@ -1,3 +1,11 @@
+---
+layout: default
+---
+
+<link rel="stylesheet" href="assets/style.css">
+
+---
+
 # CheckIT-Core Template System (v1.5.0)
 
 ## 🎯 Template Design Philosophy

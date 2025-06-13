@@ -1,3 +1,10 @@
+---
+layout: default
+---
+
+<link rel="stylesheet" href="assets/style.css">
+
+---
 
 # CheckIT Quick Reference
 

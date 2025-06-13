@@ -3,6 +3,10 @@ title: CheckIT Core v1.5.0 API Reference
 layout: default
 ---
 
+<link rel="stylesheet" href="assets/style.css">
+
+---
+
 > Complete function library with usage examples, status, and dependencies
 
 ## 📋 Table of Contents
