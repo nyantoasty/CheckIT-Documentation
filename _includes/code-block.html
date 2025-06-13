@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Clean up code block structure and fix styling
+  // Main function to fix code blocks
   function fixCodeBlocks() {
     // Find all code blocks
     const blocks = document.querySelectorAll('div.highlight');
@@ -77,78 +77,204 @@ document.addEventListener('DOMContentLoaded', function() {
           }, 2000);
         });
       });
-    });
-  }
-  
-  // Also ensure buttons are added to pre-existing code-example blocks in index.md
-  function addCopyButtonsToIndexCodeExamples() {
-    // Target specifically the code-example blocks in quick-start-card on index page
-    const indexCodeBlocks = document.querySelectorAll('.quick-start-card .code-example');
-    
-    indexCodeBlocks.forEach(function(codeExample) {
-      // Check if it already has a copy button
-      if (codeExample.querySelector('.copy-button')) {
-        return; // Skip if already has button
-      }
       
-      const highlight = codeExample.querySelector('.highlight');
-      if (!highlight) return;
-      
-      const copyButton = document.createElement('button');
-      copyButton.className = 'copy-button';
-      copyButton.innerHTML = 'Copy';
-      copyButton.style.zIndex = '15';
-      codeExample.appendChild(copyButton);
-      
-      copyButton.addEventListener('click', function() {
-        // Get code text without line numbers
-        let codeText;
-        const codeElement = highlight.querySelector('.rouge-code');
+      // Fix table structure for proper alignment
+      const table = block.querySelector('table');
+      if (table) {
+        // Apply proper styles to table
+        table.style.width = '100%';
+        table.style.tableLayout = 'fixed';
+        table.style.borderCollapse = 'collapse';
+        table.style.margin = '0';
+        table.style.padding = '0';
         
-        if (codeElement) {
-          codeText = codeElement.innerText;
-        } else {
-          codeText = highlight.innerText;
+        // Fix table rows
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+          row.style.display = 'table-row';
+          row.style.width = '100%';
+        });
+        
+        // Fix line number column
+        const gutterCell = block.querySelector('.rouge-gutter');
+        if (gutterCell) {
+          gutterCell.style.width = '3rem';
+          gutterCell.style.minWidth = '3rem';
+          gutterCell.style.maxWidth = '3rem';
+          gutterCell.style.boxSizing = 'border-box';
+          gutterCell.style.textAlign = 'right';
+          gutterCell.style.paddingRight = '0.75rem';
+          gutterCell.style.paddingLeft = '0.5rem';
+          gutterCell.style.verticalAlign = 'top';
         }
         
-        // Clean up the code
-        codeText = codeText.replace(/^\s*\d+\s+/gm, ''); // Remove line numbers
+        // Fix code column
+        const codeCell = block.querySelector('.rouge-code');
+        if (codeCell) {
+          codeCell.style.width = 'auto';
+          codeCell.style.boxSizing = 'border-box';
+          codeCell.style.paddingLeft = '1rem';
+          codeCell.style.verticalAlign = 'top';
+        }
+      }
+      
+      // Fix pre element
+      const preElement = block.querySelector('pre');
+      if (preElement) {
+        preElement.style.margin = '0';
+        preElement.style.padding = '0';
+        preElement.style.whiteSpace = 'pre';
+        preElement.style.overflowX = 'auto';
+        preElement.style.width = '100%';
+      }
+      
+      // Fix code element
+      const codeElement = block.querySelector('code');
+      if (codeElement) {
+        codeElement.style.display = 'inline-block';
+        codeElement.style.minWidth = '100%';
+      }
+    });
+  }
+
+  // Direct fix for index.md - targeting the specific structure
+  function fixIndexMdCodeBlocks() {
+    // Directly modify the specific code blocks in index.md structure
+    const codeBlocks = document.querySelectorAll('.quick-start-card .highlight');
+    
+    if (codeBlocks.length > 0) {
+      console.log("Found index code blocks to fix:", codeBlocks.length);
+      
+      codeBlocks.forEach(function(block, index) {
+        console.log(`Fixing index code block ${index + 1}`);
         
-        // Copy to clipboard
-        navigator.clipboard.writeText(codeText).then(function() {
-          copyButton.innerHTML = 'Copied!';
-          copyButton.classList.add('copied');
+        // Clear any existing styles that might interfere
+        block.style = "";
+        block.removeAttribute("style");
+
+        // Reset any margin/padding of the highlight block itself
+        block.style.margin = "0";
+        block.style.padding = "0";
+        
+        // Manually rebuild the internal structure if needed
+        let table = block.querySelector('table');
+        if (!table) {
+          console.log("Table not found in code block, structure may be incorrect");
+          return;
+        }
+
+        // Fix table and cell alignment
+        table.style = ""; // Clear any styles
+        table.style.width = "100%";
+        table.style.borderCollapse = "collapse";
+        table.style.tableLayout = "fixed";
+        
+        // Make sure column widths are explicitly set
+        const gutterCell = table.querySelector('.rouge-gutter');
+        const codeCell = table.querySelector('.rouge-code');
+        
+        if (gutterCell && codeCell) {
+          // Reset the cells first
+          gutterCell.style = "";
+          codeCell.style = "";
           
-          setTimeout(function() {
-            copyButton.innerHTML = 'Copy';
-            copyButton.classList.remove('copied');
-          }, 2000);
-        })
-        .catch(function(err) {
-          console.error('Failed to copy: ', err);
-          copyButton.innerHTML = 'Error!';
+          // Set fixed width for gutter
+          gutterCell.style.width = "40px";
+          gutterCell.style.minWidth = "40px";
+          gutterCell.style.maxWidth = "40px";
+          gutterCell.style.paddingRight = "5px";
+          gutterCell.style.borderRight = "1px solid rgba(100, 110, 130, 0.4)";
+          gutterCell.style.textAlign = "right";
+          gutterCell.style.verticalAlign = "top";
           
-          setTimeout(function() {
-            copyButton.innerHTML = 'Copy';
-          }, 2000);
-        });
+          // Code cell takes remaining space
+          codeCell.style.width = "auto";
+          codeCell.style.paddingLeft = "10px";
+          codeCell.style.verticalAlign = "top";
+          
+          // Make the line numbers more compact
+          const lineNumbers = gutterCell.querySelectorAll('.lineno');
+          lineNumbers.forEach(num => {
+            num.style = "";
+            num.style.display = "block";
+            num.style.textAlign = "right";
+            num.style.width = "100%";
+            num.style.paddingRight = "5px";
+          });
+          
+          // Fix any pre/code elements inside
+          const preElements = block.querySelectorAll('pre');
+          preElements.forEach(pre => {
+            pre.style = "";
+            pre.style.margin = "0";
+            pre.style.padding = "0";
+            pre.style.overflow = "auto";
+          });
+          
+          const codeElements = block.querySelectorAll('code');
+          codeElements.forEach(code => {
+            code.style = "";
+            code.style.whiteSpace = "pre";
+            code.style.display = "block";
+          });
+          
+          // Fix whitespace and indentation in the code block
+          const spans = codeCell.querySelectorAll('span');
+          spans.forEach(span => {
+            if (span.innerHTML.startsWith('  ')) {
+              span.innerHTML = span.innerHTML.replace(/^\s+/, '');
+            }
+          });
+          
+          console.log(`Fixed index code block ${index + 1}`);
+        } else {
+          console.log("Could not find gutter or code cells");
+        }
       });
+    } else {
+      console.log("No index code blocks found to fix");
+    }
+    
+    // Fix the code-example containers
+    const codeExamples = document.querySelectorAll('.quick-start-card .code-example');
+    codeExamples.forEach((example, i) => {
+      example.style = "";
+      example.style.padding = "0";
+      example.style.margin = "0";
+      console.log(`Fixed code example container ${i + 1}`);
+    });
+    
+    // Fix any extra padding in index.md highlighted block
+    document.querySelectorAll('.quick-start-card .highlight').forEach((el, i) => {
+      if (getComputedStyle(el).paddingLeft !== "0px") {
+        el.style.paddingLeft = "0";
+        console.log(`Fixed padding on highlight block ${i + 1}`);
+      }
     });
   }
   
-  // Run immediately and again after DOM fully loaded to catch all blocks
-  fixCodeBlocks();
-  addCopyButtonsToIndexCodeExamples();
-  
-  // Run again after a delay to catch any dynamically loaded content
-  setTimeout(() => {
+  // Run all fixing functions
+  function applyAllFixes() {
+    console.log("Applying code block fixes");
     fixCodeBlocks();
-    addCopyButtonsToIndexCodeExamples();
-  }, 500);
+    
+    // Apply index-specific fixes with extra logging
+    console.log("Applying index-specific fixes");
+    fixIndexMdCodeBlocks();
+    
+    // Force extra fixes with a delay to ensure they apply after any other processing
+    setTimeout(() => {
+      console.log("Applying delayed fixes");
+      fixIndexMdCodeBlocks();
+    }, 500);
+  }
   
-  // Also run when window loads to catch everything
+  // Run fixes immediately
+  applyAllFixes();
+  
+  // Also run when window fully loads
   window.addEventListener('load', () => {
-    fixCodeBlocks();
-    addCopyButtonsToIndexCodeExamples();
+    console.log("Window loaded, reapplying fixes");
+    applyAllFixes();
   });
 });
