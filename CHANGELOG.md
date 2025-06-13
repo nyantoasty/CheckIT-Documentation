@@ -3,10 +3,6 @@ title: 🆕 Changelog
 layout: docs-page
 ---
 
-<link rel="stylesheet" href="assets/style.css">
-
----
-
 ## 2025-06-12 - Enhanced Documentation Workflow
 
 **Type:** Enhancement
@@ -154,11 +150,11 @@ layout: docs-page
 
 ## 2025-06-07 - Documentation Synchronization and Version Updates
 
-    **Type:** Documentation
-    **Version:** 1.3.0
-    
-    **Key Changes:**
-    - Updated version references from 1.2.0 to 1.3.0 across all files
+**Type:** Documentation
+**Version:** 1.3.0
+
+**Key Changes:**
+- Updated version references from 1.2.0 to 1.3.0 across all files
 
 - Added Add-ChangelogEntry and Generate-DocumentationAnalysisPrompt to function lists
 - Enhanced template system documentation with Codebase template type
@@ -166,27 +162,27 @@ layout: docs-page
 - Fixed cross-references to use new docs/ structure
 - Added development workflow examples using new functions
 
-    **Files Changed:**
-  - `README.md`
+**Files Changed:**
+- `README.md`
 - `docs/api-reference.md`
 - `docs/implementation-status.md`
 - `docs/quick-reference.md`
 
-    **Functions Completed:**
+**Functions Completed:**
 - `Add-ChangelogEntry`
 - `Generate-DocumentationAnalysisPrompt`
 
 **Impact:** Documentation now accurately reflects v1.3.0 capabilities and new automation features. Users have clear guidance on function availability and development workflows.
 
-    ---
+---
 
 ## 2025-06-07 - Major Documentation Restructure and Module Manifest Creation
 
-    **Type:** Enhancement
-    **Version:** 1.3.0
-    
-    **Key Changes:**
-    - Created comprehensive docs/ directory structure with specialized guides
+**Type:** Enhancement
+**Version:** 1.3.0
+
+**Key Changes:**
+- Created comprehensive docs/ directory structure with specialized guides
 
 - Archived original guidelines to maintain development history
 - Added professional README.md with feature overview and usage examples
@@ -196,8 +192,8 @@ layout: docs-page
 - Updated module version to 1.3.0 reflecting near-completion status
 - Added session management documentation and troubleshooting guides
 
-    **Files Changed:**
-  - `README.md`
+**Files Changed:**
+- `README.md`
 - `checkit-core.psd1`
 - `checkit-core.psm1`
 - `docs/assistance-guide.md`
@@ -208,13 +204,13 @@ layout: docs-page
 - `docs/troubleshooting.md`
 - `archive/Checkit-Guidelines.md`
 
-    **Functions Added:**
+**Functions Added:**
 - `Add-ChangelogEntry`
 - `Generate-DocumentationAnalysisPrompt`
 
 **Impact:** CheckIT-Core now has professional-grade documentation structure, complete module manifest, and automated documentation maintenance. This establishes the foundation for final release preparation and provides comprehensive guidance for both human developers and AI assistants.
 
-    ---
+---
 
 ## 2025-06-06 - Process-Parallel Enhanced Job Management and CCM Evaluation Fix
 
