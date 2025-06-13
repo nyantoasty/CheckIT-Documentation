@@ -14,7 +14,7 @@ title: CheckIT Home
   <div class="status-container">
     <span class="status-badge status-version">Version 1.5.0</span>
     <span class="status-badge status-progress">75+ Functions</span>
-    <span class="status-badge status-production">Beta</span>
+    <span class="status-badge status-production">Beta (open to request)</span>
   </div>
 </div>
 
