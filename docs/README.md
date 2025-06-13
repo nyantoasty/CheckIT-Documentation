@@ -20,9 +20,11 @@ layout: default
 
 ## 📚 Documentation
 
-- **[API Reference](docs/api-reference.md)** - Complete function library
-- **[Troubleshooting](docs/troubleshooting.md)** - Solutions for common issues
-- **[Quick Reference](docs/quick-reference.md)** - Essential patterns and workflows
+- **[API Reference](api-reference.md)** - Complete function library
+- **[Troubleshooting](troubleshooting.md)** - Solutions for common issues
+- **[Quick Reference](quick-reference.md)** - Essential patterns and workflows
+- **[Template System](template-info.md)** - Detailed information about current template capabilities
+- **[Internal Helper Functions](internal-helpers.md)** - Details about crucial functions that are not exported
 
 ## 🚀 Key Features
 
