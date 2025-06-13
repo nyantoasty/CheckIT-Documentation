@@ -154,6 +154,7 @@ layout: docs-page
 **Version:** 1.3.0
 
 **Key Changes:**
+
 - Updated version references from 1.2.0 to 1.3.0 across all files
 
 - Added Add-ChangelogEntry and Generate-DocumentationAnalysisPrompt to function lists
@@ -163,12 +164,14 @@ layout: docs-page
 - Added development workflow examples using new functions
 
 **Files Changed:**
+
 - `README.md`
 - `docs/api-reference.md`
 - `docs/implementation-status.md`
 - `docs/quick-reference.md`
 
 **Functions Completed:**
+
 - `Add-ChangelogEntry`
 - `Generate-DocumentationAnalysisPrompt`
 
@@ -182,6 +185,7 @@ layout: docs-page
 **Version:** 1.3.0
 
 **Key Changes:**
+
 - Created comprehensive docs/ directory structure with specialized guides
 
 - Archived original guidelines to maintain development history
@@ -193,6 +197,7 @@ layout: docs-page
 - Added session management documentation and troubleshooting guides
 
 **Files Changed:**
+
 - `README.md`
 - `checkit-core.psd1`
 - `checkit-core.psm1`
@@ -205,6 +210,7 @@ layout: docs-page
 - `archive/Checkit-Guidelines.md`
 
 **Functions Added:**
+
 - `Add-ChangelogEntry`
 - `Generate-DocumentationAnalysisPrompt`
 
