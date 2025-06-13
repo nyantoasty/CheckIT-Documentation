@@ -634,84 +634,53 @@ table code {
     font-size: 1.8rem;
   }
 }
-
 /***********************************
- * CODE STYLING & SYNTAX HIGHLIGHTING - COMBINED VERSION
+ * CODE STYLING & SYNTAX HIGHLIGHTING - FIXED VERSION
  ***********************************/
 
-/* Base code styling */
-pre, code {
-  color: #839496 !important;
-  border: none !important;
-  border-radius: 0.5rem !important;
-  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
-}
-
-pre {
-  overflow-x: auto !important;
-  margin: 0 !important;
-  white-space: pre-wrap !important;
-  word-wrap: break-word !important;
-  overflow-wrap: break-word !important;
-}
-
-code {
-  padding: 0.25rem 0.5rem !important;
-  font-size: 0.9rem !important;
-}
-
-/* Inline code styling */
-p code, li code, td code, th code {
-  background: #073642 !important;
-  color: #93a1a1 !important;
-  padding: 0.25rem 0.5rem !important;
-  border-radius: 0.25rem !important;
-  border: none !important;
-  font-size: 0.875rem !important;
-}
-
-/* Make sure code stays within bounds */
-pre code {
-  white-space: pre-wrap !important;
-  word-break: break-word !important;
-}
-
-/* Outer container with proper background */
+/* Outer container with teal background */
 .code-example {
-  background: #1a1f29 !important; /* Match site background */
-  border-radius: 0.4rem !important;
+  background: linear-gradient(135deg, #0d3d4d 0%, #0a2732 100%) !important;
+  border-radius: 0.75rem !important;
   margin: 1.5rem 0 !important;
-  padding: 0 !important; /* Remove padding */
+  padding: 1rem !important;
   position: relative !important;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
   overflow: hidden !important;
+  border: 1px solid rgba(30, 70, 85, 0.4) !important;
 }
 
-/* Code block container */
-.highlight {
-  margin: 0 !important;
-  position: relative !important;
-  border-radius: 0 !important; /* Remove inner radius */
-  overflow: hidden !important;
-  background: #1a1f29 !important; /* Match outer container */
-  box-shadow: none !important; /* Remove shadow */
-  border: none !important; /* Remove border */
-}
-
-/* Clean titlebar - spans full width */
+/* Title bar in the outer teal container */
 .code-example::before {
   content: attr(data-language);
   display: block !important;
-  background: linear-gradient(to bottom, #2c313a, #222630) !important;
+  background: transparent !important;
   color: #d1d5db !important;
   font-size: 0.75rem !important;
   font-weight: 500 !important;
-  padding: 0.5rem 1rem !important;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3) !important;
+  padding: 0.25rem 0.75rem !important;
+  margin-bottom: 0.5rem !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.025em !important;
+  letter-spacing: 0.05em !important;
   text-align: left !important;
+}
+
+/* Inner code block container - gray */
+.highlight {
   width: 100% !important;
+  background: linear-gradient(to bottom, #2a2f3a 0%, #242936 100%) !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(30, 34, 45, 0.6) !important;
+  margin: 0 !important;
+}
+
+/* Base styling for code blocks */
+pre, code {
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
 }
 
 /* Code content area with proper spacing */
@@ -720,27 +689,27 @@ pre code {
   margin: 0 !important;
   background: transparent !important;
   overflow-x: auto !important;
-  font-family: 'Consolas', 'Menlo', 'Monaco', monospace !important;
   font-size: 0.9rem !important;
+  color: #d1d5db !important;
 }
 
 /* Tighter line numbers styling with visible separator */
 .highlight .lineno {
   color: #586e75 !important;
   display: inline-block !important;
-  padding: 0 0.5rem 0 0.75rem !important;
+  padding: 0 0.5rem 0 0.25rem !important;
   margin-right: 0.5rem !important;
   border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
   text-align: right !important;
   min-width: 1rem !important;
   user-select: none !important;
-  opacity: 0.7 !important;
+  opacity: 0.6 !important;
 }
 
 /* Move code text closer to line numbers */
 .highlight code {
-  padding-left: 0 !important;
-  margin-left: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
   tab-size: 2 !important;
   background: transparent !important;
 }
@@ -748,21 +717,26 @@ pre code {
 /* Windows-style copy button */
 .copy-button {
   position: absolute !important;
-  top: 0.4rem !important;
-  right: 0.85rem !important;
-  background: rgba(59, 130, 246, 0.1) !important;
-  color: #d1d5db !important;
-  border: 1px solid rgba(99, 102, 241, 0.2) !important;
-  border-radius: 0.2rem !important;
-  padding: 0.15rem 0.6rem !important;
+  top: 0.5rem !important;
+  right: 1rem !important;
+  background: rgba(59, 130, 246, 0.15) !important;
+  color: #e5e7eb !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  border-radius: 0.25rem !important;
+  padding: 0.2rem 0.75rem !important;
   font-size: 0.7rem !important;
-  font-weight: 400 !important;
+  font-weight: 500 !important;
   cursor: pointer !important;
   transition: all 0.2s !important;
   z-index: 15 !important;
 }
 
-/* Remove ALL nested elements that cause duplication */
+.copy-button:hover {
+  background: rgba(59, 130, 246, 0.25) !important;
+  border-color: rgba(99, 102, 241, 0.4) !important;
+}
+
+/* Remove nested elements that cause duplication */
 .highlight::before,
 .highlight::after {
   content: none !important;
@@ -779,9 +753,10 @@ pre code {
   border: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  width: 100% !important;
 }
 
-/* Fix code display in rouge table */
+/* Ensure code blocks fit entire width */
 .rouge-table {
   display: block !important;
   width: 100% !important;
@@ -789,16 +764,11 @@ pre code {
 }
 
 .rouge-table td.rouge-code {
+  width: 100% !important;
   padding-left: 0 !important;
 }
 
-/* Properly align code text */
-.highlight .code pre {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-
-/* Syntax highlighting colors */
+/* Syntax highlighting colors - keeping the original colors */
 .highlight .c, .highlight .c1, .highlight .cm {
   color: #586e75 !important;
   font-style: italic !important;
@@ -848,4 +818,14 @@ pre code {
 .highlight .err {
   color: #dc322f !important;
   background: none !important;
+}
+
+/* Keep inline code styling separate */
+p code, li code, td code, th code {
+  background: #073642 !important;
+  color: #93a1a1 !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.25rem !important;
+  border: none !important;
+  font-size: 0.875rem !important;
 }
