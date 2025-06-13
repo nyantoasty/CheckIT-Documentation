@@ -1,5 +1,5 @@
 ---
-title: Quick Reference
+title: ⚡Quick Reference
 layout: default
 ---
 

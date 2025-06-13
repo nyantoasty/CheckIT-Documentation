@@ -1,6 +1,6 @@
 ---
 layout: default
-title: CheckIT Out
+title: 🚀 Get Started
 ---
 
 <link rel="stylesheet" href="../assets/style.css">

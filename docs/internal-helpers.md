@@ -1,5 +1,5 @@
 ---
-title: Internal Helper Functions
+title: 🛠️ Internal Helper Functions
 layout: default
 ---
 

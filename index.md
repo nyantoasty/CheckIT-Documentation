@@ -20,7 +20,7 @@ title: CheckIT Home
 
 <div class="docs-grid">
   <div class="doc-card">
-    <h3>📖 About</h3>
+    <h3>ℹ️ About</h3>
     <p>Complete feature overview, enhanced template workflow system, installation guide, and usage examples.</p>
     <a href="docs/README" class="card-link">View Documentation →</a>
   </div>
@@ -32,23 +32,11 @@ title: CheckIT Home
   </div> 
   
   <div class="doc-card">
-    <h3>🔧 API Reference</h3>
-    <p>Complete function library with template system, multi-template workflows, and automation capabilities.</p>
-    <a href="docs/api-reference" class="card-link">Browse Functions →</a>
-  </div>
-  
-  <div class="doc-card">
-    <h3>🆘 Quick Reference</h3>
+    <h3>⚡ Quick Reference</h3>
     <p>Essential patterns, template workflows, and rapid development guide for immediate productivity.</p>
     <a href="docs/quick-reference" class="card-link">Quick Start →</a>
   </div>
   
-  <div class="doc-card">
-    <h3>🔍 Troubleshooting</h3>
-    <p>Solutions including template system troubleshooting and session automation patterns.</p>
-    <a href="docs/troubleshooting" class="card-link">Get Help →</a>
-  </div>
-
   <div class="doc-card">
     <h3>📋 Changelog</h3>
     <p>Version history, template system updates, and detailed changes across all releases.</p>
@@ -57,11 +45,13 @@ title: CheckIT Home
 </div>
 
 <div class="feature-card">
-  <h2>🚀 Key Features</h2>
+  <h2>🗝️ Key Features</h2>
   
-  **Template Workflow System** • **Session Automation** • **Centralized Management** • **Secure Authentication** • **Excel Reporting** • **Session Persistence** • **Parallel Processing** • **Active Directory Integration** • **Documentation Automation**
+  **Template Workflow System** • **Session Automation** • **Centralized Management**<br>
+  **Secure Authentication** • **Excel Reporting** • **Session Persistence**<br>
+  **Parallel Processing** • **Active Directory Integration** • **Documentation Automation**
   
-  Perfect for managing labs, classrooms, and departmental computers in domain environments.
+  <p>Perfect for managing labs, classrooms, and departmental computers in domain environments.</p>
 </div>
 
 <div class="highlight-card">
@@ -72,12 +62,10 @@ title: CheckIT Home
       <h4>🔄 Complete Template Workflow System</h4>
       <p>30+ templates across Command, Test, and Codebase categories</p>
     </div>
-    
     <div class="feature-item">
       <h4>🎛️ Enhanced Confirmation System</h4>
       <p>Smart automation with "Yes to All" / "No to All" session memory</p>
     </div>
-    
     <div class="feature-item">
       <h4>📊 Multi-Sheet Excel Integration</h4>
       <p>Individual template sheets plus summary sheet for comprehensive reporting</p>
@@ -90,6 +78,7 @@ title: CheckIT Home
   
   <div class="code-example">
     <h4>Template Workflow</h4>
+
     <pre><code># Multi-template execution with Excel export
 Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "System_Audit" -ExportToExcel</code></pre>
   </div>

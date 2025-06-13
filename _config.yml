@@ -1,5 +1,5 @@
 title: CheckIT
-description: Professional PowerShell module for Windows computer management
+description: PowerShell module for Windows computer management
 baseurl: "/CheckIT-Documentation"
 url: "https://nyantoasty.github.io"
 
@@ -12,12 +12,12 @@ plugins:
 markdown: kramdown
 highlighter: rouge
 
-# Navigation - matches the files you copied
+# Navigation
 header_pages:
-  - docs/get-started.md
   - docs/README.md
-  - docs/quick-reference.md
+  - docs/get-started.md
   - docs/api-reference.md
+  - docs/quick-reference.md
   - docs/templateInfo.md
   - docs/troubleshooting.md
   - docs/internal-helpers.md
