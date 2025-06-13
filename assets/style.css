@@ -910,3 +910,55 @@ table code {
 .code-example * {
   box-sizing: border-box !important;
 }
+/* Override Jekyll-generated code block styling - HIGH PRIORITY */
+.quick-start-card figure.highlight {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.quick-start-card .highlight table.rouge-table {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+}
+
+.quick-start-card .highlight td.rouge-gutter {
+  width: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
+  padding-right: 10px !important;
+  text-align: right !important;
+  vertical-align: top !important;
+  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
+  background-color: transparent !important;
+}
+
+.quick-start-card .highlight td.rouge-code {
+  padding-left: 10px !important;
+  background-color: transparent !important;
+}
+
+.quick-start-card .highlight pre {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  overflow-x: auto !important;
+}
+
+.quick-start-card .highlight .lineno {
+  color: rgba(150, 150, 150, 0.8) !important;
+  text-align: right !important;
+  padding-right: 5px !important;
+  user-select: none !important;
+}
+
+/* Extra specificity to ensure these rules take precedence */
+html body .quick-start-card .code-example {
+  padding: 0 !important;
+  margin: 0 !important;
+}

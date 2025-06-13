@@ -1,59 +1,79 @@
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("DOM Content Loaded - Starting Debugging");
+  console.log("DOM Content Loaded - Starting with minimal approach");
 
-  // Debug function to show element structure
-  function debugElement(element, label) {
-    console.log('------ DEBUG: ' + label + ' ------');
-    console.log('Element:', element);
-    console.log('Classes:', element.className);
-    console.log('HTML:', element.outerHTML.substring(0, 100) + '...');
-    console.log('Computed style:', window.getComputedStyle(element));
-  }
-
-  // Find code blocks
-  const allBlocks = document.querySelectorAll('div.highlight');
-  console.log(`Found ${allBlocks.length} total highlight blocks`);
-
-  // Specifically target index code blocks
-  const indexBlocks = document.querySelectorAll('.quick-start-card .highlight');
-  console.log(`Found ${indexBlocks.length} index highlight blocks`);
-
-  if (indexBlocks.length > 0) {
-    // Debug first index block
-    const firstBlock = indexBlocks[0];
-    debugElement(firstBlock, 'First Index Block');
+  // Find all code blocks
+  const blocks = document.querySelectorAll('div.highlight, figure.highlight');
+  console.log(`Found ${blocks.length} total highlight blocks`);
+  
+  blocks.forEach(function(block, index) {
+    console.log(`Processing block ${index + 1}`);
     
-    // Debug table and cells
-    const table = firstBlock.querySelector('table');
-    if (table) {
-      debugElement(table, 'Table in first block');
-      
-      const gutterCell = table.querySelector('.rouge-gutter');
-      const codeCell = table.querySelector('.rouge-code');
-      
-      if (gutterCell) debugElement(gutterCell, 'Gutter Cell');
-      if (codeCell) debugElement(codeCell, 'Code Cell');
-    } else {
-      console.log("No table found in highlight block!");
-    }
-  }
-
-  // Apply some test CSS to see if it works at all
-  console.log("Applying test styles");
-  document.querySelectorAll('.quick-start-card .highlight').forEach(block => {
-    block.style.border = '3px solid red';
-    
-    const gutterCell = block.querySelector('.rouge-gutter');
-    if (gutterCell) {
-      gutterCell.style.border = '3px solid blue';
-      gutterCell.style.width = '40px';
+    // Check if block is already in a code-example container
+    let codeExample = block.parentElement;
+    if (!codeExample.classList.contains('code-example')) {
+      console.log(`Creating code-example wrapper for block ${index + 1}`);
+      // Create wrapper if not exists
+      codeExample = document.createElement('div');
+      codeExample.className = 'code-example';
+      block.parentNode.insertBefore(codeExample, block);
+      codeExample.appendChild(block);
     }
     
-    const codeCell = block.querySelector('.rouge-code');
-    if (codeCell) {
-      codeCell.style.border = '3px solid green';
+    // Determine language
+    let language = 'POWERSHELL'; // Default
+    const classes = block.className.split(' ');
+    for (const className of classes) {
+      if (className.startsWith('language-')) {
+        language = className.replace('language-', '').toUpperCase();
+        break;
+      }
+    }
+    codeExample.setAttribute('data-language', language);
+    
+    // Add copy button if not already present
+    if (!codeExample.querySelector('.copy-button')) {
+      console.log(`Adding copy button to block ${index + 1}`);
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.innerHTML = 'Copy';
+      copyButton.style.zIndex = '15';
+      codeExample.appendChild(copyButton);
+      
+      copyButton.addEventListener('click', function() {
+        // Get code text without line numbers
+        let codeText;
+        const codeElement = block.querySelector('.rouge-code');
+        
+        if (codeElement) {
+          codeText = codeElement.innerText;
+        } else {
+          codeText = block.innerText;
+        }
+        
+        // Clean up the code
+        codeText = codeText.replace(/^\s*\d+\s+/gm, ''); // Remove line numbers
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(codeText).then(function() {
+          copyButton.innerHTML = 'Copied!';
+          copyButton.classList.add('copied');
+          
+          setTimeout(function() {
+            copyButton.innerHTML = 'Copy';
+            copyButton.classList.remove('copied');
+          }, 2000);
+        })
+        .catch(function(err) {
+          console.error('Failed to copy: ', err);
+          copyButton.innerHTML = 'Error!';
+          
+          setTimeout(function() {
+            copyButton.innerHTML = 'Copy';
+          }, 2000);
+        });
+      });
     }
   });
 
-  console.log("Debug logging complete");
+  console.log("Minimal processing complete - Letting CSS handle styles");
 });
