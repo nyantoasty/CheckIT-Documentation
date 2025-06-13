@@ -1,4 +1,5 @@
 ---
+title: Template System
 layout: default
 ---
 

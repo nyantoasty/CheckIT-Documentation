@@ -19,6 +19,7 @@ header_pages:
   - docs/api-reference.md
   - docs/templateInfo.md
   - docs/troubleshooting.md
+  - docs/internal-helpers.md
   - CHANGELOG.md
 
 # GitHub integration

@@ -1,4 +1,5 @@
 ---
+title: Quick Reference
 layout: default
 ---
 
@@ -6,7 +7,6 @@ layout: default
 
 ---
 
-# Quick Reference
 
 > Comprehensive guide to patterns, templates, and functions for development, troubleshooting, and documentation
 
