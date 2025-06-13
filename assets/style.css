@@ -633,42 +633,30 @@ table code {
     font-size: 1.8rem;
   }
 }
-/***********************************
- * CLEAN CODE BLOCKS - FINAL VERSION
- ***********************************/
 
-/* Remove any previous code block styling first */
-.highlight::before {
-  content: none !important;
-}
-
-.highlight::after {
-  content: none !important;
-}
-
-/* Outer container with teal background */
+/* Fix code block container */
 .code-example {
-  background: #002b36 !important;
+  background: #1a1f29 !important; /* Match the main background color */
   border-radius: 0.4rem !important;
   margin: 1.5rem 0 !important;
-  padding: 0.75rem !important;
+  padding: 0 !important; /* Remove padding that creates the gap */
   position: relative !important;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15) !important;
   overflow: hidden !important;
 }
 
-/* Clean terminal code block */
+/* Remove the separate highlight styling that creates the nested appearance */
 .highlight {
   margin: 0 !important;
   position: relative !important;
-  border-radius: 0.25rem !important;
+  border-radius: 0 !important; /* Remove border radius from inner element */
   overflow: hidden !important;
-  background: #1a1f29 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
-  border: 1px solid rgba(30, 30, 40, 0.5) !important;
+  background: #1a1f29 !important; /* Match the code-example background */
+  box-shadow: none !important; /* Remove inner shadow */
+  border: none !important; /* Remove inner border */
 }
 
-/* Single clean titlebar */
+/* Simplify the titlebar */
 .code-example::before {
   content: attr(data-language);
   display: block !important;
@@ -681,21 +669,12 @@ table code {
   text-transform: uppercase !important;
   letter-spacing: 0.025em !important;
   text-align: left !important;
-  position: absolute !important;
-  top: 0.75rem !important;
-  left: 0.75rem !important;
-  right: 0.75rem !important;
-  z-index: 10 !important;
+  width: 100% !important; /* Ensure it spans the full width */
 }
 
-/* Add padding to accommodate the titlebar */
-.highlight {
-  margin-top: 2.5rem !important;
-}
-
-/* Code content area with proper spacing */
+/* Fix code content area */
 .highlight pre {
-  padding: 0.75rem 0 !important;
+  padding: 1rem !important;
   margin: 0 !important;
   background: transparent !important;
   overflow-x: auto !important;
@@ -703,31 +682,24 @@ table code {
   font-size: 0.9rem !important;
 }
 
-/* Tighter line numbers styling with visible separator */
+/* Adjust line numbers styling */
 .highlight .lineno {
   color: #586e75 !important;
   display: inline-block !important;
   padding: 0 0.5rem 0 0.75rem !important;
   margin-right: 0.5rem !important;
-  border-right: 1px solid rgba(100, 110, 130, 0.4) !important; /* More visible border */
+  border-right: 1px solid rgba(100, 110, 130, 0.4) !important;
   text-align: right !important;
   min-width: 1rem !important;
   user-select: none !important;
   opacity: 0.7 !important;
 }
 
-/* Move code text closer to line numbers */
-.highlight code {
-  padding-left: 0 !important;
-  margin-left: 0 !important;
-  tab-size: 2 !important;
-}
-
-/* Windows-style copy button */
+/* Position copy button correctly */
 .copy-button {
   position: absolute !important;
-  top: 0.4rem !important;
-  right: 0.85rem !important;
+  top: 0.25rem !important;
+  right: 0.5rem !important;
   background: rgba(59, 130, 246, 0.1) !important;
   color: #d1d5db !important;
   border: 1px solid rgba(99, 102, 241, 0.2) !important;
@@ -738,35 +710,4 @@ table code {
   cursor: pointer !important;
   transition: all 0.2s !important;
   z-index: 15 !important;
-}
-
-/* Remove ALL nested elements that cause duplication */
-.highlight table.rouge-table,
-.highlight div.highlight,
-.highlight div:not(pre),
-.highlight > div, 
-.highlight td.code,
-.highlight tbody,
-.highlight tr {
-  background: transparent !important;
-  border: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Fix code display in rouge table */
-.rouge-table {
-  display: block !important;
-  width: 100% !important;
-  overflow: auto !important;
-}
-
-.rouge-table td.rouge-code {
-  padding-left: 0 !important;
-}
-
-/* Properly align code text */
-.highlight .code pre {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
 }
