@@ -3,14 +3,16 @@ layout: default
 ---
 
 <div class="home-hero">
-  <div class="hero-icon">🔧</div>
+  {% if page.icon %}
+  <div class="hero-icon">{{ page.icon }}</div>
+  {% endif %}
   <h1 class="hero-title">CheckIT-Core Documentation</h1>
   <p class="hero-description">Professional PowerShell module for Windows computer management, diagnostics, and reporting in domain environments.</p>
   
   <div class="hero-badges">
-    <span class="hero-badge">Version 1.5.0</span>
-    <span class="hero-badge">75+ Functions</span>
-    <span class="hero-badge">Beta (open to request)</span>
+    <span class="hero-badge">Version {{ site.data.site_info.version }}</span>
+    <span class="hero-badge">{{ site.data.site_info.function_count }} Functions</span>
+    <span class="hero-badge">{{ site.data.site_info.status }}</span>
   </div>
 </div>
 
@@ -20,10 +22,11 @@ layout: default
 
 <div class="docs-footer">
   <div class="footer-nav">
+    <a href="{{ site.baseurl }}/index">🏠 Home</a>
     <a href="{{ site.baseurl }}/docs/README">ℹ️ About</a>
     <a href="{{ site.baseurl }}/get-started">🚀 Get Started</a>
     <a href="{{ site.baseurl }}/docs/api-reference">📘 API Reference</a>
-    <a href="{{ site.baseurl }}/docs/quick-reference">⚡ Quick Reference</a>
+    <a href="{{ site.baseurl }}/docs/quick-reference">⚡ Quick Reference</a><br>
     <a href="{{ site.baseurl }}/docs/templateInfo">🧩 Template System</a>
     <a href="{{ site.baseurl }}/docs/troubleshooting">🔍 Troubleshooting</a>
     <a href="{{ site.baseurl }}/docs/internal-helpers">🔧 Internal Helper Functions</a>

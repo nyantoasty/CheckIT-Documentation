@@ -12,14 +12,18 @@
       <div class="wrapper">
         <a class="site-title" href="{{ site.baseurl }}/">CheckIT</a>
         <nav class="site-nav">
-          <a href="{{ site.baseurl }}/docs/README" class="page-link">ℹ️ About</a>
-          <a href="{{ site.baseurl }}/docs/get-started" class="page-link">🚀 Get Started</a>
-          <a href="{{ site.baseurl }}/docs/api-reference" class="page-link">📘 API Reference</a>
-          <a href="{{ site.baseurl }}/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
-          <a href="{{ site.baseurl }}/docs/templateInfo" class="page-link">🧩 Template System</a>
-          <a href="{{ site.baseurl }}/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
-          <a href="{{ site.baseurl }}/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
-          <a href="{{ site.baseurl }}/CHANGELOG" class="page-link">📋 Changelog</a>
+          <div class="nav-row">
+            <a href="{{ site.baseurl }}/docs/README" class="page-link">ℹ️ About</a>
+            <a href="{{ site.baseurl }}/get-started" class="page-link">🚀 Get Started</a>
+            <a href="{{ site.baseurl }}/docs/api-reference" class="page-link">📘 API Reference</a>
+            <a href="{{ site.baseurl }}/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+          </div>
+          <div class="nav-row">
+            <a href="{{ site.baseurl }}/docs/templateInfo" class="page-link">🧩 Template System</a>
+            <a href="{{ site.baseurl }}/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            <a href="{{ site.baseurl }}/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            <a href="{{ site.baseurl }}/CHANGELOG" class="page-link">📋 Changelog</a>
+          </div>
         </nav>
       </div>
     </header>
@@ -30,5 +34,6 @@
       </div>
     </main>
   </div>
+  <script src="{{ site.baseurl }}/assets/js/code-blocks.js"></script>
 </body>
 </html>

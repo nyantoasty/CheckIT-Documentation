@@ -39,27 +39,23 @@ layout: docs-page
 ## 🔄 Template System
 
 **Command Templates**: Remote PowerShell commands (20 built-in templates)
-```powershell
-# Execute a command template
+{% highlight powershell linenos %}# Execute a command template
 Invoke-TemplateCommand -Nodes $nodes -TemplateName "Get OS Info"
-```
+{% endhighlight %}
 
 **Test Templates**: Interactive functionality tests (5 built-in templates)
-```powershell
-# Run a test template
+{% highlight powershell linenos %}# Run a test template
 Invoke-TemplateCommand -Nodes $nodes -TemplateName "Default Functionality Test"
-```
+{% endhighlight %}
 
 **Codebase Templates**: Development patterns (5 built-in templates)
-```powershell
-# Get a development pattern
+{% highlight powershell linenos %}# Get a development pattern
 Manage-Templates -Type Codebase -Action Preview
-```
+{% endhighlight %}
 
 ## 🚀 Quick Start
 
-```powershell
-# Add computers to your working list
+{% highlight powershell linenos %}# Add computers to your working list
 NodeList -Action Add -Nodes @("LAB01-PC01", "LAB01-PC02")
 
 # Get Administrator credentials
@@ -67,39 +63,36 @@ Passman -Nodes $global:nodeList
 
 # Execute template workflow with Excel export
 Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "System_Audit" -ExportToExcel
-```
+{% endhighlight %}
 
 ## 📖 Usage Examples
 
 ### Template Workflow Example
 
-```powershell
-# Comprehensive system audit with Excel export
+{% highlight powershell linenos %}# Comprehensive system audit with Excel export
 Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @("Get OS Info", "Check Disk Space", "List Installed Apps") -WorkflowName "Complete_Audit" -ExportToExcel
 
 # Session automation - prompts once, remembers choice
 Invoke-TemplateWorkflow -Templates @("Get OS Info", "Check Disk Space") -Confirm "Auto"
-```
+{% endhighlight %}
 
 ### Software Inventory Example
 
-```powershell
-# Template approach
+{% highlight powershell linenos %}# Template approach
 Invoke-TemplateCommand -Nodes $global:nodeList -TemplateName "List Installed Apps"
 
 # Traditional approach
 Get-Software -Nodes $global:nodeList -Mode Specific -SearchStrings @("Office", "Chrome")
-```
+{% endhighlight %}
 
 ### Session Management Example
 
-```powershell
-# Save your session
+{% highlight powershell linenos %}# Save your session
 Save-CheckITDataCore -Path "C:\CheckIT\Lab_Audit.json"
 
 # Restore your session later
 Load-CheckITDataCore -Path "C:\CheckIT\Lab_Audit.json"
-```
+{% endhighlight %}
 
 ## 🔧 Installation
 
@@ -112,11 +105,10 @@ Load-CheckITDataCore -Path "C:\CheckIT\Lab_Audit.json"
 
 ### Quick Install
 
-```powershell
-# Install from directory
+{% highlight powershell linenos %}# Install from directory
 cd "CheckIT-Core-v1.5.0"
 .\install.ps1
-```
+{% endhighlight %}
 
 ## 📞 Support
 
@@ -124,3 +116,4 @@ cd "CheckIT-Core-v1.5.0"
 - **Documentation**: See API Reference, Quick Reference and Troubleshooting Guide
 
 ---
+

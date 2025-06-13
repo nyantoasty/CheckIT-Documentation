@@ -1,0 +1,8 @@
+{% assign lang = include.lang | default: 'powershell' %}
+{% assign caption = include.caption | default: '' %}
+{% if caption != '' %}
+<h4>{{ caption }}</h4>
+{% endif %}
+{% highlight {{ lang }} linenos %}
+{{ include.code }}
+{% endhighlight %}

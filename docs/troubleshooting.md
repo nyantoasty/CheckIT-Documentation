@@ -32,8 +32,7 @@ layout: docs-page
 ### Template Workflow Issues
 
 #### Problem: Templates Not Found in Workflow
-```powershell
-# ❌ Error: "Template 'Get OS Info' not found in Command or Test templates..."
+{% highlight powershell linenos %}# ❌ Error: "Template 'Get OS Info' not found in Command or Test templates..."
 Invoke-TemplateWorkflow -Templates @("Get OS Info") -WorkflowName "Test"
 
 # ✅ Solution: Check template availability first
@@ -42,11 +41,10 @@ Manage-Templates -Type Test -Action List
 
 # ✅ Verify template names match exactly (case-sensitive)
 Invoke-TemplateWorkflow -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "Test"
-```
+{% endhighlight %}
 
 #### Problem: Double-Prompting in Template Workflows
-```powershell
-# ❌ Wrong: User gets prompted twice (workflow + individual template)
+{% highlight powershell linenos %}# ❌ Wrong: User gets prompted twice (workflow + individual template)
 Invoke-TemplateWorkflow -Templates @("Get OS Info") -Confirm:$true
 # User selects "Yes to All" but still gets prompted for individual template
 
@@ -60,12 +58,11 @@ if ($isCommandTemplate) {
     }
     $result = Invoke-TemplateCommand -TemplateName $templateName -Confirm:$templateConfirm
 }
-```
+{% endhighlight %}
 
 
 #### Problem: Excel Export Creates Empty Sheets
-```powershell
-# ❌ Problem: Template returns verbose output instead of clean data
+{% highlight powershell linenos %}# ❌ Problem: Template returns verbose output instead of clean data
 # Results in Excel sheets with command output rather than structured data
 
 # ✅ Solution: Verify template execution returns clean results
@@ -79,13 +76,12 @@ if ($result -and $result.CleanResults) {
 } else {
     Write-Color "Template '$templateName' returned no clean results" -Color Yellow
 }
-```
+{% endhighlight %}
 
 ### Enhanced Confirmation System Issues
 
 #### Problem: Session Automation Not Working
-```powershell
-# ❌ Problem: User selects "Yes to All" but subsequent operations still prompt
+{% highlight powershell linenos %}# ❌ Problem: User selects "Yes to All" but subsequent operations still prompt
 
 # ✅ Diagnostic: Check global workflow state
 if ($global:WorkflowAutoConfirm) {
@@ -104,11 +100,10 @@ if ($global:WorkflowAutoConfirm.ContainsKey('*')) {
     $shouldProceed = $global:WorkflowAutoConfirm['*']
     Write-Host "Using session-wide setting: $shouldProceed"
 }
-```
+{% endhighlight %}
 
 #### Problem: Mixed Confirmation Patterns
-```powershell
-# ❌ Wrong: Inconsistent confirmation parameter types
+{% highlight powershell linenos %}# ❌ Wrong: Inconsistent confirmation parameter types
 function My-Function {
     param([bool]$Confirm = $true)  # Only supports true/false
 }
@@ -125,13 +120,12 @@ function My-Function {
         # Traditional confirmation
     }
 }
-```
+{% endhighlight %}
 
 ### Template Management Issues
 
 #### Problem: Built-in Templates Missing
-```powershell
-# ❌ Error: Manage-Templates shows empty lists
+{% highlight powershell linenos %}# ❌ Error: Manage-Templates shows empty lists
 
 # ✅ Diagnostic: Check if templates are loaded
 Ensure-Templates -Force
@@ -143,11 +137,10 @@ Write-Host "Codebase templates: $($global:Reports['Templates']['Codebase'].Count
 Remove-Module CheckIT-Core -Force -ErrorAction SilentlyContinue
 Import-Module CheckIT-Core -Force
 Ensure-Templates
-```
+{% endhighlight %}
 
 #### Problem: Template Execution Fails with Credential Errors
-```powershell
-# ❌ Problem: Template uses Invoke-Command but credentials aren't available
+{% highlight powershell linenos %}# ❌ Problem: Template uses Invoke-Command but credentials aren't available
 
 # ✅ Diagnostic: Check credential status
 Ensure-GlobalCredStore
@@ -163,7 +156,7 @@ $scriptBlock = {
 }
 
 $results = $nodes | Process-Parallel -ScriptBlock $scriptBlock -UseCredentials
-```
+{% endhighlight %}
 
 ## 🛠️ Working Solutions (Production-Tested)
 
@@ -171,8 +164,7 @@ $results = $nodes | Process-Parallel -ScriptBlock $scriptBlock -UseCredentials
 **Problem:** Templates execute but Excel export combines wrong data or creates malformed sheets.
 
 **Working Solution:**
-```powershell
-# ✅ Correct template workflow pattern with clean data separation:
+{% highlight powershell linenos %}# ✅ Correct template workflow pattern with clean data separation:
 foreach ($templateName in $Templates) {
     if ($PromptUser) {
         Write-Color "Executing template: $($templateName)" -Color Yellow
@@ -220,7 +212,7 @@ foreach ($templateName in $Templates) {
         }
     }
 }
-```
+{% endhighlight %}
 
 **Why This Works:**
 - **Clean data separation**: Only stores CleanResults, not verbose command output
@@ -232,8 +224,7 @@ foreach ($templateName in $Templates) {
 **Problem:** User selections don't persist across function calls within a workflow.
 
 **Working Solution:**
-```powershell
-# ✅ Correct session automation implementation:
+{% highlight powershell linenos %}# ✅ Correct session automation implementation:
 if ($Confirm -eq "Auto") {
     # Check for existing session-wide preferences
     if (-not $global:WorkflowAutoConfirm) {
@@ -272,7 +263,7 @@ if ($Confirm -eq "Auto") {
         }
     }
 }
-```
+{% endhighlight %}
 
 **Key Insights:**
 - **Session state persistence**: `$global:WorkflowAutoConfirm` stores user choice across function calls
@@ -284,8 +275,7 @@ if ($Confirm -eq "Auto") {
 **Problem:** Template workflow creates Excel files with empty sheets or mixed data types.
 
 **Working Solution:**
-```powershell
-# ✅ Correct Excel export with individual template sheets + summary:
+{% highlight powershell linenos %}# ✅ Correct Excel export with individual template sheets + summary:
 if ($ExportToExcel -and $executedTemplates.Count -gt 0) {
     if ($PromptUser) {
         Write-Color "Combining template results for Excel export..." -Color Cyan
@@ -327,7 +317,7 @@ if ($ExportToExcel -and $executedTemplates.Count -gt 0) {
         Write-Color "Sheets created: $($sheets.Keys -join ', ')" -Color Cyan
     }
 }
-```
+{% endhighlight %}
 
 **Why This Works:**
 - **Individual sheet per template**: Clear separation of template results
@@ -340,8 +330,7 @@ if ($ExportToExcel -and $executedTemplates.Count -gt 0) {
 **Problem:** Jobs hanging during template execution with credential resolution failures.
 
 **Working Solution:**
-```powershell
-# ✅ Enhanced job completion detection for template workflows:
+{% highlight powershell linenos %}# ✅ Enhanced job completion detection for template workflows:
 foreach ($j in $jobs) {
     $isComplete = $false
     try {
@@ -378,15 +367,14 @@ if ($done.Count -eq 0 -and $runningJobs.Count -gt 0) {
         break
     }
 }
-```
+{% endhighlight %}
 
 ## ❌ Enhanced Anti-Patterns & Fixes
 
 ### Template System Anti-Patterns
 
 #### Mixed Template Types in Single Function
-```powershell
-# ❌ WRONG: Trying to handle Command and Test templates in the same execution path
+{% highlight powershell linenos %}# ❌ WRONG: Trying to handle Command and Test templates in the same execution path
 function Execute-Templates {
     foreach ($template in $templates) {
         # This doesn't work - needs type detection
@@ -408,11 +396,10 @@ foreach ($templateName in $Templates) {
         Write-Color "Template '$templateName' not found" -Color Red
     }
 }
-```
+{% endhighlight %}
 
 #### Confirmation Pattern Inconsistencies
-```powershell
-# ❌ WRONG: Mixed confirmation patterns in workflow
+{% highlight powershell linenos %}# ❌ WRONG: Mixed confirmation patterns in workflow
 function Invoke-TemplateWorkflow {
     # Workflow uses enhanced confirmation
     if ($Confirm -eq "Auto") { /* session automation */ }
@@ -433,11 +420,10 @@ foreach ($templateName in $Templates) {
     }
     $result = Invoke-TemplateCommand -TemplateName $templateName -Confirm:$templateConfirm
 }
-```
+{% endhighlight %}
 
 #### Excel Export Data Mixing
-```powershell
-# ❌ WRONG: Mixing verbose output with business data
+{% highlight powershell linenos %}# ❌ WRONG: Mixing verbose output with business data
 $workflowResults[$templateName] = $result  # Includes all verbose output
 
 # ❌ WRONG: Artificial data batching
@@ -450,11 +436,10 @@ if ($result -and $result.CleanResults) {
 
 # ✅ CORRECT: Use actual report data for Excel
 $sheets[$cleanSheetName] = $workflowResults[$templateName]
-```
+{% endhighlight %}
 
 ### Enhanced Confirmation Anti-Patterns
-```powershell
-# ❌ WRONG: Boolean-only confirmation (limits automation)
+{% highlight powershell linenos %}# ❌ WRONG: Boolean-only confirmation (limits automation)
 [bool]$Confirm = $true
 
 # ❌ WRONG: No session awareness (prompts every time)
@@ -479,13 +464,12 @@ function All-Functions {
         # Traditional with session awareness
     }
 }
-```
+{% endhighlight %}
 
 ## 🔍 Enhanced Diagnostic Techniques
 
 ### Template System Diagnostics
-```powershell
-# Check template availability and structure
+{% highlight powershell linenos %}# Check template availability and structure
 Ensure-Templates
 Write-Host "Available Command Templates:"
 $global:Reports['Templates']['Command'].Keys | Sort-Object
@@ -503,11 +487,10 @@ if ($global:Reports['Templates']['Command'].ContainsKey($templateName)) {
     Write-Host "Template Command Length: $($template.Command.Length)"
     Write-Host "Template Command Preview: $($template.Command.Substring(0, [Math]::Min(100, $template.Command.Length)))"
 }
-```
+{% endhighlight %}
 
 ### Enhanced Confirmation Diagnostics
-```powershell
-# Check session automation state
+{% highlight powershell linenos %}# Check session automation state
 Write-Host "Global WorkflowAutoConfirm Status:"
 if ($global:WorkflowAutoConfirm) {
     $global:WorkflowAutoConfirm | ConvertTo-Json
@@ -539,11 +522,10 @@ function Test-ConfirmationInheritance {
 Test-ConfirmationInheritance -Confirm:$true
 Test-ConfirmationInheritance -Confirm:$false  
 Test-ConfirmationInheritance -Confirm "Auto"
-```
+{% endhighlight %}
 
 ### Template Workflow Diagnostics
-```powershell
-# Test complete template workflow execution
+{% highlight powershell linenos %}# Test complete template workflow execution
 function Test-TemplateWorkflowExecution {
     param($TestNodes = @("localhost"))
     
@@ -580,13 +562,12 @@ function Test-TemplateWorkflowExecution {
 
 # Run the diagnostic
 Test-TemplateWorkflowExecution
-```
+{% endhighlight %}
 
 ## 🚨 Emergency Fixes
 
 ### Template System Recovery
-```powershell
-# Emergency template system reset
+{% highlight powershell linenos %}# Emergency template system reset
 Remove-Module CheckIT-Core -Force -ErrorAction SilentlyContinue
 
 # Clear template cache if corrupted
@@ -607,11 +588,10 @@ Write-Host "Templates recovered:"
 Write-Host "Command: $($global:Reports['Templates']['Command'].Count)"
 Write-Host "Test: $($global:Reports['Templates']['Test'].Count)"
 Write-Host "Codebase: $($global:Reports['Templates']['Codebase'].Count)"
-```
+{% endhighlight %}
 
 ### Session Automation Recovery
-```powershell
-# Reset session automation state
+{% highlight powershell linenos %}# Reset session automation state
 $global:WorkflowAutoConfirm = @{}
 Write-Host "Session automation state reset"
 
@@ -622,7 +602,7 @@ Write-Host "Testing session automation: $($global:WorkflowAutoConfirm['*'])"
 # Clear session automation
 $global:WorkflowAutoConfirm.Remove('*')
 Write-Host "Session automation cleared"
-```
+{% endhighlight %}
 ### Pivot tables or slicers don't work correctly
 
 **Problem:** Excel pivot tables or slicers fail to work or show errors.
@@ -635,13 +615,12 @@ Write-Host "Session automation cleared"
 
 **Solution:** Use the built-in column cleaning workflow:
 
-```powershell
-# Solution 1: Use CleanData when creating reports
+{% highlight powershell linenos %}# Solution 1: Use CleanData when creating reports
 Set-Report -ReportName "Report" -Function "Get-Data" -Data $results -CleanData
 
 # Solution 2: Use Invoke-TemplateWorkflow with ExportToExcel
 Invoke-TemplateWorkflow -Nodes $nodes -Templates @("Template") -WorkflowName "Report" -ExportToExcel
-```
+{% endhighlight %}
 
 ### Missing data in exported sheets
 
@@ -651,15 +630,13 @@ Invoke-TemplateWorkflow -Nodes $nodes -Templates @("Template") -WorkflowName "Re
 
 **Solution:** Use Convert-ReportData to flatten nested data:
 
-```powershell
-# Convert complex objects to simple strings before export
+{% highlight powershell linenos %}# Convert complex objects to simple strings before export
 $cleanResults = Convert-ReportData -RawData $results -SourceFunction "YourFunction"
 $cleanResults | Export-ToExcel -Title "Clean_Report"
-```
+{% endhighlight %}
 
 ### Excel Export Recovery
-```powershell
-# Diagnose Excel export issues
+{% highlight powershell linenos %}# Diagnose Excel export issues
 $testData = @(
     [PSCustomObject]@{ Node = "Test1"; Status = "OK"; Result = "Success" }
     [PSCustomObject]@{ Node = "Test2"; Status = "OK"; Result = "Success" }
@@ -684,7 +661,7 @@ try {
 } catch {
     Write-Host "Multi-sheet export: FAILED - $($_.Exception.Message)"
 }
-```
+{% endhighlight %}
 
 ## 📋 Enhanced Troubleshooting Checklist
 
@@ -745,3 +722,4 @@ try {
 | "Multi-sheet export incomplete" | Missing or null data in workflowResults | Verify all templates executed successfully |
 
 ---
+

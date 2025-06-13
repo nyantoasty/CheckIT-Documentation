@@ -27,9 +27,8 @@ CheckIT-Core is currently in beta status and available by request.
 
 To check your current PowerShell version:
 
-```powershell
-$PSVersionTable.PSVersion
-```
+{% highlight powershell linenos %}$PSVersionTable.PSVersion
+{% endhighlight %}
 
 To install PowerShell 7+:
 1. Open Microsoft Store
@@ -41,20 +40,18 @@ To install PowerShell 7+:
 
 Once you have received the CheckIT-Core files and installed PowerShell 7+, installation is straightforward:
 
-```powershell
-# Navigate to the CheckIT-Core directory
+{% highlight powershell linenos %}# Navigate to the CheckIT-Core directory
 cd "CheckIT-Core-v1.5.0"
 
 # Run the installer script
 .\install.ps1
-```
+{% endhighlight %}
 
 ### Installation Options
 
 The installer supports several parameters for customization:
 
-```powershell
-# Install to a custom location
+{% highlight powershell linenos %}# Install to a custom location
 .\install.ps1 -InstallPath "C:\CustomPath\CheckIT-Core"
 
 # Install without help files (minimal installation)
@@ -62,7 +59,7 @@ The installer supports several parameters for customization:
 
 # Force installation (overwrite existing installation)
 .\install.ps1 -Force
-```
+{% endhighlight %}
 
 ### What Gets Installed
 
@@ -85,43 +82,39 @@ To update to a newer version of CheckIT-Core:
 2. Install the new version following the regular installation steps
 3. Test key functionality after update
 
-```powershell
-# Uninstall current version but keep your documentation
+{% highlight powershell linenos %}# Uninstall current version but keep your documentation
 .\uninstall.ps1 -KeepDocs
 
 # Install new version
 cd "CheckIT-Core-v1.5.0"
 .\install.ps1
-```
+{% endhighlight %}
 
 ## 🗑️ Uninstallation
 
 If you need to remove CheckIT-Core:
 
-```powershell
-# Navigate to the CheckIT-Core directory
+{% highlight powershell linenos %}# Navigate to the CheckIT-Core directory
 cd "CheckIT-Core-v1.5.0"
 
 # Run the uninstaller script
 .\uninstall.ps1
-```
+{% endhighlight %}
 
 ### Uninstallation Options
 
-```powershell
-# Uninstall but keep your documentation
+{% highlight powershell linenos %}# Uninstall but keep your documentation
 .\uninstall.ps1 -KeepDocs
 
 # Uninstall from a custom location
 .\uninstall.ps1 -InstallPath "C:\CustomPath\CheckIT-Core"
-```
+{% endhighlight %}
 
 ## 🚀 After Installation
 
 Once installed, you can start using CheckIT-Core:
 
-```powershell
-# Import the module
+{% highlight powershell linenos %}# Import the module
 Import-Module CheckIT-Core
 
 # Create your first node
@@ -130,7 +123,7 @@ NodeList -Action Add -Nodes $node
 
 # Try a simple template
 Invoke-TemplateCommand -Nodes @('PC001') -TemplateName 'Get OS Info'
-```
+{% endhighlight %}
 
 For more detailed documentation:
 - API Reference
@@ -142,3 +135,4 @@ For more detailed documentation:
 **Need help?** Contact KJA for assistance with installation or usage questions.
 
 ---
+
