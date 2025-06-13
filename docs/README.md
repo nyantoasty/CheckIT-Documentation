@@ -123,4 +123,4 @@ cd "CheckIT-Core-v1.5.0"
 
 ---
 
-**Current Version**: 1.5.0 | **Functions**: 75+ | **Status**: Production Ready
+**Current Version**: 1.5.0 | **Functions**: 75+ | **Status**: Beta v1.5.0 (open to request)

@@ -1,6 +1,6 @@
 ---
 layout: home
-title: CheckIT-Core Documentation
+title: CheckIT Home
 ---
 
 <link rel="stylesheet" href="assets/style.css">
@@ -14,7 +14,7 @@ title: CheckIT-Core Documentation
   <div class="status-container">
     <span class="status-badge status-version">Version 1.5.0</span>
     <span class="status-badge status-progress">75+ Functions</span>
-    <span class="status-badge status-production">Production Ready</span>
+    <span class="status-badge status-production">Beta</span>
   </div>
 </div>
 
@@ -100,4 +100,4 @@ Manage-Templates -Type Codebase -Action Search</code></pre>
 
 ---
 
-**Repository**: [CheckIT (Private)](https://github.com/nyantoasty/CheckIT) | **License**: MIT | **Maintained by**: IT Department | **Status**: Production Ready v1.5.0
+**Repository**: [CheckIT (Private)](https://github.com/nyantoasty/CheckIT) | **License**: MIT | **Maintained by**: KJA | **Status**: Beta v1.5.0 (open to request)

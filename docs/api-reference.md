@@ -1,5 +1,5 @@
 ---
-title: CheckIT Core v1.5.0 API Reference
+title: API Reference (v1.5.0)
 layout: default
 ---
 
@@ -63,7 +63,7 @@ layout: default
 
 ### Implementation Status Summary
 
-- **Core Module**: 100% complete - 75+ functions fully implemented and production-ready
+- **Core Module**: 100% complete - 75+ functions fully implemented and beta access is requestable
 - **Template System**: Enhanced with multi-template workflows, session confirmation memory, and Excel integration
 - **Node Management**: Complete with Passman status preservation and AD integration
 - **Authentication**: Enhanced credential security with session-only storage and Passman integration
