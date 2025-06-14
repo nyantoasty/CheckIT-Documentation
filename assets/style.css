@@ -806,77 +806,45 @@ tr:hover td {
 .highlight .nx { color: #7dd3fc; }
 .highlight .nf { color: #93c5fd; }
 
-/* Function link styling - for legacy auto-detection */
-.function-link {
-  color: #93c5fd;
-  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
-  font-size: 0.95em;
-  border-bottom: 1px dotted rgba(147, 197, 253, 0.4);
-  padding-bottom: 1px;
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.function-link:hover {
-  color: #60a5fa;
-  border-bottom: 1px solid rgba(147, 197, 253, 0.8);
-  text-decoration: none;
-}
-
-/* Comprehensive inline code styling */
-p code, li code, td code, th code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
-  background: rgba(35, 45, 55, 0.55);
-  color: #93c5fd;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
+/* Simplified universal inline code styling */
+code:not(.highlight code) {
   font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
   font-size: 0.9em;
-  white-space: normal;  /* Allow wrapping */
-  display: inline;      /* Keep it inline */
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  word-break: break-word;       /* Allow breaking on overflow */
-  overflow-wrap: anywhere;      /* Handle long words */
-  box-sizing: border-box;
-  line-height: 1.4;
-  margin: 0 2px;
+  color: #93c5fd;
+  background: rgba(35, 45, 55, 0.4);
+  border-radius: 3px;
+  padding: 0.15rem 0.3rem;
+  margin: 0 0.1rem;
+  border: none;
+  white-space: normal;
+  word-break: break-word;
+  display: inline;
 }
 
-/* Specific overrides for different contexts */
-td code, th code {
-  max-width: 100%;
-  vertical-align: middle;
-}
-
-li code {
+/* Keep code display inline in all contexts */
+p code, li code, td code, th code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
+  display: inline;
   vertical-align: baseline;
 }
 
-/* Additional styles to ensure code blocks don't break in tables */
-table pre {
-  margin: 0;
-  white-space: pre-wrap;
+/* Remove any special styling for table code that might break layout */
+table code {
+  max-width: none;
+  overflow: visible;
+  white-space: normal;
 }
 
-table .highlight {
-  margin: 0;
-  border: none;
-  background: transparent;
-}
-
-/* Function links styling (for [[Function]] syntax) */
+/* Function links (for [[Function]] syntax) */
 .fn {
   color: #93c5fd;
   font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
   font-size: 0.95em;
   background: transparent;
   border-bottom: 1px dotted rgba(147, 197, 253, 0.4);
-  padding: 0 0 1px 0;
+  padding: 0;
   margin: 0;
   display: inline;
   border-radius: 0;
-  border-top: none;
-  border-left: none;
-  border-right: none;
   white-space: nowrap;
   transition: all 0.2s ease;
   text-decoration: none;
