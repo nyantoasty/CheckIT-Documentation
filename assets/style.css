@@ -805,36 +805,30 @@ tr:hover td {
 .highlight .err { color: #dc322f; background: none; }
 .highlight .nx { color: #7dd3fc; }
 .highlight .nf { color: #93c5fd; }
-
-/* Simplified universal inline code styling */
-code:not(.highlight code) {
+/* Minimal inline code styling - replaces all previous code element styling */
+code {
   font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
   font-size: 0.9em;
   color: #93c5fd;
   background: rgba(35, 45, 55, 0.4);
+  padding: 0.1rem 0.2rem;
+  margin: 0;
   border-radius: 3px;
-  padding: 0.15rem 0.3rem;
-  margin: 0 0.1rem;
-  border: none;
-  white-space: normal;
-  word-break: break-word;
   display: inline;
-}
-
-/* Keep code display inline in all contexts */
-p code, li code, td code, th code, h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
-  display: inline;
-  vertical-align: baseline;
-}
-
-/* Remove any special styling for table code that might break layout */
-table code {
-  max-width: none;
-  overflow: visible;
   white-space: normal;
 }
 
-/* Function links (for [[Function]] syntax) */
+/* Make sure code in blocks is correctly styled */
+pre code, .highlight code {
+  display: inline;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  white-space: pre;
+  border-radius: 0;
+}
+
+/* Function links styling for [[Function]] syntax */
 .fn {
   color: #93c5fd;
   font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
@@ -844,10 +838,8 @@ table code {
   padding: 0;
   margin: 0;
   display: inline;
-  border-radius: 0;
   white-space: nowrap;
-  transition: all 0.2s ease;
-  text-decoration: none;
+  border-radius: 0;
 }
 
 .fn:hover {
