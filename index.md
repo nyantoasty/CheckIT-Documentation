@@ -61,21 +61,3 @@ description: Custom PowerShell module for Windows computer management, diagnosti
     </div>
   </div>
 </div>
-
-<div class="quick-start-card">
-  <h2>⚡ Quick Start Examples</h2>
-  <h4>Template Workflow</h4>
-  <div class="code-example" data-language="POWERSHELL">{% highlight powershell linenos %}
-# Multi-template execution with Excel export
-Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @("Get OS Info", "Check Disk Space") -WorkflowName "System_Audit" -ExportToExcel{% endhighlight %}
-  </div>
-  
-  <h4>Template Management</h4>
-  <div class="code-example" data-language="POWERSHELL">{% highlight powershell linenos %}
-# List available templates
-Manage-Templates -Type Command -Action List
-
-# Search for development patterns
-Manage-Templates -Type Codebase -Action Search{% endhighlight %}
-  </div>
-</div>

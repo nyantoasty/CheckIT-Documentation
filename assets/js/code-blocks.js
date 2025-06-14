@@ -1,18 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
   console.log("DOM Content Loaded - Setting up code blocks");
 
-  // Process all code blocks
+  // Process standard code blocks
   function setupCodeBlocks() {
     const blocks = document.querySelectorAll('div.highlight, figure.highlight');
     console.log(`Found ${blocks.length} total highlight blocks`);
     
     blocks.forEach(function(block, index) {
-      console.log(`Processing block ${index + 1}`);
-      
       // Check if already in a code-example container
       let codeExample = block.parentElement;
       if (!codeExample.classList.contains('code-example')) {
-        console.log(`Creating container for block ${index + 1}`);
+        // Create wrapper if not exists
         codeExample = document.createElement('div');
         codeExample.className = 'code-example';
         block.parentNode.insertBefore(codeExample, block);
@@ -32,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Add copy button if not present
       if (!codeExample.querySelector('.copy-button')) {
-        console.log(`Adding copy button to block ${index + 1}`);
         const copyButton = document.createElement('button');
         copyButton.className = 'copy-button';
         copyButton.innerHTML = 'Copy';
