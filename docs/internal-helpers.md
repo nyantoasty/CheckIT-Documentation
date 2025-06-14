@@ -12,7 +12,7 @@ layout: docs-page
 
 **Purpose:** Standardizes and cleans data values for consistent reporting and display.
 
-**Used by:** `Convert-ReportData`, various data processing functions
+**Used by:** [[Convert-ReportData]], various data processing functions
 
 **Description:** Takes raw data values and applies context-aware cleaning rules based on the property name and value type.
 
@@ -28,7 +28,7 @@ layout: docs-page
 
 **Purpose:** Validates and normalizes user preference inputs.
 
-**Used by:** `Set-UserPreference`, preference management functions
+**Used by:** [[Set-UserPreference]], preference management functions
 
 **Description:** Ensures preference values meet expected format and constraints.
 

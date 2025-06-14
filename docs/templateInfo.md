@@ -291,7 +291,7 @@ Invoke-TemplateCommand -TemplateName "Your Custom Template" -Nodes $global:nodeL
 
 ### Command Templates
 
-- All integrate with CheckIT's parallel processing (`Process-Parallel`)
+- All integrate with CheckIT's parallel processing ([[Process-Parallel]])
 - Support both CLI and GUI modes via `PromptUser` parameter
 - Include comprehensive error handling and timeout management
 - Generate structured PSCustomObject output for reporting
