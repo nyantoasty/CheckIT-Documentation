@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoke-Pivotizer | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Invoke-Pivotizer</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="invoke-pivotizer">Invoke-Pivotizer</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="invoke-pivotizer-1">Invoke-Pivotizer</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Adds a pivot table and slicers to an Excel worksheet exported by Export-ToExcel.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Invoke-Pivotizer [-ExcelPath] <String> [-SourceSheet] <String> [[-PivotSheet] <String>]
+ [[-PivotTableName] <String>] [[-RowFields] &lt;String[]&gt;] [[-ColumnFields] &lt;String[]&gt;] [[-DataFields] &lt;String[]&gt;]
+ [[-SlicerFields] &lt;String[]&gt;] [[-PromptUser] <Boolean>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]</CommonParameters></ActionPreference></Boolean></String></String></String></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Creates an interactive pivot table with optional slicers in an Excel file, using data from a specified worksheet.
+The function works in two modes:</p>
+
+<ol>
+  <li>Interactive mode (default): When PromptUser=$true, displays field list and prompts user to select:
+    <ul>
+      <li>Row fields (required): Categories to group data by (rows)</li>
+      <li>Column fields (optional): Secondary grouping (columns)</li>
+      <li>Data fields (required): Values to count/aggregate</li>
+      <li>Slicer fields (optional): Interactive filters displayed as buttons</li>
+    </ul>
+  </li>
+  <li>Programmatic mode: When PromptUser=$false, uses provided field arrays without prompting</li>
+</ol>
+
+<p>The function automatically handles field validation, error recovery, and slicer placement.
+If slicers cannot be created due to Excel version limitations, filtering will still be available through pivot table dropdowns.</p>
+
+<h3 id="column-name-requirements">Column Name Requirements:</h3>
+
+<p>For reliable pivot tables and slicers, column names should meet these requirements:</p>
+<ul>
+  <li>Maximum of 31 characters</li>
+  <li>No special characters (avoid symbols like *, %, $, #)</li>
+  <li>No spaces (underscores are preferred)</li>
+  <li>Unique names (duplicate names cause pivot errors)</li>
+</ul>
+
+<p>CheckIT’s <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Export-ToExcel
+</pre></td></tr></tbody></table></code> function automatically handles these requirements via the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Clean-ExcelColumnName
+</pre></td></tr></tbody></table></code> function. 
+For best results, use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Set-Report
+</pre></td></tr></tbody></table></code> with <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-CleanData
+</pre></td></tr></tbody></table></code> before exporting to Excel.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<p>Invoke-Pivotizer -ExcelPath “C:\Transcripts\Report.xlsx” -SourceSheet “SoftwareResults”</p>
+
+<p>Opens the Excel file in interactive mode, displays field list, and prompts user to select fields for rows, columns, data, and slicers.</p>
+
+<h3 id="example-2">EXAMPLE 2</h3>
+
+<p>Invoke-Pivotizer -ExcelPath $file -SourceSheet $sheet -RowFields @(“OU”) -DataFields @(“ProductName”)</p>
+
+<p>Creates a pivot table showing product count by OU. Still prompts for column and slicer fields since PromptUser=$true by default.</p>
+
+<h3 id="example-3">EXAMPLE 3</h3>
+
+<p>Invoke-Pivotizer -ExcelPath $report -SourceSheet “Data” -RowFields @(“Department”)</p>
+
+<p>-ColumnFields @(“Month”) -DataFields @(“Status”) -SlicerFields @(“Region”, “Priority”) -PromptUser $false</p>
+
+<p>Creates a pivot table with departments as rows, months as columns, status as data fields, and region/priority slicers.
+Runs completely non-interactively, suitable for automation.</p>
+
+<h3 id="example-4">EXAMPLE 4</h3>
+
+<h1 id="template-workflow-with-excel-export-and-pivot-table">Template workflow with Excel export and pivot table</h1>
+<p>Invoke-TemplateWorkflow -Nodes $nodes -Templates @(“Get OS Info”) -WorkflowName “SystemAudit” -ExportToExcel
+$excelFile = Get-ChildItem C:\Transcripts*SystemAudit*.xlsx | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+Invoke-Pivotizer -ExcelPath $excelFile -SourceSheet “Get_OS_Info” -RowFields @(“OS”) -SlicerFields @(“Node”)</p>
+
+<p>Typical workflow scenario: Run template, export to Excel, then add interactive analysis with pivot table and slicers.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-excelpath">-ExcelPath</h3>
+
+<p>Path to the Excel file.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-sourcesheet">-SourceSheet</h3>
+
+<p>Name of the worksheet to use as the data source (required).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-pivotsheet">-PivotSheet</h3>
+
+<p>Name for the new pivot worksheet (default: “Pivot”).
+If the sheet already exists, it will be cleared before creating the pivot table.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: Pivot
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-pivottablename">-PivotTableName</h3>
+
+<p>Name for the new pivot table (default: “MyPivot”).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: MyPivot
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-rowfields">-RowFields</h3>
+
+<p>Array of field names for pivot rows (optional, prompts if not provided).
+These are the main categories your data will be grouped by.</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-columnfields">-ColumnFields</h3>
+
+<p>Array of field names for pivot columns (optional).
+These create a matrix view when combined with row fields.</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-datafields">-DataFields</h3>
+
+<p>Array of field names for pivot data (optional, prompts if not provided).
+These are the values that will be counted/summarized in the pivot table.</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 7
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-slicerfields">-SlicerFields</h3>
+
+<p>Array of field names for slicers (optional).
+Slicers are interactive filter buttons that appear next to the pivot table.</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 8
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>If true (default), prompts for field selection.
+If false, uses only parameters, suitable for automation.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 9
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="systemstring-systemstring">System.String, System.String[]</h3>
+
+<p>The function accepts the Excel file path as a string and field names as string arrays. Field names can be provided either as parameters or via interactive selection.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="systemstring">System.String</h3>
+
+<p>Returns the Excel file path on successful completion.</p>
+
+<h2 id="notes">NOTES</h2>
+
+<ul>
+  <li>If slicers cannot be created (due to Excel version limitations), the function will continue without them and display a message</li>
+  <li>When using interactive mode, you can enter either the field index number or the field name</li>
+  <li>Multiple field selections should be separated by commas</li>
+  <li>The function automatically positions slicers to the right of the pivot table</li>
+  <li>For best results, ensure column names don’t contain special characters</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Export-ToExcel.html">Export-ToExcel</a>
+<a href="/CheckIT-Documentation/docs/help/Import-FromExcel.html">Import-FromExcel</a>
+<a href="/CheckIT-Documentation/docs/help/Invoke-TemplateWorkflow.html">Invoke-TemplateWorkflow</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

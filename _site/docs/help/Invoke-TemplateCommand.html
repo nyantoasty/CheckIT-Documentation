@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoke-TemplateCommand | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Invoke-TemplateCommand</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="invoke-templatecommand">Invoke-TemplateCommand</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="invoke-templatecommand-1">Invoke-TemplateCommand</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Executes command templates against target nodes with parallel processing and comprehensive error handling.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Invoke-TemplateCommand [[-TemplateName] <String>] [[-Nodes] &lt;Object[]&gt;] [[-PromptUser] <Boolean>] [[-GenerateReport] <Boolean>] [[-DryRun] <Boolean>]</Boolean></Boolean></Boolean></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Executes command templates (PowerShell commands) against specified nodes using CheckIT’s parallel processing engine. Supports both built-in and user-defined templates with automatic credential resolution, timeout management, and structured result reporting.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li>Parallel execution with configurable concurrency</li>
+  <li>Automatic credential resolution per node</li>
+  <li>Comprehensive error handling and timeout management</li>
+  <li>Structured PSCustomObject output for reporting</li>
+  <li>Support for dry-run validation</li>
+  <li>Integration with CheckIT’s reporting system</li>
+</ul>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-templatename">-TemplateName</h3>
+
+<p>Name of the command template to execute. Can be built-in or user-defined template.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-nodes">-Nodes</h3>
+
+<p>Target nodes for command execution. Accepts computer names, IP addresses, or node objects.</p>
+
+<p>```yaml
+Type: Object[]
+Parameter Sets: (All)
+Aliases:
+Required: False
+Position: 2
+Default value: $global:nodeList
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>If $true (default), enables interactive prompts and colored output. If $false, runs silently for automation.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+Required: False
+Position: 3
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-generatereport">-GenerateReport</h3>
+
+<p>If $true (default), generates detailed reports of template execution. Set to $false for automation scenarios.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+Required: False
+Position: 4
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-dryrun">-DryRun</h3>
+
+<p>If $true, validates template and nodes without executing commands. Shows what would be executed.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+Required: False
+Position: 5
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="string">String[]</h3>
+
+<p>Computer names or IP addresses</p>
+
+<h3 id="object">Object[]</h3>
+
+<p>Node objects with ComputerName property</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="pscustomobject">PSCustomObject[]</h3>
+
+<p>Structured results with Node, Status, Result, and Error properties for each target node.</p>
+
+<h2 id="notes">NOTES</h2>
+
+<ul>
+  <li>Uses Process-Parallel for concurrent execution</li>
+  <li>Automatically resolves credentials using Get-NodeCredAndFQDN</li>
+  <li>Supports timeout management and job cleanup</li>
+  <li>Results are automatically added to CheckIT’s reporting system</li>
+  <li>Template validation occurs before execution</li>
+  <li>Supports both CLI and GUI execution modes</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">Example 1</h3>
+
+<p>Invoke-TemplateCommand -TemplateName “Get OS Info”</p>
+
+<p>Executes the “Get OS Info” template against all nodes in $global:nodeList.</p>
+
+<h3 id="example-2">Example 2</h3>
+
+<p>Invoke-TemplateCommand -TemplateName “Check Disk Space” -Nodes @(“Server01”, “Server02”) -DryRun $true</p>
+
+<p>Validates the “Check Disk Space” template against specific servers without executing.</p>
+
+<h3 id="example-3">Example 3</h3>
+
+<p>$results = Invoke-TemplateCommand -TemplateName “Query Service Status” -Nodes $myNodes -PromptUser $false</p>
+
+<p>Executes service status template silently and returns structured results for automation.</p>
+
+<h3 id="example-4">Example 4</h3>
+
+<p>Invoke-TemplateCommand -TemplateName “Force GPUpdate” -GenerateReport $true</p>
+
+<p>Executes GPUpdate template with full reporting enabled.</p>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Manage-Templates.html">Manage-Templates</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Invoke-TemplateWorkflow.html">Invoke-TemplateWorkflow</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Process-Parallel.html">Process-Parallel</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

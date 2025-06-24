@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New-NodeObject | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">New-NodeObject</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="new-nodeobject">New-NodeObject</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="new-nodeobject-1">New-NodeObject</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Creates a standardized node object for the CheckIT NodeList with all required properties and automatic status management.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>New-NodeObject [[-inputObj] <object>]</object></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Accepts a string (node name) or an object with node properties, and returns a PSCustomObject with all standard NodeList columns.
+This function is the cornerstone of CheckIT’s node management system, ensuring all node objects have consistent structure
+and properties regardless of their source or creation method.</p>
+
+<p>The function performs comprehensive normalization and standardization:</p>
+
+<ul>
+  <li>Uses central column definitions from Get-CheckITColumns -Store NodeList for consistency</li>
+  <li>Handles both hashtable and PSCustomObject inputs with case-insensitive property matching</li>
+  <li>Sets intelligent defaults for missing properties based on CheckIT requirements</li>
+  <li>Automatically manages Passman credential status based on global credential store</li>
+  <li>Updates Skip status based on global skip list ($global:SkipNodes)</li>
+  <li>Performs robust null and empty key validation to prevent corruption</li>
+</ul>
+
+<p>Key Features:</p>
+
+<ul>
+  <li>Case-insensitive property lookup for maximum compatibility</li>
+  <li>Preserves existing Passman status during updates (critical for credential workflows)</li>
+  <li>Automatic credential store synchronization for new nodes</li>
+  <li>Comprehensive input validation and sanitization</li>
+  <li>Deep copy return to prevent reference issues</li>
+</ul>
+
+<p>This function ensures that all node objects throughout CheckIT maintain the same structure,
+making them compatible with all reporting, export, and processing functions.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<h1 id="basic-string-input---creates-standardized-node">Basic string input - creates standardized node</h1>
+<p>$node = New-NodeObject “PC123”</p>
+<h1 id="returns-pscustomobject-with-nodepc123-and-all-standard-properties-initialized">Returns: PSCustomObject with Node=”PC123” and all standard properties initialized</h1>
+
+<h3 id="example-2">EXAMPLE 2</h3>
+
+<h1 id="hashtable-input-with-multiple-properties">Hashtable input with multiple properties</h1>
+<p>$nodeData = @{ 
+    Node = “LAB-PC456”
+    Group = “LabA” 
+    OU = “Labs”
+    OS = “Windows 11”
+}
+$node = New-NodeObject $nodeData</p>
+<h1 id="returns-standardized-node-with-specified-properties-plus-defaults-for-missing-ones">Returns: Standardized node with specified properties plus defaults for missing ones</h1>
+
+<h3 id="example-3">EXAMPLE 3</h3>
+
+<h1 id="import-from-csv-and-normalize">Import from CSV and normalize</h1>
+<p>$importedNodes = Import-Csv “computers.csv” | ForEach-Object { New-NodeObject $_ }</p>
+<h1 id="ensures-all-imported-nodes-have-consistent-checkit-structure">Ensures all imported nodes have consistent CheckIT structure</h1>
+
+<h3 id="example-4">EXAMPLE 4</h3>
+
+<h1 id="update-existing-node-while-preserving-credential-status">Update existing node while preserving credential status</h1>
+<p>$existingNode = $global:nodeList | Where-Object { $_.Node -eq “PC789” }
+$existingNode.Passman = $true  # Preserve credential status
+$updatedNode = New-NodeObject @{ 
+    Node = “PC789”
+    Group = “NewGroup” 
+    OS = “Windows 11”
+    Passman = $existingNode.Passman  # Explicitly preserve
+}</p>
+<h1 id="returns-updated-node-with-new-properties-but-preserved-passman-status">Returns: Updated node with new properties but preserved Passman status</h1>
+
+<h3 id="example-5">EXAMPLE 5</h3>
+
+<h1 id="handle-mixed-case-and-null-key-validation">Handle mixed case and null key validation</h1>
+<p>$messyData = @{
+    “node” = “PC999”      # lowercase key
+    “GROUP” = “TestLab”   # uppercase key<br />
+    $null = “ignored”     # null key (safely ignored)
+    “” = “ignored”        # empty key (safely ignored)
+    “Description” = “”    # empty value (gets default)
+}
+$cleanNode = New-NodeObject $messyData</p>
+<h1 id="returns-clean-standardized-node-object-with-case-insensitive-property-matching">Returns: Clean, standardized node object with case-insensitive property matching</h1>
+
+<h3 id="example-6">EXAMPLE 6</h3>
+
+<h1 id="array-processing-for-bulk-operations">Array processing for bulk operations</h1>
+<p>$nodeNames = @(“PC001”, “PC002”, “PC003”)
+$standardizedNodes = $nodeNames | ForEach-Object { New-NodeObject $_ }</p>
+<h1 id="creates-array-of-standardized-node-objects-for-bulk-nodelist-operations">Creates array of standardized node objects for bulk NodeList operations</h1>
+
+<h3 id="example-7">EXAMPLE 7</h3>
+
+<h1 id="integration-with-credential-management">Integration with credential management</h1>
+<h1 id="first-ensure-credentials-exist">First, ensure credentials exist</h1>
+<p>Passman -Nodes @(“PC555”)</p>
+<h1 id="then-createupdate-node---passman-status-will-be-automatically-set">Then create/update node - Passman status will be automatically set</h1>
+<p>$node = New-NodeObject “PC555”</p>
+<h1 id="nodepassman-will-be-true-since-credentials-were-retrieved">$node.Passman will be $true since credentials were retrieved</h1>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-inputobj">-inputObj</h3>
+
+<p>The node data to standardize.
+Accepts multiple input formats:</p>
+
+<p>String Input:</p>
+
+<ul>
+  <li>Simple node name (e.g., “PC123”)</li>
+  <li>Automatically converted to object with Node property</li>
+</ul>
+
+<p>Hashtable Input:</p>
+
+<ul>
+  <li>Case-insensitive key matching (e.g., “node”, “Node”, “NODE” all work)</li>
+  <li>Robust null key validation to prevent corruption</li>
+  <li>All standard NodeList properties supported</li>
+</ul>
+
+<p>PSCustomObject Input:</p>
+
+<ul>
+  <li>Direct property access using PSObject.Properties</li>
+  <li>Preserves existing property values while adding missing ones</li>
+  <li>Compatible with imported data from Excel, CSV, JSON</li>
+</ul>
+
+<p>Mixed Properties Supported:</p>
+
+<ul>
+  <li>Node: Computer name (required)</li>
+  <li>Group: Logical grouping (Lab, Classroom, etc.)</li>
+  <li>OU: Active Directory organizational unit</li>
+  <li>OS: Operating system information</li>
+  <li>Description: Computer description from AD</li>
+  <li>Online, WinRM, WSManAuth: Connectivity status</li>
+  <li>UserName, IdleTime, ID, State, LogonTime: User session data</li>
+  <li>Win32PM, TaskStatus, LastReboot: System status information</li>
+  <li>LastError, LastCheck: Error tracking and timestamps</li>
+</ul>
+
+<p>```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="string---node-name">[string] - Node name</h3>
+
+<h3 id="hashtable---properties-hashtable-with-case-insensitive-key-matching">[hashtable] - Properties hashtable with case-insensitive key matching</h3>
+
+<h3 id="pscustomobject---object-with-node-properties">[PSCustomObject] - Object with node properties</h3>
+
+<h3 id="object---any-object-with-a-node-property">[object] - Any object with a Node property</h3>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="pscustomobject---standardized-node-object-with-all-checkit-nodelist-properties">[PSCustomObject] - Standardized node object with all CheckIT NodeList properties</h3>
+
+<h3 id="standard-properties-always-present">Standard Properties Always Present</h3>
+
+<h3 id="--node-computer-name-required-never-null">- Node: Computer name (required, never null)</h3>
+
+<h3 id="--group-logical-grouping-for-organization">- Group: Logical grouping for organization</h3>
+
+<h3 id="--ou-active-directory-organizational-unit">- OU: Active Directory organizational unit</h3>
+
+<h3 id="--os-operating-system-from-ad-lookup">- OS: Operating system from AD lookup</h3>
+
+<h3 id="--description-computer-description-defaults-to-empty-string">- Description: Computer description (defaults to empty string)</h3>
+
+<h3 id="--skip-whether-node-is-in-global-skip-list">- Skip: Whether node is in global skip list</h3>
+
+<h3 id="--online-last-known-connectivity-status">- Online: Last known connectivity status</h3>
+
+<h3 id="--winrm-windows-remote-management-status">- WinRM: Windows Remote Management status</h3>
+
+<h3 id="--wsmanauth-wsman-authentication-status">- WSManAuth: WSMan authentication status</h3>
+
+<h3 id="--lastcheck-timestamp-of-last-connectivity-check">- LastCheck: Timestamp of last connectivity check</h3>
+
+<h3 id="--passman-credential-availability-status">- Passman: Credential availability status</h3>
+
+<h3 id="--username-last-logged-on-user">- UserName: Last logged-on user</h3>
+
+<h3 id="--idletime-user-session-idle-time">- IdleTime: User session idle time</h3>
+
+<h3 id="--id-user-session-id">- ID: User session ID</h3>
+
+<h3 id="--state-user-session-state">- State: User session state</h3>
+
+<h3 id="--logontime-user-logon-timestamp">- LogonTime: User logon timestamp</h3>
+
+<h3 id="--lasterror-last-error-encountered">- LastError: Last error encountered</h3>
+
+<h3 id="--win32pm-service-status-indicator">- Win32PM: Service status indicator</h3>
+
+<h3 id="--taskstatus-current-operation-status-temporary">- TaskStatus: Current operation status (temporary)</h3>
+
+<h3 id="--lastreboot-last-system-reboot-time">- LastReboot: Last system reboot time</h3>
+
+<h3 id="all-properties-are-properly-typed-and-initialized-with-appropriate-defaults">All properties are properly typed and initialized with appropriate defaults</h3>
+
+<h3 id="the-returned-object-uses-psobjectcopy-to-prevent-reference-issues">The returned object uses PSObject.Copy() to prevent reference issues</h3>
+
+<h2 id="notes">NOTES</h2>
+
+<p>Critical Design Features:</p>
+
+<ul>
+  <li>Thread-safe operation with no shared state modification</li>
+  <li>Null and empty key validation prevents hashtable corruption</li>
+  <li>Case-insensitive property matching for maximum compatibility</li>
+  <li>Preserves existing Passman status during updates (prevents credential loss)</li>
+  <li>Automatic credential store synchronization for new nodes</li>
+  <li>Deep copy return prevents unintended reference modifications</li>
+</ul>
+
+<p>Passman Status Logic:
+The function implements intelligent Passman status preservation:
+1.
+If input has existing Passman property with valid value: PRESERVE IT
+2.
+If new node without Passman: Check global credential store
+3.
+Updates are non-destructive to existing credential workflows</p>
+
+<p>Integration Points:</p>
+
+<ul>
+  <li>NodeList function: Uses this for all node standardization</li>
+  <li>AD function: Creates standardized nodes with AD data</li>
+  <li>Import functions: Normalizes external data to CheckIT format</li>
+  <li>Credential functions: Maintains Passman status consistency</li>
+  <li>Export functions: Ensures consistent column structure</li>
+</ul>
+
+<p>Column Definition Source:
+Uses Get-CheckITColumns -Store NodeList for authoritative column list.
+This ensures consistency across all CheckIT functions and prevents
+schema drift between different parts of the system.</p>
+
+<p>Input Validation:</p>
+
+<ul>
+  <li>Comprehensive null checking for hashtable keys</li>
+  <li>Trim and validation for string inputs</li>
+  <li>Graceful handling of malformed or incomplete data</li>
+  <li>Robust property lookup with fallbacks</li>
+</ul>
+
+<p>Error Prevention:</p>
+
+<ul>
+  <li>Null key filtering prevents hashtable enumeration errors</li>
+  <li>Empty string defaults prevent null reference exceptions</li>
+  <li>Type checking ensures proper object construction</li>
+  <li>Copy() method prevents reference-based mutations</li>
+</ul>
+
+<p>Performance Considerations:</p>
+
+<ul>
+  <li>Single-pass property enumeration for efficiency</li>
+  <li>Minimal object creation and copying</li>
+  <li>Fast hashtable and PSObject property access</li>
+  <li>Optimized for bulk processing scenarios</li>
+</ul>
+
+<p>Usage Patterns:</p>
+
+<ul>
+  <li>ALWAYS use this function when creating or updating node objects</li>
+  <li>Required for all NodeList operations (Add, Update, etc.)</li>
+  <li>Essential for data import/export compatibility</li>
+  <li>Critical for maintaining data integrity across CheckIT</li>
+</ul>
+
+<p>Best Practices:</p>
+
+<ul>
+  <li>Use for all node object creation and modification</li>
+  <li>Don’t bypass this function for “simple” node creation</li>
+  <li>Preserve existing objects when updating: New-NodeObject $existingNode</li>
+  <li>Always validate Node property is not null before using result</li>
+</ul>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

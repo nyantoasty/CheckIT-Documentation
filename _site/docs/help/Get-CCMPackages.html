@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get-CCMPackages | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Get-CCMPackages</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="get-ccmpackages">Get-CCMPackages</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="get-ccmpackages-1">Get-CCMPackages</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Retrieves CCM package status from all specified nodes with per-node state tracking and deployment readiness analysis</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Get-CCMPackages [-Nodes] <Array> [[-Mode] <String>] [[-PackageFilter] <String>] [[-ReportName] <String>] 
+[[-PromptUser] <Boolean>] [[-StatusCallback] <ScriptBlock>] [<CommonParameters>]</CommonParameters></ScriptBlock></Boolean></String></String></String></Array></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Get-CCMPackages is a comprehensive SCCM package management function that provides three distinct operational modes for different use cases. It queries CCM_Application data from multiple nodes in parallel, performs deployment readiness analysis, and offers interactive package management capabilities.</p>
+
+<p>The function uses robust fallback query methods (CIM → Invoke-Command → WMI) to ensure maximum compatibility across different environments and PowerShell versions. It integrates seamlessly with CheckIT’s credential management, parallel processing, and reporting systems.</p>
+
+<h3 id="key-capabilities">Key Capabilities</h3>
+
+<ul>
+  <li><strong>Multi-node parallel processing</strong> with automatic credential management</li>
+  <li><strong>Three operational modes</strong> for different workflows (Discovery, Interactive, List)</li>
+  <li><strong>Deployment readiness analysis</strong> with per-package status summaries</li>
+  <li><strong>Interactive package management</strong> with command generation and remote execution</li>
+  <li><strong>Comprehensive error handling</strong> with detailed troubleshooting information</li>
+  <li><strong>Robust query fallbacks</strong> for maximum environment compatibility</li>
+</ul>
+
+<h2 id="modes">MODES</h2>
+
+<h3 id="discovery-mode-default">Discovery Mode (Default)</h3>
+
+<p>Comprehensive analysis and reporting mode that displays detailed package deployment status across all nodes. Ideal for administrative review and planning.</p>
+
+<h3 id="interactive-mode">Interactive Mode</h3>
+
+<p>Interactive package management interface that allows administrators to select packages, generate deployment commands, and execute them remotely. Perfect for hands-on package management.</p>
+
+<h3 id="list-mode">List Mode</h3>
+
+<p>Programmatic data retrieval mode that returns structured objects for GUI applications or automation scripts.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-discovery-analysis">Example 1: Basic Discovery Analysis</h3>
+
+<p>PS C:&gt; Get-CCMPackages -Nodes $global:nodeList -Mode Discovery</p>
+
+<p>Performs comprehensive CCM package discovery across all nodes in the global node list. Displays detailed deployment status analysis including per-package statistics, node-by-node status, and deployment readiness metrics.</p>
+
+<h3 id="example-2-filtered-package-discovery">Example 2: Filtered Package Discovery</h3>
+
+<p>PS C:&gt; Get-CCMPackages -Nodes @(“PC1”, “PC2”, “PC3”) -Mode Discovery -PackageFilter “Office”</p>
+
+<p>Discovers only packages containing “Office” in their name across the specified nodes. Useful for focused analysis of specific software deployments.</p>
+
+<h3 id="example-3-interactive-package-management">Example 3: Interactive Package Management</h3>
+
+<p>PS C:&gt; Get-CCMPackages -Nodes $selectedNodes -Mode Interactive</p>
+
+<p>Launches interactive package management interface allowing administrators to:</p>
+
+<ul>
+  <li>Browse available packages with deployment statistics</li>
+  <li>Generate install/uninstall/evaluate commands</li>
+  <li>Execute commands remotely with real-time progress tracking</li>
+  <li>View detailed per-node status information</li>
+</ul>
+
+<h3 id="example-4-programmatic-data-retrieval-for-gui">Example 4: Programmatic Data Retrieval for GUI</h3>
+
+<p>PS C:&gt; $packageData = Get-CCMPackages -Nodes $nodes -Mode List -PromptUser:$false
+PS C:&gt; $packageData.AllPackages | Format-Table Node, PackageName, InstallState</p>
+
+<p>Returns structured data objects for programmatic use in GUI applications or automation scripts. No interactive prompts or CLI output.</p>
+
+<h3 id="example-5-custom-report-generation">Example 5: Custom Report Generation</h3>
+
+<p>PS C:&gt; Get-CCMPackages -Nodes $labComputers -Mode Discovery -ReportName “Lab_SCCM_Audit_$(Get-Date -Format ‘yyyyMMdd’)” -PackageFilter “*”</p>
+
+<p>Generates a comprehensive SCCM package audit report for lab computers with automatic report naming and date stamping.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-nodes">-Nodes</h3>
+
+<p>Array of node names or node objects to query for CCM package information. Accepts both string arrays and CheckIT node objects from the global node list.</p>
+
+<p>```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-mode">-Mode</h3>
+
+<p>Operational mode determining the function’s behavior and output format.</p>
+
+<p><strong>Discovery</strong>: Comprehensive analysis with detailed CLI output and deployment readiness reporting
+<strong>Interactive</strong>: Interactive package management interface with command generation and remote execution
+<strong>List</strong>: Programmatic data retrieval returning structured objects for automation</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+Accepted values: Discovery, Interactive, List</p>
+
+<p>Required: False
+Position: 2
+Default value: Discovery
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-packagefilter">-PackageFilter</h3>
+
+<p>Filter pattern for package names. Supports wildcards. Use “*” for all packages or specific terms like “Office” to filter results.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: *
+Accept pipeline input: False
+Accept wildcard characters: True</p>
+
+<h3 id="-reportname">-ReportName</h3>
+
+<p>Custom name for the generated report. If not specified, automatically generates a timestamped report name following CheckIT conventions.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: CCM_Packages_[timestamp]
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>Controls interactive prompts and CLI output formatting. Set to $false for silent operation in GUI applications.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-statuscallback">-StatusCallback</h3>
+
+<p>ScriptBlock for progress reporting in GUI applications. Receives activity descriptions and progress counts for real-time status updates.</p>
+
+<p>```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="systemarray">System.Array</h3>
+
+<p>Accepts arrays of node names (strings) or CheckIT node objects for processing.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="discovery-mode-systemobject">Discovery Mode: System.Object[]</h3>
+
+<p>Returns array of package objects with comprehensive metadata for each node-package combination.</p>
+
+<h3 id="interactive-mode-systemobject-or-deployment-results">Interactive Mode: System.Object[] or Deployment Results</h3>
+
+<p>In CLI mode, returns package objects after user interaction. In GUI mode, returns enhanced package objects with deployment commands.</p>
+
+<h3 id="list-mode-systemcollectionshashtable">List Mode: System.Collections.Hashtable</h3>
+
+<p>Returns hashtable with structured data:</p>
+
+<ul>
+  <li><strong>AllPackages</strong>: All discovered package objects</li>
+  <li><strong>PackageSummary</strong>: Per-package deployment statistics</li>
+  <li><strong>NodesWithoutPackage</strong>: Nodes missing the package</li>
+  <li><strong>NodeErrors</strong>: Query errors encountered</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<h3 id="query-methods-and-reliability">Query Methods and Reliability</h3>
+
+<p>The function employs a three-tier fallback strategy for maximum compatibility:</p>
+
+<ol>
+  <li><strong>CIM Session (Primary)</strong>: Modern, efficient method using New-CimSession</li>
+  <li><strong>Invoke-Command (Secondary)</strong>: Remote PowerShell execution with nested CIM/WMI fallbacks</li>
+  <li><strong>Direct WMI (Tertiary)</strong>: Legacy compatibility using Get-WmiObject</li>
+</ol>
+
+<p>This approach ensures successful queries across diverse environments, PowerShell versions, and network configurations.</p>
+
+<h3 id="interactive-mode-features">Interactive Mode Features</h3>
+
+<p>Interactive mode provides a comprehensive package management interface:</p>
+
+<p><strong>Package Selection</strong>:</p>
+
+<ul>
+  <li>Indexed package browser with deployment statistics</li>
+  <li>Per-package status breakdown (Installed, NotInstalled, etc.)</li>
+  <li>Publisher, version, and node availability information</li>
+</ul>
+
+<p><strong>Command Generation</strong>:</p>
+
+<ul>
+  <li>Install commands using proven CCM_Application static class methods</li>
+  <li>Uninstall commands with proper error handling</li>
+  <li>Evaluate commands with CIM/WMI fallbacks for application reevaluation</li>
+</ul>
+
+<p><strong>Remote Execution</strong>:</p>
+
+<ul>
+  <li>Integration with Invoke-NodeCommand for reliable remote execution</li>
+  <li>Real-time progress reporting with per-node status updates</li>
+  <li>Comprehensive error handling and troubleshooting guidance</li>
+  <li>Execution targeting options (All nodes, NotInstalled only, Installed only)</li>
+</ul>
+
+<h3 id="deployment-readiness-analysis">Deployment Readiness Analysis</h3>
+
+<p>The function performs sophisticated deployment readiness analysis:</p>
+
+<p><strong>Per-Package Statistics</strong>:</p>
+
+<ul>
+  <li>Total nodes with package available</li>
+  <li>Installation status breakdown by count</li>
+  <li>Version and revision information</li>
+  <li>Publisher and metadata details</li>
+</ul>
+
+<p><strong>Targeting Analysis</strong>:</p>
+
+<ul>
+  <li>Identification of nodes without package availability</li>
+  <li>Group and OU analysis for deployment targeting</li>
+  <li>Deployment recommendation based on status distribution</li>
+</ul>
+
+<p><strong>Error Classification</strong>:</p>
+
+<ul>
+  <li>Intelligent separation of query errors vs. legitimate “no packages” states</li>
+  <li>Detailed error reporting with troubleshooting context</li>
+  <li>Credential vs. connectivity vs. system error categorization</li>
+</ul>
+
+<h3 id="performance-and-scalability">Performance and Scalability</h3>
+
+<ul>
+  <li><strong>Parallel Processing</strong>: Uses Process-Parallel for concurrent node queries</li>
+  <li><strong>Credential Pre-resolution</strong>: Resolves all credentials before parallel execution</li>
+  <li><strong>Timeout Management</strong>: 30-second CIM sessions, 45-second query timeouts</li>
+  <li><strong>Resource Cleanup</strong>: Automatic CIM session cleanup prevents resource leaks</li>
+  <li><strong>Progress Reporting</strong>: Real-time progress updates for large-scale operations</li>
+</ul>
+
+<h3 id="security-and-error-handling">Security and Error Handling</h3>
+
+<ul>
+  <li><strong>Credential Integration</strong>: Seamless integration with CheckIT credential management</li>
+  <li><strong>Input Validation</strong>: Comprehensive node normalization and validation</li>
+  <li><strong>Safe Command Generation</strong>: SQL injection prevention in generated commands</li>
+  <li><strong>Audit Logging</strong>: Complete task logging with execution metadata</li>
+  <li><strong>Error Recovery</strong>: Graceful handling of credential, network, and system errors</li>
+</ul>
+
+<h3 id="integration-with-checkit-ecosystem">Integration with CheckIT Ecosystem</h3>
+
+<ul>
+  <li><strong>NodeList Integration</strong>: Automatic node status updates and error tracking</li>
+  <li><strong>Reporting System</strong>: Integration with Set-Report for business reporting</li>
+  <li><strong>Task Logging</strong>: Separate audit trail logging via Write-TaskLog</li>
+  <li><strong>Template System</strong>: Generated commands compatible with template workflows</li>
+  <li><strong>Excel Export</strong>: Report data optimized for Excel export and analysis</li>
+</ul>
+
+<h2 id="troubleshooting">TROUBLESHOOTING</h2>
+
+<h3 id="common-issues-and-solutions">Common Issues and Solutions</h3>
+
+<p><strong>“Query Error” or “All query methods failed”</strong>:</p>
+
+<ul>
+  <li>Verify WinRM configuration on target nodes</li>
+  <li>Check firewall settings for CIM/WMI traffic</li>
+  <li>Ensure SCCM client is installed and running on target nodes</li>
+  <li>Validate domain membership and trust relationships</li>
+</ul>
+
+<p><strong>“Credential Error” messages</strong>:</p>
+
+<ul>
+  <li>Run Passman to refresh credentials for affected nodes</li>
+  <li>Verify administrative rights on target nodes</li>
+  <li>Check credential expiration in the global credential store</li>
+</ul>
+
+<p><strong>“No packages found” or “NotAvailable” status</strong>:</p>
+
+<ul>
+  <li>Verify SCCM application deployment targeting</li>
+  <li>Check collection membership for target nodes</li>
+  <li>Confirm application deployment status in SCCM console</li>
+  <li>Review application requirements and dependencies</li>
+</ul>
+
+<p><strong>Interactive mode deployment failures</strong>:</p>
+
+<ul>
+  <li>Ensure Software Center is installed and functional</li>
+  <li>Verify network connectivity between nodes and SCCM infrastructure</li>
+  <li>Check SCCM client policy refresh status</li>
+  <li>Review Windows Event Logs for detailed error information</li>
+</ul>
+
+<h3 id="performance-optimization">Performance Optimization</h3>
+
+<ul>
+  <li>Use specific PackageFilter to reduce query scope</li>
+  <li>Limit node count for large-scale operations</li>
+  <li>Monitor parallel processing performance with StatusCallback</li>
+  <li>Consider segmenting large deployments across multiple sessions</li>
+</ul>
+
+<h3 id="best-practices">Best Practices</h3>
+
+<ul>
+  <li>Always test with Discovery mode before Interactive deployments</li>
+  <li>Use List mode for programmatic integration with other tools</li>
+  <li>Regular credential refresh for optimal reliability</li>
+  <li>Filter packages appropriately to focus analysis efforts</li>
+</ul>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

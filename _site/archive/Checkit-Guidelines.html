@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CheckIT-Core Development Guidelines | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">CheckIT-Core Development Guidelines</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="checkit-core-development-guidelines">CheckIT-Core Development Guidelines</h1>
+
+<h2 id="recent-changes-last-30-days">Recent Changes (Last 30 Days)</h2>
+<ul>
+  <li><strong>2025-06-06</strong>: Template System Enhancement for Function Development (Enhancement)</li>
+  <li><strong>2025-06-05</strong>: Open-RemoteSystemTools Menu Flow Fix (Fix)</li>
+  <li><strong>2025-06-05</strong>: Add-ChangelogEntry Function Path Fix (Fix)</li>
+  <li><strong>2025-06-04</strong>: Passman preservation fix (Fix)</li>
+  <li><strong>2025-06-04</strong>: Credential lookup standardization (Enhancement)</li>
+</ul>
+
+<p><em>For complete changelog history, see <a href="CHANGELOG.md">CHANGELOG.md</a></em></p>
+
+<hr />
+
+<h2 id="-critical-rules--patterns">🚨 Critical Rules &amp; Patterns</h2>
+
+<h3 id="never-violate-these">Never Violate These:</h3>
+<ul>
+  <li><strong>Module Load Order:</strong> Call <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Ensure-CheckITGlobals
+</pre></td></tr></tbody></table></code> ONLY after function definitions (end of module)</li>
+  <li><strong>Global Variables:</strong> NEVER manipulate <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$global:nodeList
+</pre></td></tr></tbody></table></code> directly - use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>NodeList
+</pre></td></tr></tbody></table></code> function</li>
+  <li><strong>Node Updates:</strong> ALWAYS use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>New-NodeObject
+</pre></td></tr></tbody></table></code> for creating/updating nodes (preserves Passman status)</li>
+  <li><strong>String Interpolation:</strong> ALWAYS use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$($variable)
+</pre></td></tr></tbody></table></code> inside double quotes</li>
+  <li><strong>Null Comparisons:</strong> ALWAYS use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$null -eq $variable
+</pre></td></tr></tbody></table></code> (null on left)</li>
+  <li><strong>DateTime:</strong> ALWAYS use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>(Get-Date).ToString("format")
+</pre></td></tr></tbody></table></code> not <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Get-Date -Format
+</pre></td></tr></tbody></table></code></li>
+  <li><strong>GUI Calls:</strong> ALWAYS use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-PromptUser:$false
+</pre></td></tr></tbody></table></code> when calling Core functions from GUI</li>
+  <li><strong>Case Sensitivity:</strong> ALWAYS use case-insensitive comparisons for node names (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$_.Node.ToUpper() -eq $target.ToUpper()
+</pre></td></tr></tbody></table></code>)</li>
+  <li><strong>JSON Import:</strong> ALWAYS use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-AsHashtable
+</pre></td></tr></tbody></table></code> parameter in <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ConvertFrom-Json
+</pre></td></tr></tbody></table></code> for GUI compatibility</li>
+  <li><strong>Array Safety:</strong> ALWAYS wrap uncertain results in <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>@()
+</pre></td></tr></tbody></table></code> to ensure array output</li>
+  <li><strong>Automatic Variables:</strong> NEVER use PowerShell automatic variables (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$error
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$input
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$matches
+</pre></td></tr></tbody></table></code>, etc.) for custom logic</li>
+  <li><strong>Progress Reporting:</strong> NEVER duplicate Update-Progress calls with conflicting parameters</li>
+  <li><strong>Function Export:</strong> ALWAYS add new functions to Export-ModuleMember at module end</li>
+  <li><strong>StatusCallback Support:</strong> ALWAYS include StatusCallback parameter for GUI compatibility</li>
+  <li><strong>Excel Dependencies:</strong> ALWAYS use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Export-ToExcel
+</pre></td></tr></tbody></table></code> (COM-based, no dependencies) not <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Export-Excel
+</pre></td></tr></tbody></table></code></li>
+  <li><strong>Line Continuation:</strong> NEVER use backticks (`) for line continuation - use single lines or parameter splatting</li>
+</ul>
+
+<h3 id="-the-big-3-patterns-master-these-first">🔄 The Big 3 Patterns (Master These First)</h3>
+
+<h4 id="1-reporting-pattern">1. Reporting Pattern</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c"># ❌ WRONG - Creates double reporting errors:</span><span class="w">
+</span><span class="n">Set-Report</span><span class="w"> </span><span class="nt">-Task</span><span class="w"> </span><span class="nt">-TaskParams</span><span class="w"> </span><span class="p">@{</span><span class="err">...</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ✅ CORRECT - Two separate calls:</span><span class="w">
+</span><span class="nv">$results</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Write-TaskLog</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="nv">$function</span><span class="w"> </span><span class="nt">-TaskParams</span><span class="w"> </span><span class="p">@{</span><span class="err">...</span><span class="p">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Out-Null</span><span class="w">
+</span><span class="nx">Set-Report</span><span class="w"> </span><span class="nt">-ReportName</span><span class="w"> </span><span class="nv">$ReportName</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="nv">$function</span><span class="w"> </span><span class="nt">-Data</span><span class="w"> </span><span class="nv">$cleanResults</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Out-Null</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="2-progress-pattern">2. Progress Pattern</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ CORRECT - CLI/GUI compatible:</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$StatusCallback</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">$StatusCallback</span><span class="w"> </span><span class="p">@{</span><span class="w">
+        </span><span class="nx">Activity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Processing items"</span><span class="w">
+        </span><span class="nx">Status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Item </span><span class="si">$(</span><span class="nv">$i</span><span class="o">+</span><span class="mi">1</span><span class="si">)</span><span class="s2"> of </span><span class="si">$(</span><span class="nv">$total</span><span class="si">)</span><span class="s2">: </span><span class="si">$(</span><span class="nv">$item</span><span class="o">.</span><span class="nf">Name</span><span class="si">)</span><span class="s2">"</span><span class="w">
+        </span><span class="nx">PercentComplete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">math</span><span class="p">]</span><span class="err">::</span><span class="nx">Round</span><span class="err">((</span><span class="nv">$i</span><span class="err">+</span><span class="mi">1</span><span class="err">)</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="nv">$total</span><span class="w"> </span><span class="err">*</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="err">)</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w"> </span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$PromptUser</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">Write-Progress</span><span class="w"> </span><span class="nt">-Activity</span><span class="w"> </span><span class="s2">"Processing items"</span><span class="w"> </span><span class="se">`
+</span><span class="w">        </span><span class="nt">-Status</span><span class="w"> </span><span class="s2">"Item </span><span class="si">$(</span><span class="nv">$i</span><span class="o">+</span><span class="mi">1</span><span class="si">)</span><span class="s2"> of </span><span class="si">$(</span><span class="nv">$total</span><span class="si">)</span><span class="s2">: </span><span class="si">$(</span><span class="nv">$item</span><span class="o">.</span><span class="nf">Name</span><span class="si">)</span><span class="s2">"</span><span class="w"> </span><span class="se">`
+</span><span class="w">        </span><span class="nt">-PercentComplete</span><span class="w"> </span><span class="p">([</span><span class="n">math</span><span class="p">]::</span><span class="n">Round</span><span class="p">((</span><span class="nv">$i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">/</span><span class="w"> </span><span class="nv">$total</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">100</span><span class="p">,</span><span class="w"> </span><span class="nx">1</span><span class="p">))</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ❌ WRONG - Duplicate parameters:</span><span class="w">
+</span><span class="n">Update-Progress</span><span class="w"> </span><span class="nt">-Status</span><span class="w"> </span><span class="s2">"Processing..."</span><span class="w"> </span><span class="nt">-Current</span><span class="w"> </span><span class="nv">$i</span><span class="w"> </span><span class="nt">-Total</span><span class="w"> </span><span class="nv">$total</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Status</span><span class="w"> </span><span class="s2">"Different status..."</span><span class="w"> </span><span class="nt">-Current</span><span class="w"> </span><span class="nv">$i</span><span class="w"> </span><span class="nt">-Total</span><span class="w"> </span><span class="nv">$total</span><span class="w">  </span><span class="c"># Duplicate parameter</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="3-credential-pattern">3. Credential Pattern</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ CORRECT - Automatic credential handling:</span><span class="w">
+</span><span class="n">Process-Parallel</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+    </span><span class="c"># $credential and $fqdn automatically available here</span><span class="w">
+    </span><span class="n">Invoke-Command</span><span class="w"> </span><span class="nt">-ComputerName</span><span class="w"> </span><span class="nv">$fqdn</span><span class="w"> </span><span class="nt">-Credential</span><span class="w"> </span><span class="nv">$credential</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w"> </span><span class="nt">-UseCredentials</span><span class="w">
+
+</span><span class="c"># ❌ WRONG - Manual credential handling:</span><span class="w">
+</span><span class="nv">$cred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-Credential</span><span class="w">  </span><span class="c"># Blocks GUI, no Passman integration</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h2 id="-quick-reference-ai-assistants--developers">🚦 Quick Reference (AI Assistants &amp; Developers)</h2>
+
+<h3 id="30-second-setup">30-Second Setup</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># 1. Get template</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Preview</span><span class="w">  </span><span class="c"># Select "CheckIT Function Template"</span><span class="w">
+
+</span><span class="c"># 2. Use credential magic</span><span class="w">
+</span><span class="n">Process-Parallel</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">/</span><span class="o">*</span><span class="w"> </span><span class="nx">your</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="nx">uses</span><span class="w"> </span><span class="nv">$credential</span><span class="p">,</span><span class="w"> </span><span class="nv">$fqdn</span><span class="w"> </span><span class="o">*</span><span class="nx">/</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="nt">-UseCredentials</span><span class="w">
+
+</span><span class="c"># 3. Add to exports</span><span class="w">
+</span><span class="n">Export-ModuleMember</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="p">@(</span><span class="s1">'YourNewFunction'</span><span class="p">)</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="most-common-patterns-80-of-functions-use-these">Most Common Patterns (80% of functions use these)</h3>
+<ul>
+  <li>✅ <strong>Process-Parallel -UseCredentials</strong> (95% of remote operations)</li>
+  <li>✅ <strong>New-NodeObject</strong> (preserves Passman status)</li>
+  <li>✅ <strong>NodeList -Action Add</strong> (never manipulate $global:nodeList)</li>
+  <li>✅ <strong>Export-ToExcel</strong> (built-in, no ImportExcel dependency)</li>
+</ul>
+
+<h3 id="function-readiness-matrix">Function Readiness Matrix</h3>
+<p>| Need This? | Use This Function | Status | Dependencies |
+|————|——————|——–|————–|
+| Software inventory | Get-Software | ✅ Ready | Process-Parallel, NodeList |
+| Excel export | Export-ToExcel | ✅ Ready | Excel COM (built-in) |
+| Package management | Get-CCMPackages | ✅ Ready | Process-Parallel |
+| Node sampling | Get-SoftwareSampleAnalysis | ✅ Ready | Get-Software, Export-ToExcel |
+| Remote tools | Open-RemoteSystemTools | ✅ Ready | Credential management |</p>
+
+<h3 id="quick-function-lookup">Quick Function Lookup</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre><span class="c"># Data collection</span><span class="w">
+</span><span class="n">Get-Software</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">All</span><span class="w"> </span><span class="nt">-ReportName</span><span class="w"> </span><span class="s2">"Audit"</span><span class="w">
+</span><span class="n">Get-CCMPackages</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">Interactive</span><span class="w">
+
+</span><span class="c"># Analysis  </span><span class="w">
+</span><span class="n">Get-SoftwareSampleAnalysis</span><span class="w"> </span><span class="nt">-SampleSize</span><span class="w"> </span><span class="nx">5</span><span class="w"> </span><span class="nt">-Export</span><span class="w">
+
+</span><span class="c"># Reporting</span><span class="w">
+</span><span class="n">Export-ToExcel</span><span class="w"> </span><span class="nt">-Sheets</span><span class="w"> </span><span class="nv">$data</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="nv">$file</span><span class="w"> </span><span class="nt">-Title</span><span class="w"> </span><span class="s2">"Report"</span><span class="w">
+</span><span class="n">Set-Report</span><span class="w"> </span><span class="nt">-ReportName</span><span class="w"> </span><span class="s2">"MyReport"</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="nv">$func</span><span class="w"> </span><span class="nt">-Data</span><span class="w"> </span><span class="nv">$results</span><span class="w">
+
+</span><span class="c"># Node management (preserves Passman status)</span><span class="w">
+</span><span class="nv">$node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">New-NodeObject</span><span class="w"> </span><span class="bp">$input</span><span class="nx">Data</span><span class="w">
+</span><span class="n">NodeList</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$newNodes</span><span class="w"> </span><span class="nt">-PromptUser</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+
+</span><span class="c"># Credential management</span><span class="w">
+</span><span class="n">Ensure-GlobalCredStore</span><span class="w">
+</span><span class="nv">$credInfo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-NodeCredAndFQDN</span><span class="w"> </span><span class="nt">-Node</span><span class="w"> </span><span class="nv">$nodeName</span><span class="w">
+
+</span><span class="c"># Remote operations  </span><span class="w">
+</span><span class="n">Process-Parallel</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="nv">$script</span><span class="w"> </span><span class="nt">-UseCredentials</span><span class="w">  </span><span class="c"># 100% reliable job completion</span><span class="w">
+</span><span class="n">Invoke-NodeCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Command</span><span class="w"> </span><span class="nv">$cmd</span><span class="w">         </span><span class="c"># Interactive with dry-run</span><span class="w">
+</span><span class="n">Get-CCMPackages</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">Interactive</span><span class="w">        </span><span class="c"># Enhanced evaluation support</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="implementation-status">Implementation Status</h3>
+<h4 id="-complete--ready-95-of-core-functions">✅ Complete &amp; Ready (95% of Core Functions)</h4>
+<p>| Region | Key Functions | Status |
+|——–|—————|——–|
+| <strong>Main Tools</strong> | Get-Software, Get-CCMPackages, Invoke-NodeCommand | <strong>100% Complete</strong> |
+| <strong>Diagnostics</strong> | Open-RemoteSystemTools, Test-RemoteSystemAccess, Get-NodeStats | <strong>95% Complete</strong> |
+| <strong>Infrastructure</strong> | NodeList, Process-Parallel, Credential Management | <strong>100% Complete</strong> |
+| <strong>Excel &amp; Reporting</strong> | Export-ToExcel, Invoke-Pivotizer, Set-Report | <strong>100% Complete</strong> |
+| <strong>Templates</strong> | Manage-Templates with Codebase support | <strong>100% Complete</strong> |</p>
+
+<h4 id="-not-implemented">❌ Not Implemented</h4>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Get-NodeDiagnostics
+</pre></td></tr></tbody></table></code> (has placeholder - very low priority)</li>
+</ul>
+
+<hr />
+
+<h2 id="️-module-development-guide">🏗️ Module Development Guide</h2>
+
+<h3 id="function-export--structure">Function Export &amp; Structure</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ At end of module - Export ALL implemented functions:</span><span class="w">
+</span><span class="n">Export-ModuleMember</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="p">@(</span><span class="w">
+    </span><span class="s1">'CoreFunction1'</span><span class="p">,</span><span class="w"> </span><span class="s1">'CoreFunction2'</span><span class="p">,</span><span class="w"> </span><span class="s1">'UtilityFunction1'</span><span class="p">,</span><span class="w">
+    </span><span class="s1">'NewlyAddedFunction'</span><span class="w">  </span><span class="c"># Always add new functions here</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="c"># Initialize globals AFTER exports</span><span class="w">
+</span><span class="n">Ensure-CheckITGlobals</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="region-organization">Region Organization</h3>
+<ul>
+  <li><strong>#region Global Variables</strong> - Module-level state and preferences</li>
+  <li><strong>#region Utility Functions</strong> - Helpers used by multiple functions</li>
+  <li><strong>#region Global Store Management</strong> - NodeList, Reports, CredStore access</li>
+  <li><strong>#region Main Tools</strong> - Core user-facing functionality</li>
+  <li><strong>#region Excel Export</strong> - Reporting and data export</li>
+  <li><strong>Export-ModuleMember</strong> - Function visibility</li>
+  <li><strong>Ensure-CheckITGlobals</strong> - Initialization (LAST)</li>
+</ul>
+
+<h3 id="development-checklist">Development Checklist</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Manage-Templates -Type Codebase
+</pre></td></tr></tbody></table></code> for complete function template</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Process-Parallel -UseCredentials
+</pre></td></tr></tbody></table></code> (handles ALL credential magic automatically)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Separate task logging from business reporting (see Big 3 patterns above)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>New-NodeObject
+</pre></td></tr></tbody></table></code> for node updates (preserves Passman status)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Test both CLI (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-PromptUser:$true
+</pre></td></tr></tbody></table></code>) and GUI (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-PromptUser:$false
+</pre></td></tr></tbody></table></code>)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Add StatusCallback parameter</strong> for GUI progress reporting</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Avoid duplicate Update-Progress calls</strong> (common mistake in analysis functions)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Export functions in Export-ModuleMember</strong> when complete</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Update implementation status when complete</li>
+</ul>
+
+<h3 id="testing--validation">Testing &amp; Validation</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="c"># GUI Integration Testing</span><span class="w">
+</span><span class="nv">$results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CoreFunction</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$selectedNodes</span><span class="w"> </span><span class="nt">-PromptUser</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+</span><span class="n">Refresh-CheckITGrid</span><span class="w"> </span><span class="nt">-Store</span><span class="w"> </span><span class="s2">"NodeList"</span><span class="w">
+
+</span><span class="c"># Error handling patterns</span><span class="w">
+</span><span class="n">Show-Error</span><span class="w"> </span><span class="s2">"Error message"</span><span class="w">  </span><span class="c"># Not Write-Host</span><span class="w">
+</span><span class="n">Set-StatusBarText</span><span class="w"> </span><span class="s2">"Status update"</span><span class="w">
+
+</span><span class="c"># Data normalization (required for GUI)</span><span class="w">
+</span><span class="nv">$normalized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ConvertTo-PSCustomObject</span><span class="w"> </span><span class="nv">$hashtableData</span><span class="w">
+</span><span class="nv">$data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-Content</span><span class="w"> </span><span class="s2">"file.json"</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ConvertFrom-Json</span><span class="w"> </span><span class="nt">-AsHashtable</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h2 id="️-technical-solutions--troubleshooting">🛠️ Technical Solutions &amp; Troubleshooting</h2>
+
+<h3 id="working-solutions">Working Solutions</h3>
+
+<h4 id="process-parallel-job-management">Process-Parallel Job Management</h4>
+<p><strong>Problem:</strong> Jobs hanging at specific counts (e.g., 8/47 nodes) due to incomplete job detection.</p>
+
+<p><strong>Working Solution:</strong></p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ Robust job completion detection with multiple methods:</span><span class="w">
+</span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$j</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$jobs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$isComplete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$false</span><span class="w">
+    </span><span class="kr">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="c"># Method 1: Check job state (most reliable)</span><span class="w">
+        </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$j</span><span class="o">.</span><span class="nf">Job</span><span class="o">.</span><span class="nf">State</span><span class="w"> </span><span class="nt">-in</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Completed"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Failed"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Stopped"</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nv">$isComplete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+        </span><span class="c"># Method 2: Check if job has exited (backup)</span><span class="w">
+        </span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$j</span><span class="o">.</span><span class="nf">Job</span><span class="o">.</span><span class="nf">HasExited</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nv">$isComplete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+        </span><span class="c"># Method 3: Timeout detection (safety net)</span><span class="w">
+        </span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$jobAge</span><span class="o">.</span><span class="nf">TotalMinutes</span><span class="w"> </span><span class="o">-gt</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="n">Stop-Job</span><span class="w"> </span><span class="nt">-Job</span><span class="w"> </span><span class="nv">$j</span><span class="o">.</span><span class="nf">Job</span><span class="w"> </span><span class="nt">-Force</span><span class="w">
+            </span><span class="nv">$isComplete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w"> </span><span class="kr">catch</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="c"># If we can't check status, assume complete</span><span class="w">
+        </span><span class="nv">$isComplete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ✅ Safety checks prevent infinite loops:</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$done</span><span class="o">.</span><span class="nf">Count</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># Force completion check and ultimate timeout logic</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c">#### Windows Explorer + UNC Paths + Credentials</span><span class="w">
+</span><span class="o">**</span><span class="n">Problem:</span><span class="o">**</span><span class="w"> </span><span class="nx">Opening</span><span class="w"> </span><span class="nx">remote</span><span class="w"> </span><span class="nx">file</span><span class="w"> </span><span class="nx">shares</span><span class="w"> </span><span class="nx">programmatically</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">authentication.</span><span class="w">
+
+</span><span class="o">**</span><span class="n">Working</span><span class="w"> </span><span class="nx">Solution:</span><span class="o">**</span><span class="w">
+</span><span class="err">```</span><span class="n">powershell</span><span class="w">
+</span><span class="c"># ✅ Store credentials first:</span><span class="w">
+</span><span class="nv">$cmdkeyAdd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"cmdkey /add:</span><span class="se">`"</span><span class="nv">$fqdn</span><span class="se">`"</span><span class="s2"> /user:</span><span class="se">`"</span><span class="s2">Administrator</span><span class="se">`"</span><span class="s2"> /pass:</span><span class="se">`"</span><span class="nv">$password</span><span class="se">`"</span><span class="s2">"</span><span class="w">
+</span><span class="n">cmd</span><span class="w"> </span><span class="nx">/c</span><span class="w"> </span><span class="nv">$cmdkeyAdd</span><span class="w">
+
+</span><span class="c"># ✅ Open with rundll32 (most reliable):</span><span class="w">
+</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rundll32.exe</span><span class="w"> </span><span class="nx">url.dll</span><span class="p">,</span><span class="nx">FileProtocolHandler</span><span class="w"> </span><span class="nv">$uncPath</span><span class="w">
+
+</span><span class="c"># ✅ Auto-cleanup:</span><span class="w">
+</span><span class="n">Start-Job</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Start-Sleep</span><span class="w"> </span><span class="nx">600</span><span class="p">;</span><span class="w"> </span><span class="n">cmd</span><span class="w"> </span><span class="nx">/c</span><span class="w"> </span><span class="s2">"cmdkey /delete:</span><span class="se">`"</span><span class="nv">$fqdn</span><span class="se">`"</span><span class="s2">"</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>Key Insights:</strong></p>
+<ul>
+  <li><strong>cmdkey username:</strong> Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Administrator
+</pre></td></tr></tbody></table></code> not <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>.\Administrator
+</pre></td></tr></tbody></table></code></li>
+  <li><strong>rundll32 FileProtocolHandler:</strong> Same as Windows Run dialog - most reliable</li>
+  <li><strong>Alternative methods ranked:</strong> rundll32 &gt; Invoke-Item &gt; cmd start &gt; explorer.exe</li>
+</ul>
+
+<h4 id="ccm-package-management">CCM Package Management</h4>
+<p><strong>Problem:</strong> Interactive SCCM package discovery and deployment.</p>
+
+<p><strong>Working Solution:</strong></p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ Interactive management:</span><span class="w">
+</span><span class="n">Get-CCMPackages</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">Interactive</span><span class="w">
+
+</span><span class="c"># ✅ Filtered discovery:  </span><span class="w">
+</span><span class="n">Get-CCMPackages</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-PackageFilter</span><span class="w"> </span><span class="s2">"*Office*"</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">Discovery</span><span class="w">
+
+</span><span class="c"># ✅ GUI integration:</span><span class="w">
+</span><span class="nv">$packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-CCMPackages</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">Interactive</span><span class="w"> </span><span class="nt">-PromptUser</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+</span><span class="c"># Returns objects with InstallCommand, UninstallCommand, EvaluateCommand properties</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+<h4 id="ccm-package-evaluation-enhanced">CCM Package Evaluation (Enhanced)</h4>
+<p><strong>Problem:</strong> CCM package evaluation failures and false error detection.</p>
+
+<p><strong>Working Solution:</strong></p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ CIM-first, WMI-fallback evaluation pattern:</span><span class="w">
+</span><span class="kr">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-CimInstance</span><span class="w"> </span><span class="nt">-Namespace</span><span class="w"> </span><span class="s2">"root\ccm\clientsdk"</span><span class="w"> </span><span class="nt">-ClassName</span><span class="w"> </span><span class="s2">"CCM_Application"</span><span class="w"> </span><span class="o">|</span><span class="w"> 
+           </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="nv">$packageName</span><span class="w"> </span><span class="o">-and</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">Publisher</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="nv">$publisher</span><span class="w"> </span><span class="p">}</span><span class="w">
+    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$app</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nv">$result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Invoke-CimMethod</span><span class="w"> </span><span class="nt">-InputObject</span><span class="w"> </span><span class="nv">$app</span><span class="w"> </span><span class="nt">-MethodName</span><span class="w"> </span><span class="s2">"EvaluateApplication"</span><span class="w">
+        </span><span class="kr">return</span><span class="w"> </span><span class="s2">"CIM Evaluation result: </span><span class="si">$(</span><span class="nv">$result</span><span class="o">.</span><span class="nf">ReturnValue</span><span class="si">)</span><span class="s2"> (0=Success)"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w"> </span><span class="kr">catch</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># Fallback to WMI</span><span class="w">
+    </span><span class="nv">$app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-WmiObject</span><span class="w"> </span><span class="nt">-Namespace</span><span class="w"> </span><span class="s2">"root\ccm\clientsdk"</span><span class="w"> </span><span class="nt">-Class</span><span class="w"> </span><span class="s2">"CCM_Application"</span><span class="w"> </span><span class="o">|</span><span class="w"> 
+           </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="nv">$packageName</span><span class="w"> </span><span class="o">-and</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">Publisher</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="nv">$publisher</span><span class="w"> </span><span class="p">}</span><span class="w">
+    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$app</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nv">$result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$app</span><span class="o">.</span><span class="nf">EvaluateApplication</span><span class="p">()</span><span class="w">
+        </span><span class="kr">return</span><span class="w"> </span><span class="s2">"WMI Evaluation result: </span><span class="si">$(</span><span class="nv">$result</span><span class="o">.</span><span class="nf">ReturnValue</span><span class="si">)</span><span class="s2"> (0=Success)"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ✅ Enhanced error detection for CCM data:</span><span class="w">
+</span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$output</span><span class="w"> </span><span class="o">-match</span><span class="w"> </span><span class="s1">'(?i)(InstallState|EvaluationState|PSComputerName|Name.*SoftwareVersion)'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># This looks like structured CCM/WMI data - NOT an error</span><span class="w">
+    </span><span class="nv">$isError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="username-format-by-context">Username Format by Context</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="nv">$formats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{</span><span class="w">
+    </span><span class="s2">"cmdkey"</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">"Administrator"</span><span class="w">                    </span><span class="c"># No domain prefix</span><span class="w">
+    </span><span class="s2">"PSCredential"</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">"DOMAIN\Administrator"</span><span class="w">            </span><span class="c"># Full domain format  </span><span class="w">
+    </span><span class="s2">"net use"</span><span class="w">          </span><span class="o">=</span><span class="w"> </span><span class="s2">".\Administrator"</span><span class="w">                 </span><span class="c"># Local context</span><span class="w">
+    </span><span class="s2">"WinRM/PowerShell"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"DOMAIN\Administrator"</span><span class="w">            </span><span class="c"># Domain format</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="common-anti-patterns-to-avoid">Common Anti-Patterns to Avoid</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+</pre></td><td class="rouge-code"><pre><span class="c"># ❌ Missing from exports (function won't be available):</span><span class="w">
+</span><span class="kr">function</span><span class="w"> </span><span class="nf">New-AwesomeFunction</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="c"># No corresponding entry in Export-ModuleMember</span><span class="w">
+
+</span><span class="c"># ❌ Fragile backtick line continuation (breaks with trailing whitespace):</span><span class="w">
+</span><span class="nv">$results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SomeFunction</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Parameter1</span><span class="w"> </span><span class="nv">$value1</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Parameter2</span><span class="w"> </span><span class="nv">$value2</span><span class="w"> </span><span class="se">`
+</span><span class="w">    </span><span class="nt">-Parameter3</span><span class="w"> </span><span class="nv">$value3</span><span class="w">
+
+</span><span class="c"># ✅ Robust single-line or splatting approach:</span><span class="w">
+</span><span class="nv">$results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SomeFunction</span><span class="w"> </span><span class="nt">-Parameter1</span><span class="w"> </span><span class="nv">$value1</span><span class="w"> </span><span class="nt">-Parameter2</span><span class="w"> </span><span class="nv">$value2</span><span class="w"> </span><span class="nt">-Parameter3</span><span class="w"> </span><span class="nv">$value3</span><span class="w">
+
+</span><span class="c"># ✅ Or use parameter splatting for complex calls:</span><span class="w">
+</span><span class="nv">$params</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{</span><span class="w">
+    </span><span class="nx">Parameter1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$value1</span><span class="w">
+    </span><span class="nx">Parameter2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$value2</span><span class="w">
+    </span><span class="nx">Parameter3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$value3</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="nv">$results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SomeFunction</span><span class="w"> </span><span class="err">@</span><span class="nx">params</span><span class="w">
+
+</span><span class="c"># ❌ Inconsistent progress reporting:</span><span class="w">
+</span><span class="n">Update-Progress</span><span class="w"> </span><span class="nt">-Activity</span><span class="w"> </span><span class="s2">"Working"</span><span class="w"> </span><span class="nt">-Status</span><span class="w"> </span><span class="s2">"Step 1"</span><span class="w">
+</span><span class="n">Write-Progress</span><span class="w"> </span><span class="nt">-Activity</span><span class="w"> </span><span class="s2">"Working"</span><span class="w"> </span><span class="nt">-Status</span><span class="w"> </span><span class="s2">"Step 2"</span><span class="w">  </span><span class="c"># Mixed approaches</span><span class="w">
+
+</span><span class="c"># ❌ Excel dependency confusion:</span><span class="w">
+</span><span class="n">Export-Excel</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="nv">$file</span><span class="w">  </span><span class="c"># Requires ImportExcel module</span><span class="w">
+</span><span class="c"># Use: Export-ToExcel -Path $file  # CheckIT built-in, no dependencies</span><span class="w">
+
+</span><span class="c"># ❌ GUI incompatibility:</span><span class="w">
+</span><span class="n">Read-Host</span><span class="w"> </span><span class="s2">"Enter value"</span><span class="w">  </span><span class="c"># Blocks GUI</span><span class="w">
+</span><span class="c"># Use: if ($PromptUser) { Read-Host "Enter value" }</span><span class="w">
+
+</span><span class="c"># ❌ Unsafe array assumptions:</span><span class="w">
+</span><span class="nv">$results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SomeFunction</span><span class="w">
+</span><span class="nv">$results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">  </span><span class="c"># May fail if $results is null or single object</span><span class="w">
+
+</span><span class="c"># ✅ Safe array handling:</span><span class="w">
+</span><span class="nv">$results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@(</span><span class="err">SomeFunction</span><span class="p">)</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$results</span><span class="o">.</span><span class="nf">Count</span><span class="w"> </span><span class="o">-gt</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">$results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ❌ Simple job completion check (unreliable):</span><span class="w">
+</span><span class="nv">$done</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$jobs</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">Job</span><span class="o">.</span><span class="nf">HasExited</span><span class="w"> </span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ✅ Robust job completion with multiple methods:</span><span class="w">
+</span><span class="nv">$done</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w">
+</span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$j</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$jobs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$j</span><span class="o">.</span><span class="nf">Job</span><span class="o">.</span><span class="nf">State</span><span class="w"> </span><span class="nt">-in</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Completed"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Failed"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Stopped"</span><span class="p">)</span><span class="w"> </span><span class="o">-or</span><span class="w"> 
+        </span><span class="nv">$j</span><span class="o">.</span><span class="nf">Job</span><span class="o">.</span><span class="nf">HasExited</span><span class="w"> </span><span class="o">-or</span><span class="w"> 
+        </span><span class="nv">$jobAge</span><span class="o">.</span><span class="nf">TotalMinutes</span><span class="w"> </span><span class="o">-gt</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nv">$done</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nv">$j</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ❌ No safety checks (can cause infinite loops):</span><span class="w">
+</span><span class="kr">while</span><span class="w"> </span><span class="p">(</span><span class="nv">$jobs</span><span class="o">.</span><span class="nf">Count</span><span class="w"> </span><span class="o">-gt</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$done</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$jobs</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">Job</span><span class="o">.</span><span class="nf">HasExited</span><span class="w"> </span><span class="p">}</span><span class="w">
+    </span><span class="c"># Process $done...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ✅ Safety checks prevent hanging:</span><span class="w">
+</span><span class="kr">while</span><span class="w"> </span><span class="p">(</span><span class="nv">$jobs</span><span class="o">.</span><span class="nf">Count</span><span class="w"> </span><span class="o">-gt</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># Robust completion detection</span><span class="w">
+    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$done</span><span class="o">.</span><span class="nf">Count</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="c"># Force completion logic</span><span class="w">
+        </span><span class="c"># Ultimate timeout safety</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="c">### Instant Troubleshooting Guide</span><span class="w">
+
+</span><span class="o">|</span><span class="w"> </span><span class="n">Problem</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Solution</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|---------|----------|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="s2">"Function not found"</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Check</span><span class="w"> </span><span class="nx">Export-ModuleMember</span><span class="p">,</span><span class="w"> </span><span class="nx">reload</span><span class="w"> </span><span class="nx">module</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="o">**</span><span class="kr">Command</span><span class="w"> </span><span class="n">syntax</span><span class="w"> </span><span class="nx">errors</span><span class="o">**</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">**</span><span class="n">Check</span><span class="w"> </span><span class="nx">for</span><span class="w"> </span><span class="nx">backticks</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">trailing</span><span class="w"> </span><span class="nx">whitespace</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">use</span><span class="w"> </span><span class="nx">single</span><span class="w"> </span><span class="nx">line</span><span class="w"> </span><span class="nx">or</span><span class="w"> </span><span class="nx">splatting</span><span class="o">**</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="n">Progress</span><span class="w"> </span><span class="nx">bar</span><span class="w"> </span><span class="nx">issues</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Look</span><span class="w"> </span><span class="nx">for</span><span class="w"> </span><span class="nx">duplicate</span><span class="w"> </span><span class="nx">Update-Progress</span><span class="w"> </span><span class="nx">calls</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="n">Excel</span><span class="w"> </span><span class="nx">export</span><span class="w"> </span><span class="nx">fails</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="nx">Export-ToExcel</span><span class="w"> </span><span class="nx">not</span><span class="w"> </span><span class="nx">Export-Excel</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="n">Credential</span><span class="w"> </span><span class="nx">problems</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="nx">Process-Parallel</span><span class="w"> </span><span class="nt">-UseCredentials</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="n">GUI</span><span class="w"> </span><span class="nx">hangs</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Add</span><span class="w"> </span><span class="se">`i</span><span class="nx">f</span><span class="w"> </span><span class="p">(</span><span class="nv">$PromptUser</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="n">around</span><span class="w"> </span><span class="nx">Read-Host</span><span class="w"> </span><span class="nx">calls</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="n">Double</span><span class="w"> </span><span class="nx">reporting</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Separate</span><span class="w"> </span><span class="nx">Write-TaskLog</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="nx">Set-Report</span><span class="w"> </span><span class="nx">calls</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="n">Node</span><span class="w"> </span><span class="nx">properties</span><span class="w"> </span><span class="nx">lost</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="nx">New-NodeObject</span><span class="w"> </span><span class="nx">for</span><span class="w"> </span><span class="nx">updates</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="n">Array</span><span class="w"> </span><span class="nx">errors</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Wrap</span><span class="w"> </span><span class="nx">uncertain</span><span class="w"> </span><span class="nx">results</span><span class="w"> </span><span class="nx">in</span><span class="w"> </span><span class="p">@()</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nx">interpolation</span><span class="w"> </span><span class="nx">fails</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="err">$</span><span class="p">(</span><span class="nv">$variable</span><span class="p">)</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="nv">$variable</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="o">|</span><span class="w"> </span><span class="n">DateTime</span><span class="w"> </span><span class="nx">formatting</span><span class="w"> </span><span class="nx">issues</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="p">(</span><span class="n">Get-Date</span><span class="p">)</span><span class="o">.</span><span class="nf">ToString</span><span class="p">()</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="nx">Get-Date</span><span class="w"> </span><span class="nt">-Format</span><span class="w"> </span><span class="o">|</span><span class="w">
+
+</span><span class="o">---</span><span class="w">
+
+</span><span class="c">## 📝 Change Management &amp; Guidelines</span><span class="w">
+
+</span><span class="c">### AI Assistant Guidelines</span><span class="w">
+
+</span><span class="c">#### When Analyzing Code:</span><span class="w">
+</span><span class="mi">1</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Check</span><span class="w"> </span><span class="nx">Implementation</span><span class="w"> </span><span class="nx">Status</span><span class="o">**</span><span class="w"> </span><span class="nx">above</span><span class="w"> </span><span class="nx">before</span><span class="w"> </span><span class="nx">suggesting</span><span class="w"> </span><span class="nx">function</span><span class="w"> </span><span class="nx">usage</span><span class="w">
+</span><span class="mi">2</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Verify</span><span class="w"> </span><span class="nx">Critical</span><span class="w"> </span><span class="nx">Rules</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Check</span><span class="w"> </span><span class="nx">for</span><span class="w"> </span><span class="nx">datetime</span><span class="p">,</span><span class="w"> </span><span class="nx">string</span><span class="w"> </span><span class="nx">interpolation</span><span class="p">,</span><span class="w"> </span><span class="nx">null</span><span class="w"> </span><span class="nx">comparison</span><span class="w"> </span><span class="nx">violations</span><span class="w">
+</span><span class="mi">3</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Use</span><span class="w"> </span><span class="nx">Template</span><span class="w"> </span><span class="nx">System</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Reference</span><span class="w"> </span><span class="se">`M</span><span class="nx">anage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="se">` </span><span class="nx">for</span><span class="w"> </span><span class="nx">patterns</span><span class="w">
+</span><span class="mi">4</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Think</span><span class="w"> </span><span class="nx">Multi-Method</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">When</span><span class="w"> </span><span class="nx">initial</span><span class="w"> </span><span class="nx">approach</span><span class="w"> </span><span class="nx">fails</span><span class="p">,</span><span class="w"> </span><span class="nx">explore</span><span class="w"> </span><span class="nx">alternative</span><span class="w"> </span><span class="nx">Windows</span><span class="w"> </span><span class="nx">mechanisms</span><span class="w">
+</span><span class="mi">5</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Preserve</span><span class="w"> </span><span class="nx">Node</span><span class="w"> </span><span class="nx">Properties</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Use</span><span class="w"> </span><span class="se">`N</span><span class="nx">ew-NodeObject</span><span class="se">` </span><span class="nx">to</span><span class="w"> </span><span class="nx">maintain</span><span class="w"> </span><span class="nx">Passman</span><span class="w"> </span><span class="nx">status</span><span class="w">
+
+</span><span class="c">#### When Suggesting Solutions:</span><span class="w">
+</span><span class="mi">1</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Use</span><span class="w"> </span><span class="nx">Complete</span><span class="w"> </span><span class="nx">Templates</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">No</span><span class="w"> </span><span class="nx">placeholders</span><span class="p">,</span><span class="w"> </span><span class="nx">provide</span><span class="w"> </span><span class="nx">ready-to-use</span><span class="w"> </span><span class="nx">code</span><span class="w">
+</span><span class="mi">2</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Follow</span><span class="w"> </span><span class="nx">Big</span><span class="w"> </span><span class="nx">3</span><span class="w"> </span><span class="nx">Patterns</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Reporting</span><span class="p">,</span><span class="w"> </span><span class="nx">Progress</span><span class="p">,</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="nx">Credential</span><span class="w"> </span><span class="nx">patterns</span><span class="w">
+</span><span class="mi">3</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Test</span><span class="w"> </span><span class="nx">Multiple</span><span class="w"> </span><span class="nx">Approaches</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Provide</span><span class="w"> </span><span class="nx">2-3</span><span class="w"> </span><span class="nx">ranked</span><span class="w"> </span><span class="nx">alternatives</span><span class="w"> </span><span class="nx">when</span><span class="w"> </span><span class="nx">possible</span><span class="w">
+</span><span class="mi">4</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Document</span><span class="w"> </span><span class="nx">New</span><span class="w"> </span><span class="nx">Patterns</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nx">successful</span><span class="w"> </span><span class="nx">solutions</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="s2">"Technical Solutions"</span><span class="w">
+</span><span class="mi">5</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Update</span><span class="w"> </span><span class="nx">Status</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Mark</span><span class="w"> </span><span class="nx">functions</span><span class="w"> </span><span class="nx">complete</span><span class="w"> </span><span class="nx">when</span><span class="w"> </span><span class="nx">implementing</span><span class="w">
+</span><span class="mi">6</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Check</span><span class="w"> </span><span class="nx">Export</span><span class="w"> </span><span class="nx">Status</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Verify</span><span class="w"> </span><span class="nx">functions</span><span class="w"> </span><span class="nx">are</span><span class="w"> </span><span class="nx">exported</span><span class="w"> </span><span class="nx">in</span><span class="w"> </span><span class="nx">Export-ModuleMember</span><span class="w">
+</span><span class="mi">7</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Validate</span><span class="w"> </span><span class="nx">Progress</span><span class="w"> </span><span class="nx">Patterns</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Ensure</span><span class="w"> </span><span class="nx">no</span><span class="w"> </span><span class="nx">duplicate</span><span class="w"> </span><span class="nx">Update-Progress</span><span class="w"> </span><span class="nx">calls</span><span class="w">
+</span><span class="mi">8</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Consider</span><span class="w"> </span><span class="nx">GUI</span><span class="w"> </span><span class="nx">Requirements</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Include</span><span class="w"> </span><span class="nx">StatusCallback</span><span class="w"> </span><span class="nx">for</span><span class="w"> </span><span class="nx">long-running</span><span class="w"> </span><span class="nx">operations</span><span class="w">
+</span><span class="mi">9</span><span class="o">.</span><span class="w"> </span><span class="o">**</span><span class="n">Use</span><span class="w"> </span><span class="nx">CheckIT</span><span class="w"> </span><span class="nx">Excel</span><span class="w"> </span><span class="nx">Functions</span><span class="o">**</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">Prefer</span><span class="w"> </span><span class="nx">Export-ToExcel</span><span class="w"> </span><span class="nx">over</span><span class="w"> </span><span class="nx">Import-Excel</span><span class="w"> </span><span class="nx">module</span><span class="w"> </span><span class="nx">dependencies</span><span class="w">
+
+</span><span class="c">#### Critical Syntax Patterns:</span><span class="w">
+</span><span class="err">```</span><span class="n">powershell</span><span class="w">
+</span><span class="c"># ✅ Correct patterns:</span><span class="w">
+</span><span class="p">(</span><span class="n">Get-Date</span><span class="p">)</span><span class="o">.</span><span class="nf">ToString</span><span class="p">(</span><span class="s2">"yyyy-MM-dd"</span><span class="p">)</span><span class="w">
+</span><span class="s2">"Node: </span><span class="si">$(</span><span class="nv">$node</span><span class="o">.</span><span class="nf">Name</span><span class="si">)</span><span class="s2">"</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="bp">$null</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="nv">$variable</span><span class="p">)</span><span class="w">
+</span><span class="n">NodeList</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$newNode</span><span class="w">
+</span><span class="nv">$updatedNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">New-NodeObject</span><span class="w"> </span><span class="nv">$existingNode</span><span class="w">  </span><span class="c"># Auto-preserves Passman</span><span class="w">
+</span><span class="nv">$results</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Write-TaskLog</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="nv">$func</span><span class="w"> </span><span class="nt">-TaskParams</span><span class="w"> </span><span class="p">@{</span><span class="err">...</span><span class="p">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Out-Null</span><span class="w">
+</span><span class="nx">Set-Report</span><span class="w"> </span><span class="nt">-ReportName</span><span class="w"> </span><span class="nv">$name</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="nv">$func</span><span class="w"> </span><span class="nt">-Data</span><span class="w"> </span><span class="nv">$results</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Out-Null</span><span class="w">
+
+</span><span class="c"># ❌ Wrong patterns:</span><span class="w">
+</span><span class="n">Get-Date</span><span class="w"> </span><span class="nt">-Format</span><span class="w"> </span><span class="s2">"yyyy-MM-dd"</span><span class="w">           </span><span class="c"># Use (Get-Date).ToString("yyyy-MM-dd")</span><span class="w">
+</span><span class="s2">"Node: </span><span class="nv">$node</span><span class="s2">.Name"</span><span class="w">                      </span><span class="c"># Use "Node: $($node.Name)"</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$variable</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="bp">$null</span><span class="p">)</span><span class="w">                </span><span class="c"># Use if ($null -eq $variable)</span><span class="w">
+</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nv">$newNode</span><span class="w">            </span><span class="c"># Use NodeList -Action Add</span><span class="w">
+</span><span class="nv">$node</span><span class="o">.</span><span class="nf">Passman</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$false</span><span class="w">                  </span><span class="c"># Use New-NodeObject (preserves status)</span><span class="w">
+</span><span class="n">Set-Report</span><span class="w"> </span><span class="nt">-Task</span><span class="w"> </span><span class="nt">-TaskParams</span><span class="w"> </span><span class="p">@{</span><span class="err">...</span><span class="p">}</span><span class="w">     </span><span class="c"># Separate Write-TaskLog and Set-Report calls</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="when-making-changes">When Making Changes:</h3>
+<ol>
+  <li><strong>Use Template System</strong> - <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Manage-Templates -Type Codebase
+</pre></td></tr></tbody></table></code> for consistent patterns</li>
+  <li><strong>Test Both Environments</strong> - CLI and GUI compatibility</li>
+  <li><strong>Update Status</strong> - Mark functions complete in implementation status above</li>
+  <li><strong>Document Significant Changes</strong> - Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Add-ChangelogEntry
+</pre></td></tr></tbody></table></code> for major modifications</li>
+</ol>
+
+<h3 id="files--locations">Files &amp; Locations:</h3>
+<ul>
+  <li><strong>Core Module:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code> - All backend functions</li>
+  <li><strong>GUI Application:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-guiLIVE.ps1
+</pre></td></tr></tbody></table></code> - Windows Forms interface</li>
+  <li><strong>Guidelines:</strong> This file - Development standards and status</li>
+  <li><strong>Changelog:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>CHANGELOG.md
+</pre></td></tr></tbody></table></code> - Detailed change history</li>
+</ul>
+
+<hr />
+<h2 id="-code-documentation--organization-standards">📝 Code Documentation &amp; Organization Standards</h2>
+
+<h3 id="comment-architecture-follow-process-parallel-example">Comment Architecture (Follow Process-Parallel Example)</h3>
+
+<h4 id="1-major-section-headers-80-character-width">1. Major Section Headers (80-character width)</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c"># ====================================================================</span><span class="w">
+</span><span class="c"># INITIALIZATION &amp; SETUP PHASE</span><span class="w">
+</span><span class="c"># ====================================================================</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="2-subsection-headers-60-character-width">2. Subsection Headers (60-character width)</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c"># ========================================================</span><span class="w">
+</span><span class="c"># ENHANCED PROGRESS REPORTING WITH NODE TRACKING</span><span class="w">
+</span><span class="c"># ========================================================</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="3-inline-documentation-40-character-width">3. Inline Documentation (40-character width)</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c"># ================================================================</span><span class="w">
+</span><span class="c"># JOB SLOT MANAGEMENT - Wait for available slots</span><span class="w">
+</span><span class="c"># ================================================================</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="4-code-block-comments-explain-the-why">4. Code Block Comments (Explain the “Why”)</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="c"># Pre-resolve all credentials if requested and no map provided</span><span class="w">
+</span><span class="c"># This prevents credential lookup delays during parallel execution</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$UseCredentials</span><span class="w"> </span><span class="o">-and</span><span class="w"> </span><span class="nv">$CredentialMap</span><span class="o">.</span><span class="nf">Count</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># Build credential map for all nodes</span><span class="w">
+    </span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$obj</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$allInput</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="c"># Extract node name from input object (supports strings and objects)</span><span class="w">
+        </span><span class="nv">$nodeName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$obj</span><span class="w"> </span><span class="o">-is</span><span class="w"> </span><span class="p">[</span><span class="n">string</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">$obj</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">$obj</span><span class="o">.</span><span class="nf">Node</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="5-developer-guidance-comments">5. Developer Guidance Comments</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="c"># ========================================================================</span><span class="w">
+</span><span class="c"># PIPELINE PROCESSING BLOCKS (PowerShell Pattern)</span><span class="w">
+</span><span class="c"># ========================================================================</span><span class="w">
+</span><span class="kr">begin</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># Initialize collections for job management and result aggregation</span><span class="w">
+    </span><span class="nv">$jobs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w">              </span><span class="c"># Active job tracking with metadata</span><span class="w">
+    </span><span class="nv">$results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w">           </span><span class="c"># Successful results collection</span><span class="w">
+    </span><span class="nv">$errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w">            </span><span class="c"># Error collection for troubleshooting</span><span class="w">
+    </span><span class="nv">$allInput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w">          </span><span class="c"># Accumulated pipeline input</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="function-organization-template">Function Organization Template</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+</pre></td><td class="rouge-code"><pre><span class="kr">function</span><span class="w"> </span><span class="nf">Your-Function</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="cm">&lt;#
+</span><span class="cs">.SYNOPSIS</span><span class="cm">
+    Brief one-line description of what the function does.
+
+</span><span class="cs">.DESCRIPTION</span><span class="cm">
+    Detailed explanation including:
+    - What it accomplishes
+    - How it integrates with CheckIT patterns
+    - CLI vs GUI compatibility notes
+    - Any special considerations
+
+</span><span class="cs">.PARAMETER</span><span class="cm"> ParameterName
+    Detailed explanation of each parameter, including:
+    - Expected data types and formats
+    - CLI vs GUI behavior differences
+    - Default values and when they apply
+
+</span><span class="cs">.EXAMPLE</span><span class="cm">
+    # CLI usage
+    Your-Function -Param1 "value" -PromptUser:$true
+
+</span><span class="cs">.EXAMPLE</span><span class="cm">
+    # GUI usage
+    $results = Your-Function -Param1 "value" -PromptUser:$false -StatusCallback $callback
+
+</span><span class="cs">.NOTES</span><span class="cm">
+    - Compatibility notes (CLI/GUI)
+    - Dependencies on other CheckIT functions
+    - Any special requirements or limitations
+    - Performance considerations
+#&gt;</span><span class="w">
+    </span><span class="kr">param</span><span class="p">(</span><span class="w">
+        </span><span class="p">[</span><span class="n">Parameter</span><span class="p">(</span><span class="n">Mandatory</span><span class="p">)]</span><span class="w">
+        </span><span class="p">[</span><span class="n">ValidateSet</span><span class="p">(</span><span class="s2">"Value1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Value2"</span><span class="p">)]</span><span class="w">
+        </span><span class="p">[</span><span class="n">string</span><span class="p">]</span><span class="nv">$RequiredParam</span><span class="p">,</span><span class="w">
+        
+        </span><span class="p">[</span><span class="n">bool</span><span class="p">]</span><span class="nv">$PromptUser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="p">,</span><span class="w">
+        </span><span class="p">[</span><span class="n">scriptblock</span><span class="p">]</span><span class="nv">$StatusCallback</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+
+    </span><span class="c"># ====================================================================</span><span class="w">
+    </span><span class="c"># INITIALIZATION &amp; VALIDATION PHASE</span><span class="w">
+    </span><span class="c"># ====================================================================</span><span class="w">
+    </span><span class="nv">$user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$</span><span class="nn">env</span><span class="p">:</span><span class="nv">USERNAME</span><span class="w">
+    </span><span class="nv">$timestamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-Date</span><span class="w">
+    </span><span class="nv">$function</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Your-Function"</span><span class="w">
+    
+    </span><span class="c"># 1. ✅ ALWAYS: Ensure credentials</span><span class="w">
+    </span><span class="n">Ensure-GlobalCredStore</span><span class="w"> </span><span class="nt">-PromptUser</span><span class="p">:</span><span class="nv">$PromptUser</span><span class="w">
+
+    </span><span class="c"># 2. ✅ ALWAYS: Normalize input data</span><span class="w">
+    </span><span class="c"># [Detailed comments about normalization logic]</span><span class="w">
+    
+    </span><span class="c"># ====================================================================</span><span class="w">
+    </span><span class="c"># MAIN PROCESSING PHASE</span><span class="w">
+    </span><span class="c"># ====================================================================</span><span class="w">
+    </span><span class="c"># [Section comments explaining the core logic]</span><span class="w">
+    
+    </span><span class="c"># ====================================================================</span><span class="w">
+    </span><span class="c"># RESULTS &amp; CLEANUP PHASE  </span><span class="w">
+    </span><span class="c"># ====================================================================</span><span class="w">
+    </span><span class="c"># [Section comments about result processing and cleanup]</span><span class="w">
+    
+    </span><span class="kr">return</span><span class="w"> </span><span class="nv">$results</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="variable-naming--comments">Variable Naming &amp; Comments</h3>
+
+<h4 id="variable-purpose-documentation">Variable Purpose Documentation</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="c"># Collection Management</span><span class="w">
+</span><span class="nv">$jobs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w">              </span><span class="c"># Active job tracking with metadata</span><span class="w">
+</span><span class="nv">$results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w">           </span><span class="c"># Successful results collection  </span><span class="w">
+</span><span class="nv">$errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w">            </span><span class="c"># Error collection for troubleshooting</span><span class="w">
+</span><span class="nv">$allInput</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w">          </span><span class="c"># Accumulated pipeline input</span><span class="w">
+
+</span><span class="c"># State Tracking</span><span class="w">
+</span><span class="nv">$completedCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$results</span><span class="o">.</span><span class="nf">Count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$errors</span><span class="o">.</span><span class="nf">Count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">    </span><span class="c"># Current progress counter</span><span class="w">
+</span><span class="nv">$nodeNameFromJob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Node </span><span class="si">$(</span><span class="nv">$completedCount</span><span class="si">)</span><span class="s2">"</span><span class="w">            </span><span class="c"># Display name for progress</span><span class="w">
+</span><span class="nv">$wasValid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">        </span><span class="c"># Tracks if credential store was initially valid</span><span class="w">
+
+</span><span class="c"># Configuration</span><span class="w">
+</span><span class="nv">$maxRetries</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w">          </span><span class="c"># Maximum connection retry attempts</span><span class="w">
+</span><span class="nv">$timeoutSeconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="w">     </span><span class="c"># Per-operation timeout limit</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="inline-logic-explanation">Inline Logic Explanation</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="c"># Extract node name from input object (supports strings and objects with .Node property)</span><span class="w">
+</span><span class="nv">$nodeName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$obj</span><span class="w"> </span><span class="o">-is</span><span class="w"> </span><span class="p">[</span><span class="n">string</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+    </span><span class="nv">$obj</span><span class="w"> 
+</span><span class="p">}</span><span class="w"> </span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$obj</span><span class="o">.</span><span class="nf">PSObject</span><span class="o">.</span><span class="n">Properties</span><span class="p">[</span><span class="s1">'Node'</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+    </span><span class="nv">$obj</span><span class="o">.</span><span class="nf">Node</span><span class="w"> 
+</span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+    </span><span class="bp">$null</span><span class="w"> 
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># Performance optimization: Serial execution for small datasets</span><span class="w">
+</span><span class="c"># For small datasets (&lt; 2 items), parallel overhead exceeds benefits</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$total</span><span class="w"> </span><span class="o">-lt</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">Write-Verbose</span><span class="w"> </span><span class="s2">"Process-Parallel: Using serial execution for </span><span class="nv">$total</span><span class="s2"> items (below parallel threshold)"</span><span class="w">
+    </span><span class="c"># ... serial processing logic</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="error-handling-documentation">Error Handling Documentation</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="rouge-code"><pre><span class="kr">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># ========================================================</span><span class="w">
+    </span><span class="c"># MAIN SCRIPTBLOCK EXECUTION</span><span class="w">
+    </span><span class="c"># ========================================================</span><span class="w">
+    </span><span class="c"># Execute the user-provided scriptblock with all prepared arguments</span><span class="w">
+    </span><span class="nv">$result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">$script</span><span class="w"> </span><span class="err">@</span><span class="n">execArgs</span><span class="w">
+    
+</span><span class="p">}</span><span class="w"> </span><span class="kr">catch</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># ========================================================</span><span class="w">
+    </span><span class="c"># COMPREHENSIVE ERROR HANDLING &amp; REPORTING</span><span class="w">
+    </span><span class="c"># ========================================================</span><span class="w">
+    </span><span class="nv">$tmpTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-Date</span><span class="w">
+    </span><span class="nv">$errorMessage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">Exception</span><span class="o">.</span><span class="nf">Message</span><span class="w">
+    </span><span class="nv">$errorDetails</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">Exception</span><span class="o">.</span><span class="nf">ToString</span><span class="p">()</span><span class="w">
+    </span><span class="nv">$nodeDuration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nv">$tmpTime</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">$nodeStartTime</span><span class="p">)</span><span class="o">.</span><span class="nf">TotalSeconds</span><span class="w">
+    
+    </span><span class="c"># Create standardized error record with comprehensive information</span><span class="w">
+    </span><span class="nv">$nodeRecord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">PSCustomObject</span><span class="p">]@{</span><span class="w">
+        </span><span class="nx">Node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$nodeName</span><span class="w">
+        </span><span class="nx">TaskStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Failed"</span><span class="w">
+        </span><span class="nx">LastError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Error processing node: </span><span class="si">$(</span><span class="nv">$errorMessage</span><span class="si">)</span><span class="s2">"</span><span class="w">
+        </span><span class="nx">Error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$errorMessage</span><span class="w">
+        </span><span class="nx">ErrorDetails</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$errorDetails</span><span class="w">
+        </span><span class="nx">LastErrorTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$tmpTime</span><span class="w">
+        </span><span class="nx">Duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$nodeDuration</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="algorithm-documentation-patterns">Algorithm Documentation Patterns</h3>
+
+<h4 id="decision-logic-documentation">Decision Logic Documentation</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="c"># ============================================================</span><span class="w">
+</span><span class="c"># INTELLIGENT ERROR DETECTION &amp; CLASSIFICATION</span><span class="w">
+</span><span class="c"># ============================================================</span><span class="w">
+</span><span class="c"># Determine if output represents an actual error or just non-JSON data</span><span class="w">
+</span><span class="nv">$isError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$false</span><span class="w">
+
+</span><span class="kr">if</span><span class="w"> </span><span class="p">([</span><span class="n">string</span><span class="p">]::</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="nv">$output</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$isError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+    </span><span class="n">Write-Verbose</span><span class="w"> </span><span class="s2">"Process-Parallel: Empty output detected - treating as error"</span><span class="w">
+</span><span class="p">}</span><span class="w"> </span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$output</span><span class="w"> </span><span class="o">-match</span><span class="w"> </span><span class="s1">'(?i)(error|exception|failed|cannot|unable|timeout|access.*denied)'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$isError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+    </span><span class="n">Write-Verbose</span><span class="w"> </span><span class="s2">"Process-Parallel: Error keywords detected in output"</span><span class="w">
+</span><span class="p">}</span><span class="w"> </span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$output</span><span class="o">.</span><span class="nf">StartsWith</span><span class="p">(</span><span class="s1">'ERROR:'</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">StringComparison</span><span class="p">]::</span><span class="nx">OrdinalIgnoreCase</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$isError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+    </span><span class="n">Write-Verbose</span><span class="w"> </span><span class="s2">"Process-Parallel: Explicit ERROR prefix detected"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="flow-control-documentation">Flow Control Documentation</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="c"># ================================================================</span><span class="w">
+</span><span class="c"># JOB SLOT MANAGEMENT - Wait for available slots</span><span class="w">
+</span><span class="c"># ================================================================</span><span class="w">
+</span><span class="c"># This loop manages the job queue to stay within MaxParallel limits</span><span class="w">
+</span><span class="c"># Processes completed jobs while waiting for slots</span><span class="w">
+</span><span class="kr">while</span><span class="w"> </span><span class="p">(</span><span class="nv">$jobs</span><span class="o">.</span><span class="nf">Count</span><span class="w"> </span><span class="o">-ge</span><span class="w"> </span><span class="nv">$MaxParallel</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$done</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$jobs</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">Job</span><span class="o">.</span><span class="nf">HasExited</span><span class="w"> </span><span class="p">}</span><span class="w">
+    
+    </span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$j</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$done</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="c"># Process each completed job and clean up resources</span><span class="w">
+        </span><span class="c"># [Additional processing comments]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    
+    </span><span class="c"># Brief pause to prevent excessive CPU usage in tight loops</span><span class="w">
+    </span><span class="n">Start-Sleep</span><span class="w"> </span><span class="nt">-Milliseconds</span><span class="w"> </span><span class="nx">200</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="developer-guidance-comments">Developer Guidance Comments</h3>
+
+<h4 id="for-future-maintainers">For Future Maintainers</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="rouge-code"><pre><span class="c"># ========================================================================</span><span class="w">
+</span><span class="c"># DEVELOPER NOTES &amp; MAINTENANCE GUIDANCE</span><span class="w">
+</span><span class="c"># ========================================================================</span><span class="w">
+</span><span class="c"># This function follows CheckIT Guidelines patterns:</span><span class="w">
+</span><span class="c"># - Uses Process-Parallel -UseCredentials for automatic credential management</span><span class="w">
+</span><span class="c"># - Separates task logging from business reporting (see Big 3 patterns)</span><span class="w">
+</span><span class="c"># - Supports both CLI (PromptUser:$true) and GUI (PromptUser:$false) modes</span><span class="w">
+</span><span class="c"># - Provides StatusCallback for real-time progress reporting in GUI</span><span class="w">
+</span><span class="c">#</span><span class="w">
+</span><span class="c"># Key dependencies:</span><span class="w">
+</span><span class="c"># - Ensure-GlobalCredStore: Must be called before credential operations</span><span class="w">
+</span><span class="c"># - New-NodeObject: Required for all node creation/updates (preserves Passman status)</span><span class="w">
+</span><span class="c"># - NodeList -Action Update: Never manipulate $global:nodeList directly</span><span class="w">
+</span><span class="c">#</span><span class="w">
+</span><span class="c"># Performance considerations:</span><span class="w">
+</span><span class="c"># - Uses parallel processing for datasets &gt; 2 items</span><span class="w">
+</span><span class="c"># - Pre-resolves credentials to prevent delays during parallel execution</span><span class="w">
+</span><span class="c"># - Includes comprehensive progress reporting for long-running operations</span><span class="w">
+</span><span class="c">#</span><span class="w">
+</span><span class="c"># For troubleshooting:</span><span class="w">
+</span><span class="c"># - All operations logged to TaskLog with detailed timing and error information</span><span class="w">
+</span><span class="c"># - Use Write-Verbose for diagnostic output</span><span class="w">
+</span><span class="c"># - StatusCallback provides real-time feedback for GUI integration</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="integration-points">Integration Points</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="rouge-code"><pre><span class="c"># ================================================================</span><span class="w">
+</span><span class="c"># CHECKIT INTEGRATION POINTS</span><span class="w">
+</span><span class="c"># ================================================================</span><span class="w">
+</span><span class="c"># This function integrates with the following CheckIT components:</span><span class="w">
+</span><span class="c"># </span><span class="w">
+</span><span class="c"># 1. Credential Management:</span><span class="w">
+</span><span class="c">#    - Uses Get-NodeCredAndFQDN for standard credential resolution</span><span class="w">
+</span><span class="c">#    - Integrates with global CredStore for cached credentials</span><span class="w">
+</span><span class="c">#    - Supports Passman integration for automated credential retrieval</span><span class="w">
+</span><span class="c">#</span><span class="w">
+</span><span class="c"># 2. Node Management:</span><span class="w">
+</span><span class="c">#    - Updates $global:nodeList via NodeList function (never direct manipulation)</span><span class="w">
+</span><span class="c">#    - Uses New-NodeObject for all node creation/updates</span><span class="w">
+</span><span class="c">#    - Preserves existing node properties (especially Passman status)</span><span class="w">
+</span><span class="c">#</span><span class="w">
+</span><span class="c"># 3. Reporting System:</span><span class="w">
+</span><span class="c">#    - Task logging via Write-TaskLog (audit trail)</span><span class="w">
+</span><span class="c">#    - Business reporting via Set-Report (clean user data)</span><span class="w">
+</span><span class="c">#    - Excel export compatibility via Export-ToExcel</span><span class="w">
+</span><span class="c">#</span><span class="w">
+</span><span class="c"># 4. GUI Integration:</span><span class="w">
+</span><span class="c">#    - StatusCallback support for progress reporting</span><span class="w">
+</span><span class="c">#    - PromptUser:$false mode for non-interactive operation</span><span class="w">
+</span><span class="c">#    - Returns structured objects for data binding</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="performance-documentation">Performance Documentation</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></td><td class="rouge-code"><pre><span class="c"># ====================================================================</span><span class="w">
+</span><span class="c"># PERFORMANCE OPTIMIZATION NOTES</span><span class="w">
+</span><span class="c"># ====================================================================</span><span class="w">
+</span><span class="c"># Serial vs Parallel Decision:</span><span class="w">
+</span><span class="c"># - Datasets &lt; 2 items: Serial execution (avoids job overhead)</span><span class="w">
+</span><span class="c"># - Datasets &gt;= 2 items: Parallel execution with MaxParallel limit</span><span class="w">
+</span><span class="c"># - Default MaxParallel = 8 (balanced for network and CPU resources)</span><span class="w">
+</span><span class="c">#</span><span class="w">
+</span><span class="c"># Credential Pre-resolution:</span><span class="w">
+</span><span class="c"># - All credentials resolved before parallel execution begins</span><span class="w">
+</span><span class="c"># - Eliminates credential lookup delays during parallel processing</span><span class="w">
+</span><span class="c"># - Credential filtering option to skip nodes without valid credentials</span><span class="w">
+</span><span class="c">#</span><span class="w">
+</span><span class="c"># Memory Management:</span><span class="w">
+</span><span class="c"># - Results processed and cleaned immediately after job completion</span><span class="w">
+</span><span class="c"># - Temp files cleaned up automatically</span><span class="w">
+</span><span class="c"># - Job objects removed from tracking array after processing</span><span class="w">
+</span><span class="c">#</span><span class="w">
+</span><span class="c"># Network Optimization:</span><span class="w">
+</span><span class="c"># - Connection pooling via credential pre-resolution</span><span class="w">
+</span><span class="c"># - Configurable timeout values to prevent hanging</span><span class="w">
+</span><span class="c"># - Graceful degradation for unreachable nodes</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="documentation-checklist">Documentation Checklist</h3>
+
+<p>When adding comments to any function, ensure:</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Major sections</strong> clearly delineated with 80-character headers</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Algorithm decisions</strong> explained (why this approach?)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Integration points</strong> documented (how does it connect to other CheckIT components?)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Performance considerations</strong> noted (why this optimization?)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Error handling strategy</strong> explained (how does it handle failures?)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>CLI vs GUI differences</strong> documented (behavioral variations)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Dependencies</strong> clearly listed (what does it require?)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Future maintenance notes</strong> included (what should maintainers know?)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Variable purposes</strong> explained (especially complex data structures)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Flow control logic</strong> documented (especially loops and conditionals)</li>
+</ul>
+
+<h3 id="comment-anti-patterns-to-avoid">Comment Anti-Patterns to Avoid</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre><span class="c"># ❌ Bad: States what the code does without explaining why</span><span class="w">
+</span><span class="nv">$result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-Software</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w">  </span><span class="c"># Gets software from nodes</span><span class="w">
+
+</span><span class="c"># ✅ Good: Explains the purpose and decision</span><span class="w">
+</span><span class="c"># Query software inventory using parallel processing for performance</span><span class="w">
+</span><span class="c"># This provides the baseline data for compliance analysis</span><span class="w">
+</span><span class="nv">$result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-Software</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">All</span><span class="w">
+
+</span><span class="c"># ❌ Bad: Obvious comment that adds no value</span><span class="w">
+</span><span class="nv">$count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="c"># Increment count</span><span class="w">
+
+</span><span class="c"># ✅ Good: Explains the business logic</span><span class="w">
+</span><span class="nv">$processedCount</span><span class="o">++</span><span class="w">  </span><span class="c"># Track completion for progress reporting</span><span class="w">
+
+</span><span class="c"># ❌ Bad: Outdated or incorrect comment</span><span class="w">
+</span><span class="c"># TODO: Fix this hack (comment from 2+ years ago on production code)</span><span class="w">
+
+</span><span class="c"># ✅ Good: Current, actionable guidance</span><span class="w">
+</span><span class="c"># Future enhancement: Consider adding retry logic for transient network failures</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="this-documentation-standard-ensures-that-every-function-becomes-as-readable-and-maintainable-as-the-process-parallel-example-making-the-entire-codebase-accessible-to-both-ai-assistants-and-human-developers">This documentation standard ensures that every function becomes as readable and maintainable as the Process-Parallel example, making the entire codebase accessible to both AI assistants and human developers.</h2>
+
+<p><em>This organized version preserves all critical troubleshooting knowledge while improving accessibility for both AI assistants and developers through logical flow and strategic information placement.</em></p>
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

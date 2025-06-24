@@ -1,0 +1,434 @@
+# Ensure-GlobalCredStore
+
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+
+# Ensure-GlobalCredStore
+
+## SYNOPSIS
+
+Ensures the global credential store exists, is initialized, and is not expired with optional NodeList synchronization and missing credential management.
+
+## SYNTAX
+
+
+
+
+
+Ensure-GlobalCredStore [-SyncNodeList] [[-PromptUser] <Boolean>] [<CommonParameters>]
+
+
+
+
+
+## DESCRIPTION
+
+Core infrastructure function that validates and maintains the CheckIT global credential store ($global:CredStore). This function ensures proper initialization of all CheckIT global variables, checks credential store validity and expiration status, and optionally synchronizes with the NodeList to identify and resolve missing credentials.
+
+The function serves as a critical dependency for all credential-dependent operations in CheckIT, providing automated credential store management with both interactive and programmatic operation modes.
+
+Key features:
+
+- **Global variable initialization** via Ensure-CheckITGlobals integration
+- **Credential expiration checking** with automatic cleanup of expired credentials
+- **NodeList synchronization** with missing credential identification
+- **Dual-mode operation** supporting both CLI prompts and GUI automation
+- **Automatic Passman integration** for missing credential resolution
+- **Comprehensive error handling** with detailed status reporting
+
+## EXAMPLES
+
+### EXAMPLE 1: Basic Credential Store Validation
+
+
+
+
+
+$wasValid = Ensure-GlobalCredStore
+if ($wasValid) {
+    Write-Host "Credential store was already valid"
+} else {
+    Write-Host "Credential store was reset/initialized"
+}
+
+
+
+
+
+Ensures the credential store is initialized and checks if it was previously valid.
+
+### EXAMPLE 2: NodeList Synchronization with Interactive Prompts
+
+
+
+
+
+Ensure-GlobalCredStore -SyncNodeList
+
+
+
+
+
+Checks for nodes in NodeList missing credentials and prompts user to run Passman for credential retrieval.
+
+### EXAMPLE 3: GUI/Automation Mode with Missing Node Detection
+
+
+
+
+
+$result = Ensure-GlobalCredStore -SyncNodeList -PromptUser:$false
+if ($result.MissingNodes.Count -gt 0) {
+    Write-Host "Found $($result.MissingNodes.Count) nodes without credentials:"
+    $result.MissingNodes | ForEach-Object { Write-Host "  - $_" }
+    
+    # Handle missing credentials in GUI or automation
+    # Could trigger credential retrieval workflow
+}
+
+
+
+
+
+Demonstrates GUI/automation usage with structured return for missing credential handling.
+
+### EXAMPLE 4: Error Handling and Validation
+
+
+
+
+
+try {
+    $result = Ensure-GlobalCredStore -SyncNodeList -PromptUser:$false
+    
+    if ($result -is [hashtable]) {
+        # GUI mode - check for errors
+        if ($result.ContainsKey('Error')) {
+            Write-Warning "Credential store error: $($result.Error)"
+        } else {
+            Write-Host "Credential store valid: $($result.Valid)"
+            Write-Host "Missing nodes: $($result.MissingNodes.Count)"
+        }
+    } else {
+        # CLI mode - boolean return
+        Write-Host "Credential store was valid: $result"
+    }
+} catch {
+    Write-Error "Failed to ensure credential store: $($_.Exception.Message)"
+}
+
+
+
+
+
+Shows comprehensive error handling for both CLI and GUI operation modes.
+
+### EXAMPLE 5: Pre-operation Credential Validation Pattern
+
+
+
+
+
+$credStoreValid = Ensure-GlobalCredStore -PromptUser:$false
+
+if (-not $credStoreValid) {
+    Write-Host "Credential store was reset. Checking for missing credentials..."
+    
+    $syncResult = Ensure-GlobalCredStore -SyncNodeList -PromptUser:$false
+    if ($syncResult.MissingNodes.Count -gt 0) {
+        Write-Warning "Some nodes lack credentials. Consider running Passman first."
+    }
+}
+
+
+
+
+
+Demonstrates the standard CheckIT function pattern for credential validation.
+
+### EXAMPLE 6: Automated Credential Health Monitoring
+
+
+
+
+
+function Monitor-CredentialHealth {
+    while ($true) {
+        $result = Ensure-GlobalCredStore -SyncNodeList -PromptUser:$false
+        
+        $status = @{
+            Timestamp = Get-Date
+            StoreValid = $result.Valid
+            TotalNodes = $global:nodeList.Count
+            MissingCredentials = $result.MissingNodes.Count
+            HealthPercentage = if ($global:nodeList.Count -gt 0) {
+                [math]::Round((($global:nodeList.Count - $result.MissingNodes.Count) / $global:nodeList.Count) * 100, 1)
+            } else { 100 }
+        }
+        
+        Write-Host "$(Get-Date -Format 'HH:mm:ss') - Credential Health: $($status.HealthPercentage)% ($($result.MissingNodes.Count) missing)"
+        
+    Start-Sleep -Seconds 300  # Check every 5 minutes
+    }
+}
+
+
+
+
+
+Creates automated credential health monitoring for long-running applications.
+
+## PARAMETERS
+
+### -SyncNodeList
+
+Enables synchronization with the NodeList to identify nodes missing credentials and optionally resolve them via Passman.
+
+**When Present:**
+
+- **Missing Node Detection**: Compares NodeList against credential store to find nodes without credentials
+- **Interactive Mode**: Automatically runs Passman for missing nodes with user prompts
+- **Automation Mode**: Returns structured data with missing node list for programmatic handling
+- **Error Recovery**: Provides error details when Passman operations fail
+
+**When Not Present (Default):**
+
+- Only validates credential store existence and expiration
+- No NodeList comparison or missing credential detection
+- Faster execution for basic credential store validation
+- Suitable for simple existence checks
+
+**Return Value Impact:**
+
+- Without SyncNodeList: Returns boolean indicating if store was previously valid
+- With SyncNodeList: Returns hashtable with validation results and missing node information
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -PromptUser
+
+Controls the interaction mode for missing credential resolution and output display.
+
+**When $true (Interactive Mode - Default):**
+
+- **User Prompts**: Shows colored console output and status messages
+- **Automatic Passman**: Runs Passman interactively for missing credentials
+- **Error Display**: Shows detailed error messages with colored output
+- **Progress Indicators**: Displays operation progress and status updates
+- **User Confirmation**: Allows user control over credential retrieval process
+
+**When $false (Automation/GUI Mode):**
+
+- **Silent Operation**: No console output or user prompts
+- **Structured Returns**: Returns hashtables with detailed status information
+- **No Passman Execution**: Returns missing node lists without automatic retrieval
+- **Error Handling**: Captures errors in return structure for programmatic handling
+- **GUI Integration**: Suitable for WPF/WinForms GUI applications
+
+**Impact on SyncNodeList:**
+
+- Interactive: Automatically runs Passman for missing nodes
+- Automation: Returns missing node list for external handling
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+### None
+
+This function does not accept pipeline input. All configuration is provided via parameters.
+
+## OUTPUTS
+
+### System.Boolean (Default Mode)
+
+Returns $true if the credential store was already valid, $false if it was created or reset.
+
+### System.Collections.Hashtable (SyncNodeList + PromptUser:$false)
+
+Returns detailed validation results for GUI/automation scenarios:
+
+**Hashtable Structure:**
+
+
+
+
+
+@{
+    Valid = $true or $false           # Whether credential store was previously valid
+    MissingNodes = @("PC1", "PC2")    # Array of node names without credentials
+    Error = "Error message"           # Error description (only if error occurred)
+}
+
+
+
+
+
+**Properties:**
+
+- **Valid**: Boolean indicating if credential store was already valid
+- **MissingNodes**: Array of node names from NodeList that lack credentials
+- **Error**: String containing error description (only present if error occurred)
+
+## NOTES
+
+**Global Variable Dependencies:**
+
+- **$global:CredStore**: Main credential storage with Expiration and Credentials hashtables
+- **$global:nodeList**: Node list for synchronization operations
+- **CheckIT Global Variables**: All globals initialized via Ensure-CheckITGlobals
+
+**Credential Store Structure:**
+
+
+
+
+
+$global:CredStore = @{
+    Expiration = [DateTime]           # Global expiration time for all credentials
+    Credentials = @{                  # Hashtable of node credentials
+        "NODENAME" = [PSCredential]   # Key: Node name, Value: PSCredential object
+    }
+}
+
+
+
+
+
+**Expiration Logic:**
+
+- **Store-wide Expiration**: All credentials share the same expiration time from Passman
+- **Automatic Cleanup**: Expired credentials are automatically removed from store
+- **NodeList Updates**: Node Passman flags are reset when credentials expire
+- **Grace Period**: No grace period - expiration is enforced immediately
+
+**NodeList Synchronization Process:**
+
+1. **Extract Node Names**: Gets all node names from global NodeList
+2. **Compare with Store**: Identifies nodes not present in credential store
+3. **Filter Valid Nodes**: Only includes nodes with valid names
+4. **Missing Node Handling**:
+   - Interactive: Automatically runs Passman for missing nodes
+   - Automation: Returns missing node list for external processing
+
+**Error Handling Strategy:**
+
+- **Never Throws Exceptions**: Always returns status information instead
+- **Graceful Degradation**: Continues operation even with partial failures
+- **Detailed Error Context**: Provides specific error messages for troubleshooting
+- **Recovery Information**: Includes recovery suggestions in error messages
+
+**Performance Considerations:**
+
+- **Lightweight Validation**: Fast credential store existence and expiration checks
+- **Lazy Synchronization**: NodeList sync only when explicitly requested
+- **Minimal Overhead**: Efficient for frequent calls in CheckIT functions
+- **Batched Operations**: Processes multiple missing nodes efficiently
+
+**Integration Patterns:**
+
+
+
+
+
+# Standard CheckIT function pattern
+function My-CheckITFunction {
+    param([array]$Nodes, [bool]$PromptUser = $true)
+    
+    # Always ensure credentials first
+    Ensure-GlobalCredStore -PromptUser:$PromptUser
+    
+    # Proceed with function logic...
+}
+
+# GUI application pattern
+$credStatus = Ensure-GlobalCredStore -SyncNodeList -PromptUser:$false
+if ($credStatus.MissingNodes.Count -gt 0) {
+    # Display missing credential dialog
+    # Trigger credential retrieval workflow
+}
+
+
+
+
+
+**Security Features:**
+
+- **No Credential Exposure**: Function never returns actual credential objects
+- **Expiration Enforcement**: Strict enforcement of credential expiration times
+- **Automatic Cleanup**: Expired credentials are immediately removed from memory
+- **Session-only Storage**: Credentials are never persisted to disk
+
+**Common Use Cases:**
+
+- **Function Initialization**: Called by every credential-dependent CheckIT function
+- **Health Monitoring**: Regular credential store validation in monitoring applications
+- **GUI Integration**: Credential status checking in WPF/WinForms applications
+- **Batch Processing**: Pre-operation credential validation for automation scripts
+- **Troubleshooting**: Diagnostic tool for credential-related issues
+
+**Troubleshooting:**
+
+- **Empty Credential Store**: Indicates credentials need to be retrieved via Passman
+- **Expired Credentials**: Re-run Passman to refresh expired credentials
+- **Missing Nodes**: Check NodeList integrity and node name accuracy
+- **Passman Errors**: Verify network connectivity and authentication to Passman portal
+
+**Best Practices:**
+
+- Always call before any credential-dependent operations
+- Use PromptUser:$false for GUI and automation scenarios
+- Implement proper error handling for missing credential scenarios
+- Consider credential expiration timing in long-running applications
+- Use SyncNodeList judiciously to avoid unnecessary overhead
+
+## RELATED LINKS
+
+[Ensure-CheckITGlobals](Ensure-CheckITGlobals.md)
+
+[Passman](Passman.md)
+
+[Get-ValidCred](Get-ValidCred.md)
+
+[Get-NodeCredAndFQDN](Get-NodeCredAndFQDN.md)
+
+[NodeList](NodeList.md)
+
+[Get-ValidCredStatus](Get-ValidCredStatus.md)
+
+
+

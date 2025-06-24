@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get-ADMembership | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Get-ADMembership</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="get-admembership">Get-ADMembership</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="get-admembership-1">Get-ADMembership</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Retrieves comprehensive AD group membership and metadata for computers or users with detailed property information.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<h3 id="node-default">Node (Default)</h3>
+
+<p>Get-ADMembership [-Node] &lt;String[]&gt; [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></p>
+
+<h3 id="user">User</h3>
+
+<p>Get-ADMembership [-User] &lt;String[]&gt; [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Queries Active Directory to retrieve detailed group membership information and metadata for specified computers or users. This function provides comprehensive AD object details including group memberships, creation dates, last logon information, and organizational data.</p>
+
+<p>The function supports both individual object lookup and batch processing with flexible input formats. Results include all group memberships with one row per group assignment, making it easy to analyze group-based permissions and organizational structure.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li><strong>Dual object support</strong>: Works with both computer and user objects</li>
+  <li><strong>Comprehensive metadata</strong>: Retrieves creation date, last logon, enabled status, and more</li>
+  <li><strong>Group enumeration</strong>: Lists all group memberships with detailed group information</li>
+  <li><strong>Flexible input</strong>: Supports comma-separated strings or arrays</li>
+  <li><strong>Error handling</strong>: Graceful handling of missing or inaccessible objects</li>
+  <li><strong>Primary computer support</strong>: Identifies primary computer owners for computer objects</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-get-user-group-membership">EXAMPLE 1: Get User Group Membership</h3>
+
+<p>Get-ADMembership -User “jsmith”</p>
+
+<p>Retrieves all group memberships and profile information for user jsmith.</p>
+
+<h3 id="example-2-multiple-users-with-comma-separated-input">EXAMPLE 2: Multiple Users with Comma-Separated Input</h3>
+
+<p>Get-ADMembership -User “jsmith,adoe,bwilson”</p>
+
+<p>Processes multiple users from a single comma-separated string.</p>
+
+<h3 id="example-3-computer-group-membership-analysis">EXAMPLE 3: Computer Group Membership Analysis</h3>
+
+<p>Get-ADMembership -Node “LAB-PC-01,SERVER-01”</p>
+
+<p>Retrieves group memberships and metadata for specified computers.</p>
+
+<h3 id="example-4-batch-processing-with-arrays">EXAMPLE 4: Batch Processing with Arrays</h3>
+
+<p>$users = @(“jsmith”, “adoe”, “bwilson”, “tgonzales”)
+$membership = Get-ADMembership -User $users
+$membership | Group-Object User | ForEach-Object {
+    Write-Host “$($<em>.Name): $($</em>.Count) group memberships”
+}</p>
+
+<p>Processes multiple users and summarizes group membership counts.</p>
+
+<h3 id="example-5-computer-ownership-analysis">EXAMPLE 5: Computer Ownership Analysis</h3>
+
+<p>$computers = Get-ADMembership -Node “LAB-PC-01,LAB-PC-02,LAB-PC-03”
+$computers | Where-Object PrimaryUser | Select-Object Node, PrimaryUser, OperatingSystem</p>
+
+<p>Identifies primary computer owners and operating systems for lab computers.</p>
+
+<h3 id="example-6-department-based-group-analysis">EXAMPLE 6: Department-Based Group Analysis</h3>
+
+<p>$userMembership = Get-ADMembership -User “jsmith,adoe,bwilson”
+$userMembership | Group-Object Department | ForEach-Object {
+    Write-Host “Department: $($<em>.Name)”
+    $</em>.Group | Select-Object User, Group | Format-Table -AutoSize
+}</p>
+
+<p>Analyzes group memberships by department affiliation.</p>
+
+<h3 id="example-7-security-group-filtering">EXAMPLE 7: Security Group Filtering</h3>
+
+<p>$membership = Get-ADMembership -User “jsmith”
+$securityGroups = $membership | Where-Object { $<em>.Group -like “*Security*” -or $</em>.Group -like “<em>Admin</em>” }
+$securityGroups | Select-Object User, Group, Department</p>
+
+<p>Filters results to show only security-related group memberships.</p>
+
+<h3 id="example-8-error-handling-and-validation">EXAMPLE 8: Error Handling and Validation</h3>
+
+<p>$results = Get-ADMembership -User “validuser,invaliduser,anothervalid”
+$errors = $results | Where-Object Error
+$valid = $results | Where-Object { -not $_.Error }</p>
+
+<p>Write-Host “Valid results: $($valid.Count)”
+Write-Host “Errors: $($errors.Count)”
+$errors | Select-Object User, Error</p>
+
+<p>Demonstrates error handling for mixed valid/invalid input.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-user">-User</h3>
+
+<p>One or more usernames to query for group membership and profile information.</p>
+
+<p><strong>Input Formats:</strong></p>
+
+<ul>
+  <li>
+    <p>Single username: `“jsmith”</p>
+  </li>
+  <li>
+    <p>Comma-separated string: `“jsmith,adoe,bwilson”</p>
+  </li>
+  <li>
+    <p>Semicolon-separated string: `“jsmith;adoe;bwilson”</p>
+  </li>
+  <li>
+    <p>String array: `@(“jsmith”, “adoe”, “bwilson”)</p>
+  </li>
+</ul>
+
+<p><strong>Username Formats:</strong></p>
+
+<ul>
+  <li>
+    <p>SamAccountName (preferred): `“jsmith”</p>
+  </li>
+  <li>
+    <p>UserPrincipalName: `“jsmith@domain.com”</p>
+  </li>
+  <li>
+    <p>DistinguishedName: `“CN=John Smith,OU=Users,DC=domain,DC=com”</p>
+  </li>
+</ul>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: User
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False</p>
+
+<h3 id="-node">-Node</h3>
+
+<p>One or more computer names to query for group membership and system information.</p>
+
+<p><strong>Input Formats:</strong></p>
+
+<ul>
+  <li>
+    <p>Single computer name: `“LAB-PC-01”</p>
+  </li>
+  <li>
+    <p>Comma-separated string: `“LAB-PC-01,SERVER-01,OFFICE-PC”</p>
+  </li>
+  <li>
+    <p>Semicolon-separated string: `“LAB-PC-01;SERVER-01;OFFICE-PC”</p>
+  </li>
+  <li>
+    <p>String array: `@(“LAB-PC-01”, “SERVER-01”, “OFFICE-PC”)</p>
+  </li>
+</ul>
+
+<p><strong>Computer Name Formats:</strong></p>
+
+<ul>
+  <li>
+    <p>NetBIOS name (preferred): `“LAB-PC-01”</p>
+  </li>
+  <li>
+    <p>FQDN: `“LAB-PC-01.domain.com”</p>
+  </li>
+  <li>
+    <p>DistinguishedName: `“CN=LAB-PC-01,OU=Computers,DC=domain,DC=com”</p>
+  </li>
+</ul>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: Node
+Aliases: Computer</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>Standard PowerShell progress action preference for controlling progress display during batch operations.</p>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="string">String[]</h3>
+
+<p>Array of usernames or computer names to process.</p>
+
+<h3 id="string-1">String</h3>
+
+<p>Comma or semicolon-separated string of names to process.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="pscustomobject">PSCustomObject[]</h3>
+
+<p>Array of objects containing membership and metadata information.</p>
+
+<p><strong>User Object Properties:</strong></p>
+
+<ul>
+  <li><strong>User</strong>: SamAccountName of the queried user</li>
+  <li><strong>DisplayName</strong>: Full display name from AD</li>
+  <li><strong>Description</strong>: User description field</li>
+  <li><strong>Created</strong>: Account creation timestamp</li>
+  <li><strong>LastLogonDate</strong>: Most recent logon timestamp</li>
+  <li><strong>Enabled</strong>: Account enabled status (True/False)</li>
+  <li><strong>EmailAddress</strong>: Primary email address</li>
+  <li><strong>Department</strong>: Organizational department</li>
+  <li><strong>Title</strong>: Job title or position</li>
+  <li><strong>DistinguishedName</strong>: Full AD distinguished name</li>
+  <li><strong>Group</strong>: Group name (one row per group membership)</li>
+  <li><strong>Error</strong>: Error message if lookup failed</li>
+</ul>
+
+<p><strong>Computer Object Properties:</strong></p>
+
+<ul>
+  <li><strong>Node</strong>: Computer name that was queried</li>
+  <li><strong>Description</strong>: Computer description field</li>
+  <li><strong>Created</strong>: Computer object creation timestamp</li>
+  <li><strong>LastLogonDate</strong>: Most recent computer logon timestamp</li>
+  <li><strong>Enabled</strong>: Computer account enabled status (True/False)</li>
+  <li><strong>OperatingSystem</strong>: Operating system information from AD</li>
+  <li><strong>DistinguishedName</strong>: Full AD distinguished name</li>
+  <li><strong>PrimaryUser</strong>: Primary computer owner (if configured)</li>
+  <li><strong>Group</strong>: Group name (one row per group membership)</li>
+  <li><strong>Error</strong>: Error message if lookup failed</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Group Membership Handling:</strong></p>
+
+<ul>
+  <li>Each group membership creates a separate result row</li>
+  <li>Objects with no group memberships return one row with empty Group field</li>
+  <li>Group names are extracted from CN= portion of DistinguishedName</li>
+  <li>Nested group memberships are not expanded (shows direct memberships only)</li>
+</ul>
+
+<p><strong>Primary Computer Owner Detection:</strong></p>
+
+<ul>
+  <li>Uses msDS-PrimaryComputerOwnerSID attribute for computer objects</li>
+  <li>Resolves SID to SamAccountName when possible</li>
+  <li>Provides null value if no primary owner configured or SID resolution fails</li>
+  <li>Useful for identifying computer assignments in lab/classroom environments</li>
+</ul>
+
+<p><strong>Active Directory Requirements:</strong></p>
+
+<ul>
+  <li>Requires ActiveDirectory PowerShell module</li>
+  <li>Needs read permissions to query user and computer objects</li>
+  <li>Requires access to group membership information</li>
+  <li>Domain connectivity required for all operations</li>
+</ul>
+
+<p><strong>Performance Characteristics:</strong></p>
+
+<ul>
+  <li>Each object requires individual AD query</li>
+  <li>Group membership enumeration adds processing time</li>
+  <li>Large batch operations may take significant time</li>
+  <li>Network latency affects overall performance</li>
+</ul>
+
+<p><strong>Error Handling:</strong></p>
+
+<ul>
+  <li>Individual object failures don’t stop batch processing</li>
+  <li>Error messages included in result objects</li>
+  <li>Common errors: object not found, access denied, AD unavailable</li>
+  <li>Graceful handling of invalid or malformed names</li>
+</ul>
+
+<p><strong>Data Analysis Patterns:</strong></p>
+
+<ul>
+  <li>Group results by User/Node for membership summaries</li>
+  <li>Filter by Group field for specific group analysis</li>
+  <li>Use Department/OU information for organizational analysis</li>
+  <li>Combine with other CheckIT functions for comprehensive reporting</li>
+</ul>
+
+<p><strong>Security Considerations:</strong></p>
+
+<ul>
+  <li>Respects AD read permissions for querying user</li>
+  <li>Sensitive information (like group memberships) follows AD security model</li>
+  <li>Does not expose password or other sensitive authentication data</li>
+  <li>Results should be handled according to organizational data policies</li>
+</ul>
+
+<p><strong>Integration with CheckIT:</strong></p>
+
+<ul>
+  <li>Output format compatible with CheckIT reporting functions</li>
+  <li>Can be used with Export-ToExcel for comprehensive reports</li>
+  <li>Integrates with NodeList data for computer management</li>
+  <li>Supports CheckIT’s standard error handling patterns</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/AD.html">AD</a></p>
+
+<p><a href="https://docs.microsoft.com/en-us/powershell/module/activedirectory/get-adcomputer">Get-ADComputer</a></p>
+
+<p><a href="https://docs.microsoft.com/en-us/powershell/module/activedirectory/get-aduser">Get-ADUser</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/NodeList.html">NodeList</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Export-ToExcel.html">Export-ToExcel</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

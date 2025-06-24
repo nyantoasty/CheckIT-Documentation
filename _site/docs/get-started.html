@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚀 Get Started | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <div class="docs-header">
+  <div class="icon-container">
+    
+  </div>
+  
+  <div class="title-container">
+    <h1>🚀 Get Started</h1>
+    
+  </div>
+  
+  <div class="status-container">
+    <span class="version-pill">Version 1.5.0</span>
+    <span class="status-pill">Open Beta</span>
+  </div>
+</div>
+
+<div class="page-content">
+  <h2 id="getting-started-with-checkit-core">Getting Started with CheckIT-Core</h2>
+
+<p>This guide provides instructions on how to request access to CheckIT-Core, install it, update to a new version, and uninstall if needed.</p>
+
+<h2 id="-requesting-access">📋 Requesting Access</h2>
+
+<p>CheckIT-Core is currently in beta status and available by request.</p>
+
+<p><strong>To request access:</strong></p>
+
+<ol>
+  <li>Contact KJA directly</li>
+  <li>Provide your department/team name and intended use case</li>
+  <li>You’ll receive installation files and access instructions if approved</li>
+</ol>
+
+<h2 id="️-important-powershell-compatibility-note">⚠️ Important PowerShell Compatibility Note</h2>
+
+<blockquote>
+  <p><strong>Warning:</strong> CheckIT-Core requires PowerShell 7 or higher and is <strong>not compatible with Windows PowerShell 5.1</strong>.</p>
+
+  <p>If you encounter installation or module loading errors with Windows PowerShell, please install the latest PowerShell version from the Microsoft Store.</p>
+</blockquote>
+
+<p>To check your current PowerShell version:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="bp">$PSVersionTable</span><span class="o">.</span><span class="nf">PSVersion</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>To install PowerShell 7+:</p>
+
+<ol>
+  <li>Open Microsoft Store</li>
+  <li>Search for “PowerShell”</li>
+  <li>Select and install “PowerShell” (not “Windows PowerShell”)</li>
+  <li>Launch PowerShell 7 and proceed with the installation</li>
+</ol>
+
+<h2 id="-installation">🔧 Installation</h2>
+
+<p>Once you have received the CheckIT-Core files and installed PowerShell 7+, installation is straightforward:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c"># Navigate to the CheckIT-Core directory</span><span class="w">
+</span><span class="n">cd</span><span class="w"> </span><span class="s2">"CheckIT-Core-v1.5.0"</span><span class="w">
+
+</span><span class="c"># Run the installer script</span><span class="w">
+</span><span class="o">.</span><span class="n">\install.ps1</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="installation-options">Installation Options</h3>
+
+<p>The installer supports several parameters for customization:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># Install to a custom location</span><span class="w">
+</span><span class="o">.</span><span class="n">\install.ps1</span><span class="w"> </span><span class="nt">-InstallPath</span><span class="w"> </span><span class="s2">"C:\CustomPath\CheckIT-Core"</span><span class="w">
+
+</span><span class="c"># Install without help files (minimal installation)</span><span class="w">
+</span><span class="o">.</span><span class="n">\install.ps1</span><span class="w"> </span><span class="nt">-SkipHelp</span><span class="w">
+
+</span><span class="c"># Force installation (overwrite existing installation)</span><span class="w">
+</span><span class="o">.</span><span class="n">\install.ps1</span><span class="w"> </span><span class="nt">-Force</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="what-gets-installed">What Gets Installed</h3>
+
+<ul>
+  <li>Core module files (checkit-core.psd1, checkit-core.psm1)</li>
+  <li>Help files in the en-US directory</li>
+  <li>Documentation in the docs directory</li>
+</ul>
+
+<p>The installer will automatically:</p>
+
+<ul>
+  <li>Create necessary directories</li>
+  <li>Copy all required files</li>
+  <li>Import the module to verify it works</li>
+  <li>Perform basic functionality tests</li>
+  <li>Show quick-start examples for immediate use</li>
+</ul>
+
+<h2 id="-updating-to-a-new-version">🔄 Updating to a New Version</h2>
+
+<p>To update to a newer version of CheckIT-Core:</p>
+
+<ol>
+  <li>Uninstall the current version (see uninstallation instructions below)</li>
+  <li>Install the new version following the regular installation steps</li>
+  <li>Test key functionality after update</li>
+</ol>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c"># Uninstall current version but keep your documentation</span><span class="w">
+</span><span class="o">.</span><span class="n">\uninstall.ps1</span><span class="w"> </span><span class="nt">-KeepDocs</span><span class="w">
+
+</span><span class="c"># Install new version</span><span class="w">
+</span><span class="n">cd</span><span class="w"> </span><span class="s2">"CheckIT-Core-v1.5.0"</span><span class="w">
+</span><span class="o">.</span><span class="n">\install.ps1</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="️-uninstallation">🗑️ Uninstallation</h2>
+
+<p>If you need to remove CheckIT-Core:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c"># Navigate to the CheckIT-Core directory</span><span class="w">
+</span><span class="n">cd</span><span class="w"> </span><span class="s2">"CheckIT-Core-v1.5.0"</span><span class="w">
+
+</span><span class="c"># Run the uninstaller script</span><span class="w">
+</span><span class="o">.</span><span class="n">\uninstall.ps1</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="uninstallation-options">Uninstallation Options</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c"># Uninstall but keep your documentation</span><span class="w">
+</span><span class="o">.</span><span class="n">\uninstall.ps1</span><span class="w"> </span><span class="nt">-KeepDocs</span><span class="w">
+
+</span><span class="c"># Uninstall from a custom location</span><span class="w">
+</span><span class="o">.</span><span class="n">\uninstall.ps1</span><span class="w"> </span><span class="nt">-InstallPath</span><span class="w"> </span><span class="s2">"C:\CustomPath\CheckIT-Core"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-after-installation">🚀 After Installation</h2>
+
+<p>Once installed, you can start using CheckIT-Core:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c"># Import the module</span><span class="w">
+</span><span class="n">Import-Module</span><span class="w"> </span><span class="nx">CheckIT-Core</span><span class="w">
+
+</span><span class="c"># Create your first node</span><span class="w">
+</span><span class="nv">$node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">New-NodeObject</span><span class="w"> </span><span class="s1">'PC001'</span><span class="w">
+</span><span class="n">NodeList</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$node</span><span class="w">
+
+</span><span class="c"># Try a simple template</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="p">@(</span><span class="s1">'PC001'</span><span class="p">)</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s1">'Get OS Info'</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>For more detailed documentation:</p>
+
+<ul>
+  <li>API Reference</li>
+  <li>Quick Reference</li>
+  <li>Troubleshooting</li>
+</ul>
+
+<hr />
+
+<p><strong>Need help?</strong> Contact KJA for assistance with installation or usage questions.</p>
+
+<hr />
+
+</div>
+
+<div class="docs-footer">
+  <div class="footer-nav">
+    <a href="/CheckIT-Documentation/index">🏠 Home</a>
+    <a href="/CheckIT-Documentation/docs/README">ℹ️ About</a>
+    <a href="/CheckIT-Documentation/docs/get-started">🚀 Get Started</a>
+    <a href="/CheckIT-Documentation/docs/api-reference">📘 API Reference</a>
+    <a href="/CheckIT-Documentation/docs/quick-reference">⚡ Quick Reference</a><br>
+    <a href="/CheckIT-Documentation/docs/templateInfo">🧩 Template System</a>
+    <a href="/CheckIT-Documentation/docs/troubleshooting">🔍 Troubleshooting</a>
+    <a href="/CheckIT-Documentation/docs/internal-helpers">🔧 Internal Helper Functions</a>
+    <a href="/CheckIT-Documentation/CHANGELOG">📋 Changelog</a>
+  </div>
+  
+  <div class="footer-info">
+    <div class="footer-badge-container">
+      <span class="footer-badge">1.5.0</span>
+      <span class="footer-badge status">Open Beta</span>
+      <span class="footer-badge">75+ Functions</span>
+    </div>
+    <p>CheckIT-Core • <a href="https://nyantoasty.github.io/CheckIT-Documentation/">Repository</a> • Maintained by KJA • MIT License</p>
+    <p class="footer-updated">Last updated: 2025-06-13</p>
+  </div>
+</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

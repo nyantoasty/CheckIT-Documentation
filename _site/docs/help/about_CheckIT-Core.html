@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>about_CheckIT-Core | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">about_CheckIT-Core</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="about_checkit-core">about_CheckIT-Core</h1>
+
+<hr />
+<p>Module Name: CheckIT-Core
+Module Guid: [your-module-guid]
+Download Help Link: https://checkit.shsu.edu/help/
+Help Version: 1.4.0
+Locale: en-US
+—</p>
+
+<h1 id="checkit-core-module">CheckIT-Core Module</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Core module for CheckIT: comprehensive node management, credential handling, diagnostics, reporting, and automation.</p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>The CheckIT-Core module provides foundational logic and utilities for the CheckIT system, supporting both CLI and GUI workflows.
+It enables robust management of nodes, credentials, reporting, diagnostics, Active Directory integration, parallel processing,
+SCCM package management, testing frameworks, and advanced Excel export capabilities including pivot tables and slicers.
+All functions are designed for extensibility, automation, and safe use in both interactive and automated environments.</p>
+
+<h2 id="version">VERSION</h2>
+
+<p>1.4.0</p>
+
+<h2 id="table-of-contents">TABLE OF CONTENTS</h2>
+
+<h3 id="1-global-variables--initialization">1. Global Variables &amp; Initialization</h3>
+
+<ul>
+  <li>Stores user preferences, node lists, credential store, and other global state</li>
+  <li>Automatic initialization and safety checks for all global stores</li>
+</ul>
+
+<h3 id="2-utility-functions">2. Utility Functions</h3>
+
+<ul>
+  <li>General helpers for colored output, progress reporting, object conversion, and sanity checks</li>
+  <li>Template management and workflow orchestration</li>
+  <li>Documentation generation and changelog management</li>
+</ul>
+
+<h3 id="3-global-store-management">3. Global Store Management</h3>
+
+<ul>
+  <li>Functions to get, clear, and manage global stores (NodeList, Reports, TaskLog, ErrorLog, Preferences, CredStore, Templates)</li>
+  <li>Safe store access with automatic initialization and type checking</li>
+</ul>
+
+<p>[… continue with all sections from the original comment block …]</p>
+
+<h2 id="architecture--cooperation">ARCHITECTURE &amp; COOPERATION</h2>
+
+<ul>
+  <li>Utility and global store functions provide foundation for all other operations</li>
+  <li>Node management and AD tools work together for comprehensive computer lifecycle management</li>
+  <li>Passman and credential helpers ensure secure, centralized authentication for all remote operations</li>
+  <li>Main tools and diagnostics rely on parallel processing engine for scalable, robust execution</li>
+</ul>
+
+<h2 id="usage-patterns">USAGE PATTERNS</h2>
+
+<h3 id="cli-mode-interactive">CLI Mode (Interactive)</h3>
+
+<ul>
+  <li>All functions support rich colored output, progress bars, and user prompts</li>
+  <li>Interactive selection menus for OUs, packages, tests, and configuration options</li>
+  <li>Real-time status updates and comprehensive error reporting</li>
+</ul>
+
+<h3 id="gui-mode-automation">GUI Mode (Automation)</h3>
+
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-PromptUser:$false
+</pre></td></tr></tbody></table></code> for silent operation with structured object returns</li>
+  <li>StatusCallback support for progress reporting in GUI applications</li>
+  <li>Structured error objects for programmatic error handling</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="node-management">Node Management</h3>
+
+<p>NodeList -Action Add -Nodes @(“PC1”,”PC2”,”PC3”)
+NodeList -Action Upload -FilePath “C:\Data\computers.xlsx”
+$nodes = NodeList -Action Preview -PromptUser:$false</p>
+
+<h3 id="credential-management">Credential Management</h3>
+
+<p>Passman -Nodes $global:nodeList
+$credStatus = Get-ValidCred -Nodes @(“PC1”,”PC2”) -ReturnCredential
+Show-CredentialClipboard -Node “PC1”</p>
+
+<p>[… continue with all examples …]</p>
+
+<h2 id="security-features">SECURITY FEATURES</h2>
+
+<ul>
+  <li>Credentials are never saved to disk - session-only storage</li>
+  <li>Input sanitization for all user-provided data</li>
+  <li>Secure credential passing to background jobs</li>
+  <li>Audit trail for all operations and credential access</li>
+  <li>Safe execution with timeout handling and resource cleanup</li>
+</ul>
+
+<h2 id="configuration">CONFIGURATION</h2>
+
+<h3 id="initial-setup">Initial Setup</h3>
+
+<ol>
+  <li>
+    <p>Set execution policy: `Set-ExecutionPolicy RemoteSigned</p>
+  </li>
+  <li>
+    <p>Configure WSMan trusted hosts: `Set-Item WSMan:\localhost\Client\TrustedHosts -Value “*.shsu.edu”</p>
+  </li>
+  <li>
+    <p>Import module: `Import-Module CheckIT-Core</p>
+  </li>
+  <li>
+    <p>Configure preferences: `Set-UserPreference</p>
+  </li>
+  <li>
+    <p>Load initial data: `Load-CheckITDataCore -Path “your_data.json”</p>
+  </li>
+</ol>
+
+<h2 id="troubleshooting">TROUBLESHOOTING</h2>
+
+<h3 id="common-issues">Common Issues</h3>
+
+<ul>
+  <li><strong>Credential errors</strong>: Run Passman to refresh credentials</li>
+  <li><strong>Connection failures</strong>: Check network connectivity and WinRM configuration</li>
+  <li><strong>Excel export errors</strong>: Ensure Excel is installed and COM objects are accessible</li>
+  <li><strong>Performance issues</strong>: Reduce MaxParallel parameter for slower networks</li>
+</ul>
+
+<h3 id="diagnostic-commands">Diagnostic Commands</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>SanityCheck
+</pre></td></tr></tbody></table></code>: Validates common configuration issues</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Test-NodeConnection
+</pre></td></tr></tbody></table></code>: Comprehensive connectivity testing</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Get-ValidCred
+</pre></td></tr></tbody></table></code>: Credential validation and status checking</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Manage-Store -Store ErrorLog
+</pre></td></tr></tbody></table></code>: Review error history</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<ul>
+  <li>All global stores are managed for CLI/GUI safety</li>
+  <li>Bracket notation is used for hashtable property access</li>
+  <li>Always use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$($var)
+</pre></td></tr></tbody></table></code> in double-quoted strings for safe interpolation</li>
+  <li>Functions are robust for both CLI and GUI (PromptUser parameter)</li>
+</ul>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

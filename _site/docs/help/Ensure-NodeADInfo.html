@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ensure-NodeADInfo | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Ensure-NodeADInfo</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="ensure-nodeadinfo">Ensure-NodeADInfo</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="ensure-nodeadinfo-1">Ensure-NodeADInfo</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Ensures a node object has complete Active Directory information (OS and OU) by querying AD if needed.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Ensure-NodeADInfo [-Node] <object> [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></object></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Utility function that checks if a node object has complete Active Directory information (Operating System and Organizational Unit). If either property is missing or empty, the function automatically queries Active Directory to populate the missing information.</p>
+
+<p>This function is designed to be called internally by other CheckIT functions to ensure node objects have complete metadata before processing. It provides a lightweight way to enrich node data without requiring explicit AD queries in calling functions.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li><strong>Conditional querying</strong>: Only queries AD if OS or OU information is missing</li>
+  <li><strong>Automatic enrichment</strong>: Updates the node object with discovered information</li>
+  <li><strong>Error resilience</strong>: Sets default values if AD queries fail</li>
+  <li><strong>NodeList integration</strong>: Retrieves updated information from the global NodeList after AD updates</li>
+  <li><strong>Non-disruptive</strong>: Returns the node object whether AD information was needed or not</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-node-enrichment">EXAMPLE 1: Basic Node Enrichment</h3>
+
+<p>$node = [PSCustomObject]@{ Node = “LAB-PC-01”; Group = “Lab Computers” }
+$enrichedNode = Ensure-NodeADInfo -Node $node</p>
+
+<p>Queries AD for OS and OU information since the node object is missing these properties.</p>
+
+<h3 id="example-2-node-with-partial-information">EXAMPLE 2: Node with Partial Information</h3>
+
+<p>$node = [PSCustomObject]@{ 
+    Node = “PC123”
+    OS = “Windows 11 Pro”
+    # OU is missing
+}
+$enrichedNode = Ensure-NodeADInfo -Node $node</p>
+
+<p>Only queries AD for the missing OU information since OS is already present.</p>
+
+<h3 id="example-3-node-with-complete-information">EXAMPLE 3: Node with Complete Information</h3>
+
+<p>$node = [PSCustomObject]@{ 
+    Node = “SERVER01”
+    OS = “Windows Server 2022”
+    OU = “Servers”
+}
+$enrichedNode = Ensure-NodeADInfo -Node $node</p>
+
+<p>Returns immediately without AD queries since both OS and OU are already populated.</p>
+
+<h3 id="example-4-integration-in-workflow-functions">EXAMPLE 4: Integration in Workflow Functions</h3>
+
+<p>function Process-NodeWorkflow {
+    param([array]$Nodes)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre>foreach ($node in $Nodes) {
+    # Ensure AD information is complete before processing
+    $enrichedNode = Ensure-NodeADInfo -Node $node
+    
+    # Now proceed with workflow using complete node information
+    if ($enrichedNode.OS -eq "Not in AD") {
+        Write-Warning "Skipping $($enrichedNode.Node) - not found in AD"
+        continue
+    }
+    
+    # Process the enriched node...
+} }
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Demonstrates typical usage pattern in CheckIT workflow functions.</p>
+
+<h3 id="example-5-batch-processing-with-error-handling">EXAMPLE 5: Batch Processing with Error Handling</h3>
+
+<p>$nodes = $global:nodeList | Where-Object { -not $<em>.OS }
+foreach ($node in $nodes) {
+    try {
+        $enrichedNode = Ensure-NodeADInfo -Node $node
+        if ($enrichedNode.OS -ne “Unknown”) {
+            Write-Host “Enriched $($enrichedNode.Node): OS=$($enrichedNode.OS), OU=$($enrichedNode.OU)”
+        }
+    } catch {
+        Write-Warning “Failed to enrich node $($node.Node): $($</em>.Exception.Message)”
+    }
+}</p>
+
+<p>Shows error handling when processing multiple nodes with potential AD issues.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-node">-Node</h3>
+
+<p>The node object to check and potentially enrich with Active Directory information. The object must have a ‘Node’ property containing the computer name.</p>
+
+<p><strong>Required Properties:</strong></p>
+
+<ul>
+  <li><strong>Node</strong>: Computer name for AD lookup (required)</li>
+</ul>
+
+<p><strong>Optional Properties:</strong></p>
+
+<ul>
+  <li><strong>OS</strong>: Operating System (will be populated if missing)</li>
+  <li><strong>OU</strong>: Organizational Unit (will be populated if missing)</li>
+  <li>Any other node properties (preserved unchanged)</li>
+</ul>
+
+<p><strong>Object Types Supported:</strong></p>
+
+<ul>
+  <li>PSCustomObject with Node property</li>
+  <li>Node objects from global NodeList</li>
+  <li>Hashtables with Node key</li>
+</ul>
+
+<p>```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>Standard PowerShell progress action preference for controlling progress display during AD operations.</p>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="systemobject">System.Object</h3>
+
+<p>Node objects or any object with a ‘Node’ property containing a computer name.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="systemobject-1">System.Object</h3>
+
+<p>Returns the input node object, potentially enriched with Active Directory information:</p>
+
+<ul>
+  <li><strong>OS</strong>: Operating System from AD or “Unknown” if AD query fails</li>
+  <li><strong>OU</strong>: Organizational Unit from AD or “Unknown” if AD query fails</li>
+  <li><strong>All other properties</strong>: Preserved unchanged from input object</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>When AD Queries Occur:</strong></p>
+
+<ul>
+  <li>OS property is null, empty, or whitespace</li>
+  <li>OU property is null, empty, or whitespace</li>
+  <li>Both conditions must be false to skip AD queries</li>
+</ul>
+
+<p><strong>Active Directory Integration:</strong></p>
+
+<ul>
+  <li>Uses the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>AD
+</pre></td></tr></tbody></table></code> function for consistent AD querying behavior</li>
+  <li>Supports both exact name matching and wildcard searches</li>
+  <li>Handles AD connection failures gracefully</li>
+</ul>
+
+<p><strong>NodeList Integration:</strong></p>
+
+<ul>
+  <li>After AD queries, retrieves updated information from global NodeList</li>
+  <li>Ensures consistency between the returned object and global NodeList</li>
+  <li>Updates are automatically persisted via the AD function</li>
+</ul>
+
+<p><strong>Error Handling:</strong></p>
+
+<ul>
+  <li>Sets OS and OU to “Unknown” if AD queries fail</li>
+  <li>Does not throw exceptions - always returns a node object</li>
+  <li>Preserves all original properties even if AD queries fail</li>
+</ul>
+
+<p><strong>Performance Considerations:</strong></p>
+
+<ul>
+  <li>Lightweight check avoids unnecessary AD queries</li>
+  <li>Only queries AD when information is actually missing</li>
+  <li>Uses existing NodeList data when available</li>
+  <li>Single AD query updates both OS and OU simultaneously</li>
+</ul>
+
+<p><strong>Usage Patterns:</strong></p>
+
+<ul>
+  <li>Call before processing nodes that require complete metadata</li>
+  <li>Use in functions that need to ensure data completeness</li>
+  <li>Safe to call multiple times on the same node (idempotent)</li>
+  <li>Suitable for both individual nodes and batch processing</li>
+</ul>
+
+<p><strong>Thread Safety:</strong></p>
+
+<ul>
+  <li>Safe for concurrent use with different node objects</li>
+  <li>NodeList updates are handled by underlying thread-safe functions</li>
+  <li>No shared state between function calls</li>
+</ul>
+
+<p><strong>Integration with CheckIT Functions:</strong></p>
+
+<ul>
+  <li>Commonly used in workflow functions before node processing</li>
+  <li>Called by functions that require complete node metadata</li>
+  <li>Supports the CheckIT pattern of progressive data enrichment</li>
+  <li>Compatible with all CheckIT node management functions</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/AD.html">AD</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/NodeList.html">NodeList</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/New-NodeObject.html">New-NodeObject</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-ADMembership.html">Get-ADMembership</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

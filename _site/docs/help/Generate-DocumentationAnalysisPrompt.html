@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate-DocumentationAnalysisPrompt | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Generate-DocumentationAnalysisPrompt</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="generate-documentationanalysisprompt">Generate-DocumentationAnalysisPrompt</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="generate-documentationanalysisprompt-1">Generate-DocumentationAnalysisPrompt</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Generates an intelligent AI assistant prompt for documentation analysis and follow-up tasks.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Generate-DocumentationAnalysisPrompt [[-Summary] <String>] [[-Type] <String>] [[-Impact] <String>]
+ [[-FilesChanged] &lt;String[]&gt;] [[-FunctionsAdded] &lt;String[]&gt;] [[-FunctionsCompleted] &lt;String[]&gt;]
+ [[-KeyChanges] &lt;String[]&gt;] [[-PromptUser] <Boolean>]</Boolean></String></String></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Creates a structured prompt for AI assistants to analyze CheckIT documentation and suggest improvements.
+The prompt includes recent code changes, documentation structure, and specific analysis requests.
+This function helps bridge development tasks with documentation updates to ensure comprehensive,
+accurate documentation is maintained alongside code changes.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-summary">-Summary</h3>
+
+<p>A summary of recent code changes or feature additions that need documentation.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-type">-Type</h3>
+
+<p>Type of change. Common values include “Enhancement,” “Feature,” “Bugfix,” “Documentation,” or “Refactor.”</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-impact">-Impact</h3>
+
+<p>A summary of how these changes impact users or the system.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-fileschanged">-FilesChanged</h3>
+
+<p>Array of file paths that were modified as part of this change.</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-functionsadded">-FunctionsAdded</h3>
+
+<p>Array of function names that were added (optional).</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-functionscompleted">-FunctionsCompleted</h3>
+
+<p>Array of function names that were completed or significantly updated (optional).</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-keychanges">-KeyChanges</h3>
+
+<p>Array of bullet points describing the main changes made.</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>If true, displays the generated prompt and asks for confirmation before proceeding.
+If false, returns the prompt string directly.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 7
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-generate-a-documentation-analysis-prompt-for-a-new-feature">Example 1: Generate a documentation analysis prompt for a new feature</h3>
+
+<p>Generate-DocumentationAnalysisPrompt -Summary “Added Excel pivot table functionality” -Type “Feature”</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>-FilesChanged @("checkit-core.psm1", "docs/help/Invoke-Pivotizer.md") 
+
+-FunctionsAdded @("Invoke-Pivotizer") 
+
+-KeyChanges @("Added pivot table creation", "Added interactive slicers") 
+
+-Impact "Users can now create Excel pivot tables directly from CheckIT"
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Creates a detailed prompt that includes the recent changes to Excel pivot functionality and requests a full documentation analysis.</p>
+
+<h3 id="example-2-generate-a-documentation-prompt-for-bug-fixes">Example 2: Generate a documentation prompt for bug fixes</h3>
+
+<p>$prompt = Generate-DocumentationAnalysisPrompt -Summary “Fixed Excel export issues” -Type “Fix”</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>-FilesChanged @("checkit-core.psm1") 
+
+-KeyChanges @("Fixed column name handling", "Added error recovery") 
+
+-Impact "Excel exports now handle special characters correctly" 
+
+-PromptUser $false
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Send-ToAIAssistant -Prompt $prompt</p>
+
+<p>Creates a documentation analysis prompt for bug fixes without displaying it to the user and sends it directly to an AI assistant.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="none">None</h3>
+
+<p>This function does not accept pipeline input.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="systemstring">System.String</h3>
+
+<p>Returns the generated analysis prompt as a string.</p>
+
+<h2 id="notes">NOTES</h2>
+
+<p>This function is intended for developer use and documentation maintenance.
+The prompt includes standard sections for consistent AI responses:</p>
+
+<ul>
+  <li>Current module structure</li>
+  <li>Documentation elements to analyze</li>
+  <li>Recent changes</li>
+  <li>Specific analysis requests</li>
+  <li>Expected output format</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Add-ChangelogEntry.html">Add-ChangelogEntry</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

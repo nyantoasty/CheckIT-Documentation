@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AD | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">AD</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="ad">AD</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+<p>Updates node objects with OS and OU information from Active Directory with automatic NodeList integration.</p>
+
+<h2 id="description">DESCRIPTION</h2>
+<p>Queries Active Directory for computer information and updates node objects with Operating System and Organizational Unit data. This function performs both exact name matching and wildcard searches to locate computers in AD, making it robust for finding systems with partial or modified names.</p>
+
+<p>The function automatically updates the global NodeList with discovered information and manages node status tracking. Non-Windows systems are marked as “Non-PC” and systems not found in AD are automatically added to the SkipNodes list to prevent future processing attempts.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li><strong>Dual search strategy</strong>: Exact name match followed by wildcard search</li>
+  <li><strong>Automatic NodeList updates</strong>: Discovered information is immediately saved</li>
+  <li><strong>Status management</strong>: TaskStatus tracking during processing</li>
+  <li><strong>Error handling</strong>: Graceful handling of AD connection issues</li>
+  <li><strong>Skip list management</strong>: Automatic exclusion of invalid systems</li>
+</ul>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-nodes">-Nodes</h3>
+<p>Array of node objects or node names.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="na">Type</span><span class="pi">:</span> <span class="s">Array</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">1</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>AD -Nodes @("PC001")
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Basic usage example.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h2 id="notes">NOTES</h2>
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

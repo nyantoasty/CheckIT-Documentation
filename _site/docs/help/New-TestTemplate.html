@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New-TestTemplate | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">New-TestTemplate</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="new-testtemplate">New-TestTemplate</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="new-testtemplate-1">New-TestTemplate</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Interactive or programmatic generator for dynamic test templates.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>New-TestTemplate [[-PromptUser] <Boolean>] [[-Steps] <Array>] [[-TemplateName] <String>] [-Save]</String></Array></Boolean></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Interactive and programmatic generator for dynamic test templates supporting CheckIT’s
+comprehensive testing framework. Creates structured test workflows that combine:</p>
+
+<ul>
+  <li><strong>Manual verification steps</strong> for human validation</li>
+  <li><strong>Automated command execution</strong> via PowerShell remoting</li>
+  <li><strong>Screenshot capture</strong> for visual documentation</li>
+  <li><strong>File upload capabilities</strong> for evidence collection</li>
+  <li><strong>Flexible execution modes</strong> (attended/unattended)</li>
+</ul>
+
+<p>All templates are validated, sanitized, and can be saved to the global template store
+for reuse across testing scenarios.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<p>New-TestTemplate -PromptUser</p>
+
+<h3 id="example-2">EXAMPLE 2</h3>
+
+<p>New-TestTemplate -Steps $steps -TemplateName “MyTest” -Save</p>
+
+<h3 id="example-3-programmatic-template-creation">EXAMPLE 3: Programmatic Template Creation</h3>
+
+<p>$steps = @(
+    @{
+        Name = “ServiceCheck”
+        Type = “Invoke”
+        Command = “Get-Service -Name ‘Spooler’ | Select-Object Name, Status”
+        CanUnattend = $true
+        CanAttend = $true
+        ResponseType = “Status”
+    },
+    @{
+        Name = “UserConfirmation”
+        Type = “Manual”
+        Question = “Did the print spooler restart successfully?”
+        CanUnattend = $false
+        CanAttend = $true
+        ResponseType = “YesNo”
+    }
+)</p>
+
+<p>$template = New-TestTemplate -PromptUser $false -Steps $steps -TemplateName “Print Spooler Test” -Save</p>
+
+<h3 id="example-4-screenshot-and-file-upload-template">EXAMPLE 4: Screenshot and File Upload Template</h3>
+
+<p>New-TestTemplate -PromptUser $true</p>
+<h1 id="interactive-creation-including">Interactive creation including:</h1>
+<h1 id="--screenshot-step-for-desktop-capture">- Screenshot step for desktop capture</h1>
+<h1 id="--file-upload-step-for-log-collection">- File upload step for log collection</h1>
+<h1 id="--manual-verification-questions">- Manual verification questions</h1>
+<h1 id="--mixed-attendedunattended-capabilities">- Mixed attended/unattended capabilities</h1>
+
+<h3 id="example-5-complex-multi-step-validation">EXAMPLE 5: Complex Multi-Step Validation</h3>
+
+<p>$complexSteps = @(
+    @{ Name = “PreCheck”; Type = “Invoke”; Command = “Get-Process -Name ‘explorer’”; CanUnattend = $true },
+    @{ Name = “Screenshot”; Type = “Screenshot”; Question = “Take screenshot of desktop”; CanUnattend = $false },
+    @{ Name = “UserTest”; Type = “Manual”; Question = “Can you access the Start Menu?”; ResponseType = “YesNo” },
+    @{ Name = “PostCheck”; Type = “Invoke”; Command = “Get-EventLog -LogName System -Newest 5”; CanUnattend = $true },
+    @{ Name = “LogUpload”; Type = “FileUpload”; Question = “Upload any relevant log files”; CanUnattend = $false }
+)</p>
+
+<p>New-TestTemplate -Steps $complexSteps -TemplateName “Desktop Functionality Test” -Save -PromptUser $false</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>If $true (default), prompts the user for each step.
+If $false, expects -Steps input.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-steps">-Steps</h3>
+
+<p>Optional.
+Array of hashtables defining steps (for automation or GUI).</p>
+
+<p>```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-templatename">-TemplateName</h3>
+
+<p>Optional.
+Name for the template (used for saving).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-save">-Save</h3>
+
+<p>If set, saves the template to $global:Reports[‘Templates’].</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h2 id="notes">NOTES</h2>
+
+<h2 id="step-types-and-capabilities">STEP TYPES AND CAPABILITIES</h2>
+
+<h3 id="manual-steps">Manual Steps</h3>
+
+<ul>
+  <li><strong>Purpose</strong>: Human verification and interaction</li>
+  <li><strong>CanUnattend</strong>: Always $false (requires human input)</li>
+  <li><strong>ResponseTypes</strong>: YesNo, Text, Status, Other</li>
+  <li><strong>Use Cases</strong>: Visual verification, subjective assessment, user interaction testing</li>
+</ul>
+
+<h3 id="invoke-steps">Invoke Steps</h3>
+
+<ul>
+  <li><strong>Purpose</strong>: Automated PowerShell command execution</li>
+  <li><strong>CanUnattend</strong>: Typically $true (fully automated)</li>
+  <li><strong>Execution</strong>: Via CheckIT’s credential management and remoting</li>
+  <li><strong>Use Cases</strong>: System queries, service checks, automated validation</li>
+</ul>
+
+<h3 id="screenshot-steps">Screenshot Steps</h3>
+
+<ul>
+  <li><strong>Purpose</strong>: Visual evidence capture</li>
+  <li><strong>CanUnattend</strong>: Always $false (requires human interaction)</li>
+  <li><strong>Implementation</strong>: Prompts for file path or GUI integration</li>
+  <li><strong>Use Cases</strong>: Before/after comparisons, issue documentation, compliance evidence</li>
+</ul>
+
+<h3 id="fileupload-steps">FileUpload Steps</h3>
+
+<ul>
+  <li><strong>Purpose</strong>: Evidence and log file collection</li>
+  <li><strong>CanUnattend</strong>: Always $false (requires file selection)</li>
+  <li><strong>Implementation</strong>: File path prompting or GUI file dialogs</li>
+  <li><strong>Use Cases</strong>: Log collection, configuration backup, evidence preservation</li>
+</ul>
+
+<h2 id="response-types">RESPONSE TYPES</h2>
+
+<h3 id="yesno">YesNo</h3>
+
+<p>Simple boolean responses for pass/fail scenarios</p>
+
+<h3 id="text">Text</h3>
+
+<p>Free-form text input for detailed descriptions or observations</p>
+
+<h3 id="status">Status</h3>
+
+<p>Structured status responses (OK, Warning, Error, etc.)</p>
+
+<h3 id="file">File</h3>
+
+<p>File path responses for screenshot and upload steps</p>
+
+<h3 id="other">Other</h3>
+
+<p>Custom response formats for specialized validation</p>
+
+<h2 id="execution-modes">EXECUTION MODES</h2>
+
+<h3 id="attended-mode">Attended Mode</h3>
+
+<ul>
+  <li>All steps can execute with user present</li>
+  <li>Manual steps require human interaction</li>
+  <li>Screenshots and file uploads are supported</li>
+  <li>Full interactive capability</li>
+</ul>
+
+<h3 id="unattended-mode">Unattended Mode</h3>
+
+<ul>
+  <li>Only steps with <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>CanUnattend = $true
+</pre></td></tr></tbody></table></code> execute</li>
+  <li>Automated validation only</li>
+  <li>Skips manual verification steps</li>
+  <li>Perfect for automated testing scenarios</li>
+</ul>
+
+<h2 id="template-validation">TEMPLATE VALIDATION</h2>
+
+<h3 id="input-sanitization">Input Sanitization</h3>
+
+<ul>
+  <li>Step names limited to alphanumeric, underscore, dash, space</li>
+  <li>Commands and questions sanitized for security</li>
+  <li>Length limits prevent excessive content</li>
+  <li>Special character filtering prevents injection attacks</li>
+</ul>
+
+<h3 id="structure-validation">Structure Validation</h3>
+
+<ul>
+  <li>Required properties validated for each step type</li>
+  <li>Response types checked against allowed values</li>
+  <li>Execution capabilities verified for consistency</li>
+  <li>Dependencies between steps validated</li>
+</ul>
+
+<h2 id="integration-with-start-test">INTEGRATION WITH START-TEST</h2>
+
+<p>Templates created with New-TestTemplate are fully compatible with <a href="/CheckIT-Documentation/docs/help/Start-Test.html"><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Start-Test
+</pre></td></tr></tbody></table></code></a>:</p>
+
+<h1 id="create-template">Create template</h1>
+<p>$template = New-TestTemplate -TemplateName “My Test” -Save</p>
+
+<h1 id="execute-template">Execute template</h1>
+<p>Start-Test -TemplateName “My Test” -Nodes $targetNodes -PromptUser $true</p>
+
+<h1 id="or-execute-unattended">Or execute unattended</h1>
+<p>Start-Test -TemplateName “My Test” -Nodes $targetNodes -Unattended</p>
+
+<p><strong>Template Storage:</strong></p>
+
+<ul>
+  <li>
+    <p>Saved templates persist in `$global:Reports[‘Templates’][‘Test’]</p>
+  </li>
+  <li>Templates are included in CheckIT data saves/loads</li>
+  <li>Author attribution tracks template creators</li>
+  <li>Template modifications are audit-logged</li>
+</ul>
+
+<p><strong>Best Practices:</strong></p>
+
+<ul>
+  <li>Use descriptive step names for clear identification</li>
+  <li>Balance automated and manual steps based on testing needs</li>
+  <li>Consider unattended execution when designing step capabilities</li>
+  <li>Test templates with small node sets before large deployments</li>
+</ul>
+
+<p><strong>GUI Integration:</strong></p>
+
+<ul>
+  <li>Templates work seamlessly with CheckIT GUI applications</li>
+  <li>GuiPromptCallback support for custom UI interactions</li>
+  <li>StatusCallback integration for progress reporting</li>
+  <li>Structured return objects for programmatic processing</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Start-Test.html">Start-Test</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Invoke-TestStep.html">Invoke-TestStep</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/New-SystemTestTemplate.html">New-SystemTestTemplate</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Manage-Templates.html">Manage-Templates</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

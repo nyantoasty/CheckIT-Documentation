@@ -1,0 +1,278 @@
+# AD
+
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+
+# AD
+
+## SYNOPSIS
+
+Updates node objects with OS and OU information from Active Directory with automatic NodeList integration.
+
+## SYNTAX
+
+
+
+
+
+AD [[-Nodes] <Array>] [[-PromptUser] <Boolean>]
+
+
+
+
+
+## DESCRIPTION
+
+Queries Active Directory for computer information and updates node objects with Operating System and Organizational Unit data. This function performs both exact name matching and wildcard searches to locate computers in AD, making it robust for finding systems with partial or modified names.
+
+The function automatically updates the global NodeList with discovered information and manages node status tracking. Non-Windows systems are marked as "Non-PC" and systems not found in AD are automatically added to the SkipNodes list to prevent future processing attempts.
+
+Key features:
+
+- **Dual search strategy**: Exact name match followed by wildcard search
+- **Automatic NodeList updates**: Discovered information is immediately saved
+- **Status management**: TaskStatus tracking during processing
+- **Error handling**: Graceful handling of AD connection issues
+- **Skip list management**: Automatic exclusion of invalid systems
+
+## EXAMPLES
+
+### EXAMPLE 1: Update Single Node with AD Information
+
+
+
+
+
+$node = [PSCustomObject]@{ Node = "LAB-PC-01" }
+AD -Nodes @($node) -PromptUser $true
+
+
+
+
+
+Queries AD for LAB-PC-01 and updates the node object with OS and OU information.
+
+### EXAMPLE 2: Batch Update Multiple Nodes
+
+
+
+
+
+$nodes = $global:nodeList | Where-Object { -not $_.OS }
+AD -Nodes $nodes -PromptUser $true
+
+
+
+
+
+Updates all nodes in the NodeList that don't have OS information from AD.
+
+### EXAMPLE 3: Silent Operation for Automation
+
+
+
+
+
+$newNodes = @(
+    [PSCustomObject]@{ Node = "PC123" },
+    [PSCustomObject]@{ Node = "SERVER01" }
+)
+AD -Nodes $newNodes -PromptUser $false
+
+
+
+
+
+Silently updates node objects without console output, suitable for GUI or automation scenarios.
+
+### EXAMPLE 4: Integration with NodeList Workflow
+
+
+
+
+
+# Add new nodes to NodeList
+NodeList -Action Add -Nodes @("PC123", "PC124", "PC125")
+
+# Update all nodes with AD information
+$allNodes = $global:nodeList
+AD -Nodes $allNodes -PromptUser $true
+
+# View updated information
+NodeList -Action Preview
+
+
+
+
+
+Complete workflow showing integration with NodeList management.
+
+### EXAMPLE 5: Handling Partial Name Matches
+
+
+
+
+
+$partialNode = [PSCustomObject]@{ Node = "LAB01" }
+AD -Nodes @($partialNode) -PromptUser $true
+# Will find computers with names like "LAB01-PC", "LAB01-STUDENT", etc.
+
+
+
+
+
+Demonstrates wildcard search capability for partial computer names.
+
+## PARAMETERS
+
+### -Nodes
+
+Array of node objects to update with AD information. Each object must have a 'Node' property containing the computer name to search for in Active Directory.
+
+**Supported Input Types:**
+
+- PSCustomObject with Node property
+- Output from NodeList functions
+- Manually created node objects
+
+**Node Object Structure:**
+The function expects objects with at minimum a 'Node' property but can work with full NodeList objects containing additional properties like Group, OU, etc.
+
+```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+
+
+
+
+
+### -PromptUser
+
+Controls output behavior and user interaction.
+
+**When $true (default):**
+
+- Displays colored status messages for each node processed
+- Shows success/failure information for AD lookups
+- Provides detailed progress information
+- Suitable for interactive CLI sessions
+
+**When $false:**
+
+- Silent operation with no console output
+- Returns structured objects for programmatic use
+- Suitable for GUI applications and automation scripts
+- Error information still logged internally
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+## INPUTS
+
+### PSCustomObject[]
+
+Array of node objects containing computer names to look up in Active Directory.
+
+## OUTPUTS
+
+### None
+
+This function does not return objects directly. Instead, it updates:
+
+- The input node objects with discovered AD information
+- The global NodeList via NodeList -Action Update
+- The global SkipNodes list for computers not found in AD
+
+## NOTES
+
+**Active Directory Integration:**
+
+- Requires the ActiveDirectory PowerShell module
+- Uses Get-ADComputer with comprehensive property retrieval
+- Supports both domain-joined and workgroup scenarios
+- Handles AD connection failures gracefully
+
+**Search Strategy:**
+
+1. **Exact Match**: Searches for computers with exact name match
+2. **Wildcard Search**: If exact match fails, searches for names containing the target string
+3. **First Result**: If multiple matches found, uses the first result
+4. **Error Handling**: Graceful handling of AD query failures
+
+**Property Updates:**
+
+- **OS**: Operating System from AD (Windows systems) or "Non-PC" for others
+- **OU**: Extracted from DistinguishedName (first OU component)
+- **Description**: Computer description from AD
+- **TaskStatus**: Set to "Complete" for found systems, "Not in AD" for missing systems
+
+**NodeList Integration:**
+
+- Automatically calls `NodeList -Action Update` to persist changes
+- Uses `CreateIfMissing:$true` to add new nodes if needed
+- Maintains referential integrity with global NodeList
+
+**Skip List Management:**
+
+- Computers not found in AD are added to global SkipNodes list
+- Prevents repeated AD queries for non-existent systems
+- Uses `Add-SkipNode` with reason "Not in AD" and attribution "Auto (AD)"
+
+**Performance Considerations:**
+
+- Each node requires an AD query (potentially two queries with wildcard fallback)
+- Large node sets may take significant time to process
+- Network connectivity to domain controllers affects performance
+- Consider batching large operations or using background jobs
+
+**Error Scenarios:**
+
+- AD module not available: Function will fail with module import error
+- No domain connectivity: Queries will timeout or fail
+- Insufficient permissions: May return incomplete results
+- Invalid computer names: Will be marked as "Not in AD"
+
+**Best Practices:**
+
+- Verify AD module availability before calling function
+- Use PromptUser:$false for automation scenarios
+- Process large node sets in batches to avoid performance issues
+- Check TaskStatus property after processing to identify failures
+
+## RELATED LINKS
+
+[Get-ADMembership](Get-ADMembership.md)
+
+[NodeList](NodeList.md)
+
+[Add-SkipNode](Add-SkipNode.md)
+
+[New-NodeObject](New-NodeObject.md)
+
+[Ensure-NodeADInfo](Ensure-NodeADInfo.md)
+
+
+

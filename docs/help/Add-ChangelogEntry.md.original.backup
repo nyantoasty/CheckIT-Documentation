@@ -1,0 +1,353 @@
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+# Add-ChangelogEntry
+
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+
+# Add-ChangelogEntry
+
+## SYNOPSIS
+
+Creates and adds a standardized entry to the project's CHANGELOG.md file.
+
+## SYNTAX
+
+
+
+
+
+Add-ChangelogEntry [-Summary](./-Summary.md) <String> [-KeyChanges](./-KeyChanges.md) <String[]> [-FilesChanged](./-FilesChanged.md) <String[]> [-Impact](./-Impact.md) <String>
+ [[-Type](./-Type.md) <String>] [[-FunctionsAdded](./-FunctionsAdded.md) <String[]>] [[-FunctionsCompleted](./-FunctionsCompleted.md) <String[]>] [[-Version](./-Version.md) <String>]
+ [[-GenerateAIPrompt](./-GenerateAIPrompt.md) <Boolean>] [-PreviewOnly](./-PreviewOnly.md) [-CopyToClipboard](./-CopyToClipboard.md) [-ProgressAction <ActionPreference>]
+ [<Common## PARAMETERS>]
+
+
+
+
+
+## DESCRIPTION
+
+Adds a structured changelog entry with consistent formatting to the project's CHANGELOG.md file.
+Each entry includes metadata like change type, version, impact, and lists of affected files and functions.
+The function ensures entries are properly formatted according to the project's changelog standards
+and places them in chronological order.
+
+## EXAMPLES
+
+### Example 1: Add a basic changelog entry
+
+
+
+
+
+Add-ChangelogEntry -Summary "Added Excel Pivot Support" -Type "Enhancement" -Version "1.5.0" 
+
+  -KeyChanges @("Added Invoke-Pivotizer function", "Enhanced Export-ToExcel") 
+
+  -FilesChanged @("checkit-core.psm1", "docs/help/Invoke-Pivotizer.md") 
+
+  -Impact "Users can now create Excel pivot tables directly from CheckIT"
+
+
+
+
+
+Adds a changelog entry for the Excel pivot features with basic metadata.
+
+### Example 2: Comprehensive changelog entry with function tracking
+
+
+
+
+
+Add-ChangelogEntry -Summary "Major GUI Overhaul" -Type "Enhancement" -Version "2.0.0" 
+
+  -KeyChanges @(
+    "Redesigned main dashboard interface",
+    "Added dark mode support",
+    "Improved performance for large node lists"
+  ) 
+
+  -FilesChanged @(
+    "checkit-gui.psm1", 
+    "assets/styles.xaml", 
+    "templates/dashboard.xaml"
+  ) 
+
+  -FunctionsAdded @("New-DarkModeTheme", "Convert-StyleToTheme") 
+
+  -FunctionsChanged @("Show-MainDashboard", "Update-NodeDisplay") 
+
+  -FunctionsRemoved @("Legacy-GUIRenderer") 
+
+  -Impact "Completely refreshed user experience with better performance and visual options"
+
+
+
+
+
+Creates a detailed changelog entry for a major GUI update, including tracking of added, changed, and removed functions.
+
+## PARAMETERS
+
+### -Summary
+
+Brief summary of the changes, will appear in the changelog entry heading.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -KeyChanges
+
+Array of bullet points describing the main changes made.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -FilesChanged
+
+Array of file paths that were modified as part of this change.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -Impact
+
+A summary of how these changes impact users or the system.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -Type
+
+Type of change. Common values include "Enhancement," "Bugfix," "Documentation," or "Breaking Change."
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -FunctionsAdded
+
+Array of function names that were added (optional).
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 6
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -FunctionsCompleted
+Array of function names that moved from placeholder to complete
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -Version
+
+Version number affected by these changes (e.g., "1.5.0").
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 8
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -GenerateAIPrompt
+If true, generates an AI assistant prompt for follow-up documentation analysis
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 9
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -ProgressAction
+{{ Fill ProgressAction ## DESCRIPTION }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -CopyToClipboard
+{{ Fill CopyToClipboard ## DESCRIPTION }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -PreviewOnly
+{{ Fill PreviewOnly ## DESCRIPTION }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### Common## PARAMETERS
+This cmdlet supports the common ## PARAMETERS: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_Common## PARAMETERS](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+### None
+
+This function does not accept pipeline input.
+
+## OUTPUTS
+
+### System.String
+
+Returns the path to the updated changelog file.
+
+## NOTES
+
+- Ensures chronological ordering of changelog entries
+- Creates the changelog file if it doesn't exist
+- Uses Markdown formatting for structured, readable output
+- Maintains consistent formatting across entries
+
+## RELATED LINKS
+
+[Generate-DocumentationAnalysisPrompt](Generate-DocumentationAnalysisPrompt.md)
+
+
+
+

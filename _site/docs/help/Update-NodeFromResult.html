@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update-NodeFromResult | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Update-NodeFromResult</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="update-nodefromresult">Update-NodeFromResult</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="update-nodefromresult-1">Update-NodeFromResult</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Updates node properties in the global NodeList from function execution results with selective property updates.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Update-NodeFromResult [-result] <PSCustomObject></PSCustomObject></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Intelligently updates node objects in the global NodeList based on results from CheckIT function executions. Only updates properties that exist in the result object and have non-null values, preserving existing node data while adding new information.</p>
+
+<p>This function is designed to be called by CheckIT functions after executing operations that return node-specific information such as OS details, connection status, or other system properties. It ensures the NodeList stays current with the latest discovered information about each node.</p>
+
+<p>The function performs selective updates - only modifying properties that are present and non-null in the result object, which prevents overwriting existing valuable data with empty or null values.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-update-from-system-information-results">EXAMPLE 1: Update from System Information Results</h3>
+
+<h1 id="after-getting-os-information-from-a-node">After getting OS information from a node</h1>
+<p>$result = [PSCustomObject]@{
+    Node = “PC123”
+    OS = “Windows 11 Pro”
+    LastBootTime = “2024-01-15 08:30:00”
+    Online = “Online”
+}</p>
+
+<p>Update-NodeFromResult -result $result</p>
+
+<p>Updates PC123 with OS information and connection status while preserving other existing properties.</p>
+
+<h3 id="example-2-update-from-connection-test-results">EXAMPLE 2: Update from Connection Test Results</h3>
+
+<h1 id="after-testing-node-connectivity">After testing node connectivity</h1>
+<p>$result = [PSCustomObject]@{
+    Node = “SERVER01”
+    Online = “Online”
+    WinRM = $true
+    LastCheck = Get-Date
+}</p>
+
+<p>Update-NodeFromResult -result $result</p>
+
+<p>Updates connection-related properties for SERVER01 without affecting other node metadata.</p>
+
+<h3 id="example-3-update-from-process-parallel-results">EXAMPLE 3: Update from Process-Parallel Results</h3>
+
+<h1 id="in-a-checkit-function-using-process-parallel">In a CheckIT function using Process-Parallel</h1>
+<p>$parallelResults = $nodeObjects | Process-Parallel -ScriptBlock {
+    param($node, $credential, $fqdn)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre># ... remote operations ...
+
+return [PSCustomObject]@{
+    Node = $node.Node
+    Status = "Success"
+    LastReboot = (Get-CimInstance Win32_OperatingSystem).LastBootUpTime
+    Online = "Online"
+} } -UseCredentials
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="update-nodelist-with-results">Update NodeList with results</h1>
+<p>foreach ($result in $parallelResults.Results) {
+    if ($result.Status -eq “Success”) {
+        Update-NodeFromResult -result $result
+    }
+}</p>
+
+<p>Batch updates multiple nodes from parallel operation results.</p>
+
+<h3 id="example-4-partial-property-updates">EXAMPLE 4: Partial Property Updates</h3>
+
+<h1 id="result-with-only-some-properties">Result with only some properties</h1>
+<p>$result = [PSCustomObject]@{
+    Node = “LAB-PC-05”
+    Group = “Lab Computers”
+    # Note: No OS, OU, or other properties
+}</p>
+
+<p>Update-NodeFromResult -result $result</p>
+
+<p>Only updates the Group property, leaving all other existing properties unchanged.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-result">-result</h3>
+
+<p>The result object containing node information to update. Must have a ‘Node’ property with a valid node name. Only properties that exist in this object and have non-null values will be updated in the NodeList.</p>
+
+<p>```yaml
+Type: PSCustomObject
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="pscustomobject">PSCustomObject</h3>
+
+<p>Result objects from CheckIT function executions containing node information to update.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="none">None</h3>
+
+<p>This function does not return any output. It updates the global NodeList in place.</p>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Update Logic:</strong></p>
+
+<ul>
+  <li>Only updates properties that exist in the result object</li>
+  <li>Only updates properties with non-null values</li>
+  <li>Preserves existing node data not present in the result</li>
+  <li>Requires a valid ‘Node’ property to identify the target node</li>
+</ul>
+
+<p><strong>Property Handling:</strong></p>
+
+<ul>
+  <li>Uses Get-CheckITColumns to determine valid NodeList properties</li>
+  <li>Skips the ‘Node’ property itself during updates (used only for identification)</li>
+  <li>Maintains property consistency with NodeList schema</li>
+</ul>
+
+<p><strong>Error Handling:</strong></p>
+
+<ul>
+  <li>Validates that result object has a valid Node property</li>
+  <li>Warns if Node property is missing or invalid</li>
+  <li>Gracefully handles cases where node doesn’t exist in NodeList</li>
+  <li>Uses New-NodeObject for proper object structure</li>
+</ul>
+
+<p><strong>Integration with CheckIT Functions:</strong></p>
+
+<ul>
+  <li>Commonly called within Process-Parallel result processing loops</li>
+  <li>Used by diagnostic and information gathering functions</li>
+  <li>Supports the standard CheckIT pattern of updating NodeList with discovered information</li>
+  <li>Works with both single node and batch update scenarios</li>
+</ul>
+
+<p><strong>Best Practices:</strong></p>
+
+<ul>
+  <li>Always check result.Status before calling for error results</li>
+  <li>Include Node property in all result objects</li>
+  <li>Use consistent property names matching NodeList schema</li>
+  <li>Consider using this in finally blocks to ensure updates occur</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/NodeList.html">NodeList</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/New-NodeObject.html">New-NodeObject</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Process-Parallel.html">Process-Parallel</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-CheckITColumns.html">Get-CheckITColumns</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

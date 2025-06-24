@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Reference | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <link rel="stylesheet" href="../assets/style.css" />
+
+<h1 id="checkit-quick-reference">CheckIT Quick Reference</h1>
+
+<blockquote>
+  <p>Essential patterns, functions, and rules for rapid development and troubleshooting</p>
+</blockquote>
+
+<h2 id="-30-second-setup-ai-assistants--developers">⚡ 30-Second Setup (AI Assistants &amp; Developers)</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># 1. Get complete function template</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Preview</span><span class="w">  </span><span class="c"># Select "CheckIT Function Template"</span><span class="w">
+
+</span><span class="c"># 2. Use enhanced template workflows</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Check Disk Space"</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"Audit"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+
+</span><span class="c"># 3. Export your function</span><span class="w">
+</span><span class="n">Export-ModuleMember</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="p">@(</span><span class="s1">'YourNewFunction'</span><span class="p">)</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-critical-rules-never-violate">🔥 Critical Rules (Never Violate)</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Rule</th>
+      <th>Correct</th>
+      <th>Wrong</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>String Interpolation</strong></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>"Node: $($node.Name)"
+</pre></td></tr></tbody></table></code></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>"Node: $node.Name"
+</pre></td></tr></tbody></table></code></td>
+    </tr>
+    <tr>
+      <td><strong>Line Continuation</strong></td>
+      <td>Single line or splatting</td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Backticks
+</pre></td></tr></tbody></table></code> (break with whitespace)</td>
+    </tr>
+    <tr>
+      <td><strong>Node Updates</strong></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>New-NodeObject $data
+</pre></td></tr></tbody></table></code></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$node.Property = $value
+</pre></td></tr></tbody></table></code></td>
+    </tr>
+    <tr>
+      <td><strong>Global Variables</strong></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>NodeList -Action Add
+</pre></td></tr></tbody></table></code></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$global:nodeList += $node
+</pre></td></tr></tbody></table></code></td>
+    </tr>
+    <tr>
+      <td><strong>Function Export</strong></td>
+      <td>Add to <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Export-ModuleMember
+</pre></td></tr></tbody></table></code></td>
+      <td>Function won’t be available</td>
+    </tr>
+    <tr>
+      <td><strong>Reporting Pattern</strong></td>
+      <td>Separate <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Write-TaskLog
+</pre></td></tr></tbody></table></code> and <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Set-Report
+</pre></td></tr></tbody></table></code></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Set-Report -Task
+</pre></td></tr></tbody></table></code> (causes errors)</td>
+    </tr>
+    <tr>
+      <td><strong>Excel Dependencies</strong></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Export-ToExcel
+</pre></td></tr></tbody></table></code></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Export-Excel
+</pre></td></tr></tbody></table></code> (external module)</td>
+    </tr>
+    <tr>
+      <td><strong>GUI Compatibility</strong></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>if ($PromptUser) { Read-Host }
+</pre></td></tr></tbody></table></code></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Read-Host
+</pre></td></tr></tbody></table></code> (blocks GUI)</td>
+    </tr>
+    <tr>
+      <td><strong>Array Safety</strong></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>@(SomeFunction)
+</pre></td></tr></tbody></table></code></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>SomeFunction
+</pre></td></tr></tbody></table></code> (unsafe)</td>
+    </tr>
+    <tr>
+      <td><strong>DateTime Formatting</strong></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>(Get-Date).ToString("yyyy-MM-dd")
+</pre></td></tr></tbody></table></code></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Get-Date -Format "yyyy-MM-dd"
+</pre></td></tr></tbody></table></code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="-enhanced-template-workflow-system">🚀 Enhanced Template Workflow System</h2>
+
+<h3 id="quick-template-usage">Quick Template Usage</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="c"># Execute multiple templates with Excel export</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Check Disk Space"</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"System_Audit"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+
+</span><span class="c"># Enhanced confirmation modes</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">)</span><span class="w"> </span><span class="nt">-Confirm</span><span class="p">:</span><span class="bp">$false</span><span class="w">  </span><span class="c"># Auto-execute</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">)</span><span class="w"> </span><span class="nt">-Confirm</span><span class="w"> </span><span class="s2">"Auto"</span><span class="w">  </span><span class="c"># Smart session automation</span><span class="w">
+
+</span><span class="c"># Individual template execution</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s2">"Get OS Info"</span><span class="w"> </span><span class="nt">-Confirm</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+
+</span><span class="c"># Template management</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Command</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">List</span><span class="w">    </span><span class="c"># List command templates</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Search</span><span class="w"> </span><span class="c"># Find development patterns</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="enhanced-confirmation-system">Enhanced Confirmation System</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="c"># Three-tier confirmation pattern:</span><span class="w">
+</span><span class="p">[</span><span class="n">object</span><span class="p">]</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">   </span><span class="c"># $true, $false, or "Auto"</span><span class="w">
+
+</span><span class="c"># Session automation with YA/NA support</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">WorkflowAutoConfirm</span><span class="o">.</span><span class="nf">ContainsKey</span><span class="p">(</span><span class="s1">'*'</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$shouldProceed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">WorkflowAutoConfirm</span><span class="p">[</span><span class="s1">'*'</span><span class="p">]</span><span class="w">  </span><span class="c"># Uses session choice</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-function-readiness-matrix">📊 Function Readiness Matrix</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Need This?</th>
+      <th>Use This Function</th>
+      <th>Status</th>
+      <th>Key Features</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Template workflows</strong></td>
+      <td>Invoke-TemplateWorkflow</td>
+      <td>✅ Ready</td>
+      <td>Multi-template execution, Excel export, session automation</td>
+    </tr>
+    <tr>
+      <td><strong>Template commands</strong></td>
+      <td>Invoke-TemplateCommand</td>
+      <td>✅ Ready</td>
+      <td>Enhanced confirmation, workflow integration</td>
+    </tr>
+    <tr>
+      <td><strong>Template management</strong></td>
+      <td>Manage-Templates</td>
+      <td>✅ Ready</td>
+      <td>Command, Test, Codebase templates with search</td>
+    </tr>
+    <tr>
+      <td><strong>Software inventory</strong></td>
+      <td>Get-Software</td>
+      <td>✅ Ready</td>
+      <td>Parallel processing, All/Specific modes</td>
+    </tr>
+    <tr>
+      <td><strong>SCCM packages</strong></td>
+      <td>Get-CCMPackages</td>
+      <td>✅ Ready</td>
+      <td>Interactive management, CIM/WMI fallback</td>
+    </tr>
+    <tr>
+      <td><strong>Remote commands</strong></td>
+      <td>Invoke-NodeCommand</td>
+      <td>✅ Ready</td>
+      <td>Dry-run support, comprehensive logging</td>
+    </tr>
+    <tr>
+      <td><strong>System connectivity</strong></td>
+      <td>Test-NodeConnection</td>
+      <td>✅ Ready</td>
+      <td>WinRM/WSMan/Credentials validation</td>
+    </tr>
+    <tr>
+      <td><strong>Excel export</strong></td>
+      <td>Export-ToExcel</td>
+      <td>✅ Ready</td>
+      <td>No dependencies, multi-sheet support</td>
+    </tr>
+    <tr>
+      <td><strong>Software analysis</strong></td>
+      <td>Get-SoftwareSampleAnalysis</td>
+      <td>✅ Ready</td>
+      <td>OU-based sampling, statistical analysis</td>
+    </tr>
+    <tr>
+      <td><strong>Node management</strong></td>
+      <td>NodeList, New-NodeObject</td>
+      <td>✅ Ready</td>
+      <td>Preserves Passman status</td>
+    </tr>
+    <tr>
+      <td><strong>Credential handling</strong></td>
+      <td>Process-Parallel -UseCredentials</td>
+      <td>✅ Ready</td>
+      <td>Automatic resolution, Passman integration</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="-the-big-3-patterns-master-these-first">⚡ The Big 3 Patterns (Master These First)</h2>
+
+<h3 id="1-enhanced-confirmation-pattern">1. Enhanced Confirmation Pattern</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ CORRECT: Three-tier confirmation with session memory</span><span class="w">
+</span><span class="kr">function</span><span class="w"> </span><span class="nf">My-CheckITFunction</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kr">param</span><span class="p">([</span><span class="n">object</span><span class="p">]</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="p">)</span><span class="w">  </span><span class="c"># $true, $false, or "Auto"</span><span class="w">
+    
+    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="bp">$false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nv">$shouldProceed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+    </span><span class="p">}</span><span class="w"> </span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="s2">"Auto"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="c"># Check session-wide automation state</span><span class="w">
+        </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">WorkflowAutoConfirm</span><span class="o">.</span><span class="nf">ContainsKey</span><span class="p">(</span><span class="s1">'*'</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nv">$shouldProceed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">WorkflowAutoConfirm</span><span class="p">[</span><span class="s1">'*'</span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ❌ WRONG: Boolean-only confirmation</span><span class="w">
+</span><span class="p">[</span><span class="n">bool</span><span class="p">]</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">  </span><span class="c"># Limits automation flexibility</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="2-reporting-pattern-separate-task-logging-from-business-reporting">2. Reporting Pattern (SEPARATE task logging from business reporting)</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ CORRECT: Two separate calls</span><span class="w">
+</span><span class="nv">$results</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Write-TaskLog</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="nv">$function</span><span class="w"> </span><span class="nt">-TaskParams</span><span class="w"> </span><span class="p">@{}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Out-Null</span><span class="w">
+</span><span class="nx">Set-Report</span><span class="w"> </span><span class="nt">-ReportName</span><span class="w"> </span><span class="nv">$name</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="nv">$function</span><span class="w"> </span><span class="nt">-Data</span><span class="w"> </span><span class="nv">$results</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Out-Null</span><span class="w">
+
+</span><span class="c"># ❌ WRONG: Causes double reporting errors</span><span class="w">
+</span><span class="n">Set-Report</span><span class="w"> </span><span class="nt">-Task</span><span class="w"> </span><span class="nt">-TaskParams</span><span class="w"> </span><span class="p">@{</span><span class="err">...</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="3-credential-pattern-automatic-credential-management">3. Credential Pattern (Automatic credential management)</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ CORRECT: Process-Parallel with -UseCredentials</span><span class="w">
+</span><span class="n">Process-Parallel</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+    </span><span class="kr">param</span><span class="p">(</span><span class="nv">$node</span><span class="p">,</span><span class="w"> </span><span class="nv">$customParam</span><span class="p">,</span><span class="w"> </span><span class="nv">$credential</span><span class="p">,</span><span class="w"> </span><span class="nv">$fqdn</span><span class="p">)</span><span class="w">
+    </span><span class="c"># $credential and $fqdn automatically available</span><span class="w">
+    </span><span class="n">Invoke-Command</span><span class="w"> </span><span class="nt">-ComputerName</span><span class="w"> </span><span class="nv">$fqdn</span><span class="w"> </span><span class="nt">-Credential</span><span class="w"> </span><span class="nv">$credential</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">...</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w"> </span><span class="nt">-UseCredentials</span><span class="w">
+
+</span><span class="c"># ❌ WRONG: Manual credential handling</span><span class="w">
+</span><span class="nv">$cred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-Credential</span><span class="w">  </span><span class="c"># Blocks GUI, no Passman integration</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-instant-troubleshooting">🔧 Instant Troubleshooting</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Problem</th>
+      <th>Quick Fix</th>
+      <th>Common Cause</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>“Function not found”</strong></td>
+      <td>Add to <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Export-ModuleMember
+</pre></td></tr></tbody></table></code>, reload module</td>
+      <td>Function not exported</td>
+    </tr>
+    <tr>
+      <td><strong>Template workflow double-prompting</strong></td>
+      <td>Check confirmation inheritance in workflow</td>
+      <td>Missing <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$templateConfirm
+</pre></td></tr></tbody></table></code> parameter</td>
+    </tr>
+    <tr>
+      <td><strong>Excel export empty sheets</strong></td>
+      <td>Verify template returns <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>CleanResults
+</pre></td></tr></tbody></table></code></td>
+      <td>Template returns verbose output</td>
+    </tr>
+    <tr>
+      <td><strong>Session automation not working</strong></td>
+      <td>Check <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$global:WorkflowAutoConfirm
+</pre></td></tr></tbody></table></code> state</td>
+      <td>Missing session state management</td>
+    </tr>
+    <tr>
+      <td><strong>Command syntax errors</strong></td>
+      <td>Use single line or splatting</td>
+      <td>Backticks with trailing whitespace</td>
+    </tr>
+    <tr>
+      <td><strong>Template not found</strong></td>
+      <td>Run <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Ensure-Templates -Force
+</pre></td></tr></tbody></table></code></td>
+      <td>Templates not loaded</td>
+    </tr>
+    <tr>
+      <td><strong>Credential problems</strong></td>
+      <td>Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Process-Parallel -UseCredentials
+</pre></td></tr></tbody></table></code></td>
+      <td>Manual credential handling</td>
+    </tr>
+    <tr>
+      <td><strong>GUI hangs</strong></td>
+      <td>Add <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>if ($PromptUser)
+</pre></td></tr></tbody></table></code> around prompts</td>
+      <td>CLI-only code in GUI</td>
+    </tr>
+    <tr>
+      <td><strong>Double reporting</strong></td>
+      <td>Separate <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Write-TaskLog
+</pre></td></tr></tbody></table></code> and <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Set-Report
+</pre></td></tr></tbody></table></code></td>
+      <td>Using <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-Task
+</pre></td></tr></tbody></table></code> parameter incorrectly</td>
+    </tr>
+    <tr>
+      <td><strong>Node properties lost</strong></td>
+      <td>Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>New-NodeObject
+</pre></td></tr></tbody></table></code> for updates</td>
+      <td>Direct property assignment</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="-essential-function-calls">📋 Essential Function Calls</h2>
+
+<h3 id="enhanced-template-workflows">Enhanced Template Workflows</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># Multi-template execution with Excel export</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Check Disk Space"</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"System_Audit"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+
+</span><span class="c"># Auto-execute without confirmation</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">)</span><span class="w"> </span><span class="nt">-Confirm</span><span class="p">:</span><span class="bp">$false</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+
+</span><span class="c"># Smart session automation (prompts once, remembers choice)</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Check Disk Space"</span><span class="p">)</span><span class="w"> </span><span class="nt">-Confirm</span><span class="w"> </span><span class="s2">"Auto"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="core-data-collection">Core Data Collection</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="c"># Software inventory</span><span class="w">
+</span><span class="n">Get-Software</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">All</span><span class="w"> </span><span class="nt">-ReportName</span><span class="w"> </span><span class="s2">"Audit"</span><span class="w">
+</span><span class="n">Get-Software</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">Specific</span><span class="w"> </span><span class="nt">-SearchStrings</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Chrome"</span><span class="p">,</span><span class="s2">"Office"</span><span class="p">)</span><span class="w">
+
+</span><span class="c"># SCCM package management</span><span class="w">
+</span><span class="n">Get-CCMPackages</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">Interactive</span><span class="w">
+</span><span class="n">Get-CCMPackages</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-PackageFilter</span><span class="w"> </span><span class="s2">"*Office*"</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">Discovery</span><span class="w">
+
+</span><span class="c"># User sessions and connectivity</span><span class="w">
+</span><span class="n">Get-Users</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Report</span><span class="w">
+</span><span class="n">Test-NodeConnection</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-OnlineOnly</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="template-management">Template Management</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># Template discovery and management</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Command</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">List</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Search</span><span class="w">  </span><span class="c"># Find development patterns</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Test</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Add</span><span class="w">
+
+</span><span class="c"># Individual template execution</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s2">"Get OS Info"</span><span class="w"> </span><span class="nt">-Confirm</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s2">"List"</span><span class="w">  </span><span class="c"># Show available templates</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="remote-operations--analysis">Remote Operations &amp; Analysis</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="c"># Remote command execution</span><span class="w">
+</span><span class="n">Invoke-NodeCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Command</span><span class="w"> </span><span class="s2">"Get-Service SCCM*"</span><span class="w"> </span><span class="nt">-DryRun</span><span class="w">
+</span><span class="n">Invoke-NodeCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Get-ComputerInfo</span><span class="w"> </span><span class="p">}</span><span class="w">
+
+</span><span class="c"># System tools and analysis</span><span class="w">
+</span><span class="n">Open-RemoteSystemTools</span><span class="w"> </span><span class="nt">-Node</span><span class="w"> </span><span class="s2">"PC123"</span><span class="w"> </span><span class="nt">-Tool</span><span class="w"> </span><span class="nx">ComputerMgmt</span><span class="w">
+</span><span class="n">Get-SoftwareSampleAnalysis</span><span class="w"> </span><span class="nt">-SampleSize</span><span class="w"> </span><span class="nx">5</span><span class="w"> </span><span class="nt">-Export</span><span class="w"> </span><span class="nt">-BaseOU</span><span class="w"> </span><span class="s2">"Lab"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="node--credential-management">Node &amp; Credential Management</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c"># Node management (always use these - never manipulate $global:nodeList directly)</span><span class="w">
+</span><span class="nv">$node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">New-NodeObject</span><span class="w"> </span><span class="p">@{</span><span class="w"> </span><span class="nx">Node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"PC123"</span><span class="p">;</span><span class="w"> </span><span class="nx">Group</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"LabA"</span><span class="p">;</span><span class="w"> </span><span class="nx">Status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Complete"</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="n">NodeList</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="p">@(</span><span class="s2">"PC1"</span><span class="p">,</span><span class="s2">"PC2"</span><span class="p">)</span><span class="w"> </span><span class="nt">-PromptUser</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+</span><span class="n">NodeList</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Update</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="p">@(</span><span class="nv">$updatedNode</span><span class="p">)</span><span class="w"> </span><span class="nt">-PromptUser</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+
+</span><span class="c"># Credential management</span><span class="w">
+</span><span class="n">Ensure-GlobalCredStore</span><span class="w"> </span><span class="nt">-PromptUser</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+</span><span class="n">Get-ValidCredStatus</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w">
+</span><span class="n">Passman</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w">  </span><span class="c"># Retrieves credentials from Passman</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="reporting--export">Reporting &amp; Export</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="c"># Excel export with multi-sheet support</span><span class="w">
+</span><span class="n">Export-ToExcel</span><span class="w"> </span><span class="nt">-Sheets</span><span class="w"> </span><span class="p">@{</span><span class="w"> </span><span class="s2">"Audit"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$results</span><span class="p">;</span><span class="w"> </span><span class="s2">"Summary"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$summary</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="nt">-Title</span><span class="w"> </span><span class="s2">"Report"</span><span class="w">
+</span><span class="n">Export-ToExcel</span><span class="w"> </span><span class="nt">-InputObject</span><span class="w"> </span><span class="nv">$data</span><span class="w"> </span><span class="nt">-Columns</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Node"</span><span class="p">,</span><span class="s2">"Status"</span><span class="p">,</span><span class="s2">"Error"</span><span class="p">)</span><span class="w">
+
+</span><span class="c"># Pivot tables and business reporting</span><span class="w">
+</span><span class="n">Invoke-Pivotizer</span><span class="w"> </span><span class="nt">-ExcelPath</span><span class="w"> </span><span class="nv">$file</span><span class="w"> </span><span class="nt">-SourceSheet</span><span class="w"> </span><span class="s2">"Data"</span><span class="w"> </span><span class="nt">-RowFields</span><span class="w"> </span><span class="p">@(</span><span class="s2">"OU"</span><span class="p">)</span><span class="w">
+</span><span class="n">Set-Report</span><span class="w"> </span><span class="nt">-ReportName</span><span class="w"> </span><span class="s2">"Audit"</span><span class="w"> </span><span class="nt">-Function</span><span class="w"> </span><span class="nv">$function</span><span class="w"> </span><span class="nt">-Data</span><span class="w"> </span><span class="nv">$results</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="️-small-tweaks-development-philosophy">🛠️ Small Tweaks Development Philosophy</h2>
+
+<h3 id="-enhanced-template-integration-pattern">✅ Enhanced Template Integration Pattern</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="c"># Small enhancement: Add enhanced confirmation to existing function</span><span class="w">
+</span><span class="kr">function</span><span class="w"> </span><span class="nf">Existing-Function</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kr">param</span><span class="p">(</span><span class="w">
+        </span><span class="p">[</span><span class="n">array</span><span class="p">]</span><span class="nv">$Nodes</span><span class="p">,</span><span class="w">
+        </span><span class="p">[</span><span class="n">object</span><span class="p">]</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="p">,</span><span class="w">  </span><span class="c"># NEW: Enhanced confirmation support</span><span class="w">
+        </span><span class="p">[</span><span class="n">bool</span><span class="p">]</span><span class="nv">$PromptUser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+    </span><span class="p">)</span><span class="w">
+    
+    </span><span class="c"># NEW: Enhanced confirmation logic</span><span class="w">
+    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="bp">$false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nv">$shouldProceed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+    </span><span class="p">}</span><span class="w"> </span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="s2">"Auto"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="c"># Check session state, prompt with YA/NA options</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    
+    </span><span class="c"># UNCHANGED: All existing functionality preserved</span><span class="w">
+    </span><span class="c"># Existing logic remains exactly the same</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="-template-workflow-integration-pattern">✅ Template Workflow Integration Pattern</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="c"># Small enhancement: Make function template-workflow friendly</span><span class="w">
+</span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$templateName</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$Templates</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># NEW: Inherit confirmation settings from workflow</span><span class="w">
+    </span><span class="nv">$templateConfirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="bp">$false</span><span class="w"> </span><span class="o">-or</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">WorkflowAutoConfirm</span><span class="o">.</span><span class="nf">ContainsKey</span><span class="p">(</span><span class="s1">'*'</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+        </span><span class="bp">$false</span><span class="w">  </span><span class="c"># Inherit automation setting</span><span class="w">
+    </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+        </span><span class="bp">$true</span><span class="w">   </span><span class="c"># Use standard confirmation</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    
+    </span><span class="c"># UNCHANGED: Use existing template execution</span><span class="w">
+    </span><span class="nv">$result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="nv">$templateName</span><span class="w"> </span><span class="nt">-Confirm</span><span class="p">:</span><span class="nv">$templateConfirm</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="-large-refactors-to-avoid">❌ Large Refactors to Avoid</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="c"># ❌ WRONG: Complete rewrites</span><span class="w">
+</span><span class="kr">function</span><span class="w"> </span><span class="nf">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># Complete rewrite changing fundamental behavior</span><span class="w">
+    </span><span class="c"># Breaks existing integrations and user expectations</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ❌ WRONG: Bypassing core functions</span><span class="w">
+</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nv">$newNode</span><span class="w">  </span><span class="c"># Direct manipulation</span><span class="w">
+</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">Reports</span><span class="p">[</span><span class="s1">'Reports'</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nv">$result</span><span class="w">  </span><span class="c"># Bypassing Set-Report</span><span class="w">
+
+</span><span class="c"># ❌ WRONG: Artificial data batching</span><span class="w">
+</span><span class="n">Build-Report</span><span class="w"> </span><span class="nt">-Batch</span><span class="w"> </span><span class="nv">$WorkflowName</span><span class="w"> </span><span class="nt">-Result</span><span class="w"> </span><span class="nv">$result</span><span class="w">  </span><span class="c"># Don't combine unrelated concerns</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-development-checklist">📖 Development Checklist</h2>
+
+<h3 id="before-starting">Before Starting</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Check existing templates: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Manage-Templates -Type Command -Action List
+</pre></td></tr></tbody></table></code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Get function template: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Manage-Templates -Type Codebase -Action Preview
+</pre></td></tr></tbody></table></code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Verify template workflows can’t solve the need first</li>
+</ul>
+
+<h3 id="during-development">During Development</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Use enhanced confirmation pattern: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>[object]$Confirm = $true
+</pre></td></tr></tbody></table></code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Implement session automation with <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$global:WorkflowAutoConfirm
+</pre></td></tr></tbody></table></code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Process-Parallel -UseCredentials
+</pre></td></tr></tbody></table></code> for remote operations</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Separate <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Write-TaskLog
+</pre></td></tr></tbody></table></code> and <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Set-Report
+</pre></td></tr></tbody></table></code> calls</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>New-NodeObject
+</pre></td></tr></tbody></table></code> for all node updates</li>
+</ul>
+
+<h3 id="before-completion">Before Completion</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Add to <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Export-ModuleMember
+</pre></td></tr></tbody></table></code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Test enhanced confirmation modes: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$true
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$false
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>"Auto"
+</pre></td></tr></tbody></table></code></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Test template workflow integration if applicable</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Verify session automation works (YA/NA options)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Test both CLI (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-PromptUser:$true
+</pre></td></tr></tbody></table></code>) and GUI (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-PromptUser:$false
+</pre></td></tr></tbody></table></code>)</li>
+</ul>
+
+<h2 id="-working-solutions-production-tested">🎯 Working Solutions (Production-Tested)</h2>
+
+<h3 id="enhanced-template-workflow-integration">Enhanced Template Workflow Integration</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="c"># Session-wide automation with inheritance</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Check Disk Space"</span><span class="p">)</span><span class="w"> </span><span class="nt">-Confirm</span><span class="w"> </span><span class="s2">"Auto"</span><span class="w">
+</span><span class="c"># User selects "Yes to All" → all subsequent templates auto-execute</span><span class="w">
+</span><span class="c"># No double-prompting, seamless automation</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="process-parallel-job-management">Process-Parallel Job Management</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="c"># Multi-method job completion detection</span><span class="w">
+</span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$j</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$jobs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$j</span><span class="o">.</span><span class="nf">Job</span><span class="o">.</span><span class="nf">State</span><span class="w"> </span><span class="nt">-in</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Completed"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Failed"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Stopped"</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nv">$isComplete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+    </span><span class="p">}</span><span class="w"> </span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$j</span><span class="o">.</span><span class="nf">Job</span><span class="o">.</span><span class="nf">HasExited</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nv">$isComplete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+    </span><span class="p">}</span><span class="w"> </span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$jobAge</span><span class="o">.</span><span class="nf">TotalMinutes</span><span class="w"> </span><span class="o">-gt</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="n">Stop-Job</span><span class="w"> </span><span class="nt">-Job</span><span class="w"> </span><span class="nv">$j</span><span class="o">.</span><span class="nf">Job</span><span class="w"> </span><span class="nt">-Force</span><span class="p">;</span><span class="w"> </span><span class="nv">$isComplete</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="excel-multi-sheet-export-strategy">Excel Multi-Sheet Export Strategy</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="c"># Template workflow creates comprehensive Excel reports</span><span class="w">
+</span><span class="nv">$sheets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{}</span><span class="w">
+</span><span class="c"># Individual template sheets from clean data</span><span class="w">
+</span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$templateName</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$executedTemplates</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$cleanSheetName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$templateName</span><span class="w"> </span><span class="o">-replace</span><span class="w"> </span><span class="s1">'[^A-Za-z0-9_\-]'</span><span class="p">,</span><span class="w"> </span><span class="s1">'_'</span><span class="w">
+    </span><span class="nv">$sheets</span><span class="p">[</span><span class="nv">$cleanSheetName</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$workflowResults</span><span class="p">[</span><span class="nv">$templateName</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="c"># Summary sheet with all results combined</span><span class="w">
+</span><span class="nv">$sheets</span><span class="p">[</span><span class="s2">"Summary"</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$allResults</span><span class="w">
+</span><span class="n">Export-ToExcel</span><span class="w"> </span><span class="nt">-Sheets</span><span class="w"> </span><span class="nv">$sheets</span><span class="w"> </span><span class="nt">-Title</span><span class="w"> </span><span class="nv">$WorkflowName</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<p>📖 <strong>Full Documentation</strong></p>
+
+<ul>
+  <li><a href="/CheckIT-Documentation/archive/developer-guide.html">Developer Guide</a> - Enhanced patterns and template-driven development</li>
+  <li><a href="/CheckIT-Documentation/archive/api-reference.html">API Reference</a> - Complete function library with template workflow system</li>
+  <li><a href="/CheckIT-Documentation/archive/assistance-guide.html">AI Assistant Guide</a> - Human-AI collaboration with template workflows</li>
+  <li><a href="/CheckIT-Documentation/archive/troubleshooting.html">Troubleshooting</a> - Solutions including template system troubleshooting</li>
+  <li><a href="/CheckIT-Documentation/archive/implementation-status.html">Implementation Status</a> - Current completion status (100% complete)</li>
+</ul>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Last Updated</strong>: 2025-06-09</td>
+      <td><strong>Enhanced</strong>: Template workflow system with session automation</td>
+      <td><strong>Status</strong>: Production Ready</td>
+    </tr>
+  </tbody>
+</table>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

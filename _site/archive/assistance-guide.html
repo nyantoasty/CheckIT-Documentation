@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Assisted Development Guide | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <link rel="stylesheet" href="../assets/style.css" />
+
+<h1 id="ai-assisted-development-guide-for-checkit-core">AI-Assisted Development Guide for CheckIT-Core</h1>
+
+<blockquote>
+  <p>Strategic guidance for human-AI collaboration in CheckIT development</p>
+</blockquote>
+
+<h2 id="-core-philosophy">🎯 Core Philosophy</h2>
+
+<p><strong>CheckIT follows three fundamental principles:</strong></p>
+<ol>
+  <li><strong>Template-Driven Development</strong> - Leverage existing capabilities before building new ones</li>
+  <li><strong>Small, Careful Enhancements</strong> - Incremental improvements over large refactors</li>
+  <li><strong>Modular Integration</strong> - Use core functions to keep the system scalable</li>
+</ol>
+
+<h2 id="-pre-development-analysis-for-ai-assistants">🔍 Pre-Development Analysis (For AI Assistants)</h2>
+
+<h3 id="essential-checks-before-suggesting-code">Essential Checks Before Suggesting Code</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c"># 1. Verify function exists and is exported</span><span class="w">
+</span><span class="n">Get-Command</span><span class="w"> </span><span class="nx">Function-Name</span><span class="w"> </span><span class="nt">-Module</span><span class="w"> </span><span class="nx">CheckIT-Core</span><span class="w">
+
+</span><span class="c"># 2. Check template availability first</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Command</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">List</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Search</span><span class="w">
+
+</span><span class="c"># 3. Confirm dependency availability</span><span class="w">
+</span><span class="n">Get-Help</span><span class="w"> </span><span class="nx">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Full</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="critical-rules-audit">Critical Rules Audit</h3>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Templates First</strong>: Check existing templates before creating new functions</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Confirm Enhancement</strong>: Use enhanced confirmation patterns (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-Confirm
+</pre></td></tr></tbody></table></code> parameter)</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Credential Integration</strong>: Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Process-Parallel -UseCredentials
+</pre></td></tr></tbody></table></code> pattern</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Reporting Separation</strong>: Separate <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Write-TaskLog
+</pre></td></tr></tbody></table></code> and <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Set-Report
+</pre></td></tr></tbody></table></code> calls</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Node Management</strong>: Always use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>New-NodeObject
+</pre></td></tr></tbody></table></code> and <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>NodeList
+</pre></td></tr></tbody></table></code> functions</li>
+</ul>
+
+<h2 id="-effective-human-ai-collaboration">🤝 Effective Human-AI Collaboration</h2>
+
+<h3 id="how-to-give-ai-better-context">How to Give AI Better Context</h3>
+
+<h4 id="specify-your-workflow-stage"><strong>Specify Your Workflow Stage</strong></h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># ❌ Vague: "I need to check some computers"</span><span class="w">
+</span><span class="c"># ✅ Clear: "I have 25 lab computers in NodeList with credentials. </span><span class="w">
+</span><span class="c">#          Need to check Chrome and Office installations, export to Excel"</span><span class="w">
+
+</span><span class="c"># Include your current state:</span><span class="w">
+</span><span class="s2">"</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="s2"> has 25 nodes, credentials valid until 3pm"</span><span class="w">
+</span><span class="s2">"Starting fresh session, need to add Lab-A computers and get credentials"</span><span class="w">
+</span><span class="s2">"Have yesterday's software data, need summary report with compliance percentages"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="share-error-context-completely"><strong>Share Error Context Completely</strong></h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c"># When something fails, provide:</span><span class="w">
+</span><span class="c"># 1. Exact command</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"Test"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+
+</span><span class="c"># 2. Full error message</span><span class="w">
+</span><span class="s2">"Template 'Get OS Info' not found in Command or Test templates..."</span><span class="w">
+
+</span><span class="c"># 3. Your goal</span><span class="w">
+</span><span class="s2">"Wanted to run OS audit on 10 lab computers for inventory report"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="what-ai-excels-at">What AI Excels At</h3>
+
+<h4 id="1-workflow-planning--command-sequencing"><strong>1. Workflow Planning &amp; Command Sequencing</strong></h4>
+<p>AI can map goals to CheckIT function chains:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="c"># Human: "Audit software compliance in Lab A"</span><span class="w">
+</span><span class="c"># AI provides complete workflow:</span><span class="w">
+
+</span><span class="c"># Step 1: Get computers from AD</span><span class="w">
+</span><span class="n">Select-OUComputers</span><span class="w"> </span><span class="nt">-BaseOU</span><span class="w"> </span><span class="s2">"Lab"</span><span class="w"> </span><span class="nt">-StringSearch</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Lab-A"</span><span class="p">)</span><span class="w"> </span><span class="nt">-AddToNodeList</span><span class="w">
+
+</span><span class="c"># Step 2: Get credentials  </span><span class="w">
+</span><span class="n">Passman</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w">
+
+</span><span class="c"># Step 3: Run template workflow</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> </span><span class="s2">"List Installed Apps"</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"Lab_A_Compliance"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="2-template-integration-strategies"><strong>2. Template Integration Strategies</strong></h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="c"># AI can suggest template combinations:</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="w">
+    </span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w">           </span><span class="c"># System inventory</span><span class="w">
+    </span><span class="s2">"Check Disk Space"</span><span class="p">,</span><span class="w">      </span><span class="c"># Storage status  </span><span class="w">
+    </span><span class="s2">"List Installed Apps"</span><span class="p">,</span><span class="w">   </span><span class="c"># Software compliance</span><span class="w">
+    </span><span class="s2">"Query Service Status"</span><span class="w">   </span><span class="c"># Service health</span><span class="w">
+</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"Complete_Audit"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="3-enhanced-confirmation-patterns"><strong>3. Enhanced Confirmation Patterns</strong></h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="c"># AI can implement automation-friendly patterns:</span><span class="w">
+
+</span><span class="c"># For interactive use:</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">)</span><span class="w"> </span><span class="nt">-Confirm</span><span class="p">:</span><span class="bp">$true</span><span class="w">
+
+</span><span class="c"># For automation:</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">)</span><span class="w"> </span><span class="nt">-Confirm</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+
+</span><span class="c"># For smart batching:</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">)</span><span class="w"> </span><span class="nt">-Confirm</span><span class="w"> </span><span class="s2">"Auto"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="when-to-use-ai-vs-ask-humans">When to Use AI vs Ask Humans</h3>
+
+<h4 id="use-ai-for"><strong>Use AI For:</strong></h4>
+<ul>
+  <li>Planning command sequences for clear requirements</li>
+  <li>Creating template workflows from existing components</li>
+  <li>Integrating confirmation patterns for automation</li>
+  <li>Analyzing structured data from CheckIT reports</li>
+  <li>Generating variations of working solutions</li>
+</ul>
+
+<h4 id="ask-humans-for"><strong>Ask Humans For:</strong></h4>
+<ul>
+  <li>Business requirements clarification (“What compliance standards?”)</li>
+  <li>Production system approval (“Should I run this on all 200 computers?”)</li>
+  <li>Domain-specific knowledge (“Which software is required for this department?”)</li>
+  <li>Final validation of critical operations</li>
+</ul>
+
+<h2 id="-advanced-workflow--template-integration-patterns">🔄 Advanced Workflow &amp; Template Integration Patterns</h2>
+
+<h3 id="template-workflow-architecture">Template Workflow Architecture</h3>
+<p>The enhanced <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Invoke-TemplateWorkflow
+</pre></td></tr></tbody></table></code> demonstrates key CheckIT patterns:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ CORRECT: Each template creates individual reports, Excel combines them</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Check Disk Space"</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"System_Audit"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+
+</span><span class="c"># Workflow process:</span><span class="w">
+</span><span class="c"># 1. Each template executes independently → creates individual reports</span><span class="w">
+</span><span class="c"># 2. Excel export reads actual report data → creates individual sheets + summary</span><span class="w">
+</span><span class="c"># 3. No artificial data combining/batching</span><span class="w">
+</span><span class="c"># 4. Clean separation of concerns</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="enhanced-confirmation-system-pattern">Enhanced Confirmation System Pattern</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre><span class="c"># Three-tier confirmation for automation-friendly workflows:</span><span class="w">
+</span><span class="p">[</span><span class="n">object</span><span class="p">]</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">   </span><span class="c"># $true, $false, or "Auto"</span><span class="w">
+
+</span><span class="c"># Implementation pattern:</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="bp">$false</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$shouldProceed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="w">  </span><span class="c"># Skip confirmation entirely</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="kr">elseif</span><span class="w"> </span><span class="p">(</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="s2">"Auto"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># Check session-wide preferences, prompt once and remember</span><span class="w">
+    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">WorkflowAutoConfirm</span><span class="o">.</span><span class="nf">ContainsKey</span><span class="p">(</span><span class="s1">'*'</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nv">$shouldProceed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">WorkflowAutoConfirm</span><span class="p">[</span><span class="s1">'*'</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="c"># Enhanced options: Y/N/YA=Yes to All/NA=No to All</span><span class="w">
+        </span><span class="nv">$confirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Read-Host</span><span class="w"> </span><span class="s2">"Proceed? (Y/N/YA=Yes to All/NA=No to All)"</span><span class="w">
+        </span><span class="c"># Store choice for session-wide automation</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="template-integration-inheritance-pattern">Template Integration Inheritance Pattern</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ CORRECT: Workflow confirmation settings inherit to templates</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$isCommandTemplate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$templateConfirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="bp">$false</span><span class="w"> </span><span class="o">-or</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">WorkflowAutoConfirm</span><span class="o">.</span><span class="nf">ContainsKey</span><span class="p">(</span><span class="s1">'*'</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+        </span><span class="bp">$false</span><span class="w">  </span><span class="c"># Inherit automation setting</span><span class="w">
+    </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+        </span><span class="bp">$true</span><span class="w">   </span><span class="c"># Use standard confirmation</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    </span><span class="nv">$result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Confirm</span><span class="p">:</span><span class="nv">$templateConfirm</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># This prevents double-prompting when user chooses "Yes to All"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-development-best-practices">💡 Development Best Practices</h2>
+
+<h3 id="template-driven-development-pattern">Template-Driven Development Pattern</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></td><td class="rouge-code"><pre><span class="c"># ALWAYS check existing capabilities first:</span><span class="w">
+
+</span><span class="c"># 1. Search existing templates</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Command</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">List</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Search</span><span class="w">
+
+</span><span class="c"># 2. Use workflow for complex operations  </span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Existing Template 1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Existing Template 2"</span><span class="p">)</span><span class="w">
+
+</span><span class="c"># 3. Only create new functions when templates can't solve the need</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="small-enhancement-pattern">Small Enhancement Pattern</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ CORRECT: Small, targeted enhancements</span><span class="w">
+</span><span class="c"># Example: Adding -Confirm parameter to existing function</span><span class="w">
+
+</span><span class="c"># Before: Function without automation support</span><span class="w">
+</span><span class="kr">function</span><span class="w"> </span><span class="nf">Invoke-TemplateCommand</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kr">param</span><span class="p">(</span><span class="nv">$Nodes</span><span class="p">,</span><span class="w"> </span><span class="nv">$TemplateName</span><span class="p">,</span><span class="w"> </span><span class="nv">$PromptUser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="p">)</span><span class="w">
+    </span><span class="c"># Always prompted for confirmation</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># After: Enhanced with confirmation control  </span><span class="w">
+</span><span class="kr">function</span><span class="w"> </span><span class="nf">Invoke-TemplateCommand</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="kr">param</span><span class="p">(</span><span class="nv">$Nodes</span><span class="p">,</span><span class="w"> </span><span class="nv">$TemplateName</span><span class="p">,</span><span class="w"> </span><span class="nv">$PromptUser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">object</span><span class="p">]</span><span class="nv">$Confirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">$true</span><span class="p">)</span><span class="w">
+    </span><span class="c"># Now supports $false, $true, "Auto" modes</span><span class="w">
+    </span><span class="c"># Preserves ALL existing functionality</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="excel-integration-strategy">Excel Integration Strategy</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="c"># ✅ CORRECT: Use actual report data, not intermediate batching</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$ExportToExcel</span><span class="w"> </span><span class="o">-and</span><span class="w"> </span><span class="nv">$executedTemplates</span><span class="o">.</span><span class="nf">Count</span><span class="w"> </span><span class="o">-gt</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$sheets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{}</span><span class="w">
+    
+    </span><span class="c"># Individual template sheets from actual reports</span><span class="w">
+    </span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$templateName</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$executedTemplates</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nv">$cleanSheetName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$templateName</span><span class="w"> </span><span class="o">-replace</span><span class="w"> </span><span class="s1">'[^A-Za-z0-9_\-]'</span><span class="p">,</span><span class="w"> </span><span class="s1">'_'</span><span class="w">
+        </span><span class="nv">$sheets</span><span class="p">[</span><span class="nv">$cleanSheetName</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$workflowResults</span><span class="p">[</span><span class="nv">$templateName</span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+    
+    </span><span class="c"># Summary sheet with all results combined</span><span class="w">
+    </span><span class="nv">$sheets</span><span class="p">[</span><span class="s2">"Summary"</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$allResults</span><span class="w">
+    </span><span class="n">Export-ToExcel</span><span class="w"> </span><span class="nt">-Sheets</span><span class="w"> </span><span class="nv">$sheets</span><span class="w"> </span><span class="nt">-Title</span><span class="w"> </span><span class="nv">$WorkflowName</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-anti-patterns-to-avoid">🚨 Anti-Patterns to Avoid</h2>
+
+<h3 id="-large-refactors">❌ Large Refactors</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c"># ❌ WRONG: Rewriting entire function architecture</span><span class="w">
+</span><span class="kr">function</span><span class="w"> </span><span class="nf">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="c"># Complete rewrite of workflow system</span><span class="w">
+    </span><span class="c"># Changes fundamental behavior</span><span class="w">
+    </span><span class="c"># Breaks existing integrations</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="-bypassing-core-functions">❌ Bypassing Core Functions</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># ❌ WRONG: Direct manipulation</span><span class="w">
+</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nv">$newNode</span><span class="w">  </span><span class="c"># Bypasses New-NodeObject</span><span class="w">
+</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">Reports</span><span class="p">[</span><span class="s1">'Reports'</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nv">$result</span><span class="w">  </span><span class="c"># Bypasses Set-Report</span><span class="w">
+
+</span><span class="c"># ✅ CORRECT: Use core functions</span><span class="w">
+</span><span class="nv">$nodeObj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">New-NodeObject</span><span class="w"> </span><span class="nv">$newNode</span><span class="w">
+</span><span class="n">NodeList</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="p">@(</span><span class="nv">$nodeObj</span><span class="p">)</span><span class="w">
+</span><span class="n">Set-Report</span><span class="w"> </span><span class="nt">-ReportName</span><span class="w"> </span><span class="nv">$name</span><span class="w"> </span><span class="nt">-Data</span><span class="w"> </span><span class="nv">$results</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="-combining-unrelated-concerns">❌ Combining Unrelated Concerns</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="c"># ❌ WRONG: Artificial batching in workflow</span><span class="w">
+</span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$template</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$templates</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Invoke-Template</span><span class="w"> </span><span class="nv">$template</span><span class="w">
+    </span><span class="n">Build-Report</span><span class="w"> </span><span class="nt">-Batch</span><span class="w"> </span><span class="nv">$WorkflowName</span><span class="w"> </span><span class="nt">-Result</span><span class="w"> </span><span class="nv">$result</span><span class="w">  </span><span class="c"># Don't do this</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c"># ✅ CORRECT: Individual reports, combine at export</span><span class="w">
+</span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$template</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$templates</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nv">$result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Invoke-Template</span><span class="w"> </span><span class="nv">$template</span><span class="w">  </span><span class="c"># Creates individual report</span><span class="w">
+    </span><span class="nv">$workflowResults</span><span class="p">[</span><span class="nv">$template</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$result</span><span class="o">.</span><span class="nf">CleanResults</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="c"># Excel export combines sheets from individual reports</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-testing--validation-patterns">🧪 Testing &amp; Validation Patterns</h2>
+
+<h3 id="regression-testing-checklist">Regression Testing Checklist</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="c"># After any enhancement, verify:</span><span class="w">
+
+</span><span class="c"># 1. Original functionality still works</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s2">"Get OS Info"</span><span class="w">
+
+</span><span class="c"># 2. New functionality works  </span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s2">"Get OS Info"</span><span class="w"> </span><span class="nt">-Confirm</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+
+</span><span class="c"># 3. Integration points aren't broken</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">)</span><span class="w"> </span><span class="nt">-Confirm</span><span class="w"> </span><span class="s2">"Auto"</span><span class="w">
+
+</span><span class="c"># 4. Edge cases are handled</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Confirm</span><span class="w"> </span><span class="s2">"Invalid"</span><span class="w">  </span><span class="c"># Should handle gracefully</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="template-workflow-testing">Template Workflow Testing</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># Test template combinations:</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Check Disk Space"</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"Test"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+
+</span><span class="c"># Verify:</span><span class="w">
+</span><span class="c"># - Each template creates individual report</span><span class="w">
+</span><span class="c"># - Excel has separate sheets per template + summary</span><span class="w">
+</span><span class="c"># - No double-prompting with confirmation inheritance</span><span class="w">
+</span><span class="c"># - Clean data separation (no verbose command output in business reports)</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-ai-assistant-prompt-templates">📋 AI Assistant Prompt Templates</h2>
+
+<h3 id="-workflow-planning-prompt">🔄 Workflow Planning Prompt</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre>I need to accomplish: [specific goal]
+My current state: [NodeList status, credentials, previous work]
+Environment: [Lab/Classroom/Department, number of computers]
+Output needed: [Console results/Excel export/Compliance report]
+
+Please provide a complete CheckIT workflow using existing templates and functions.
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="️-enhancement-request-prompt">🛠️ Enhancement Request Prompt</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre>I have this working CheckIT code: [paste code]
+I want to enhance it to: [specific improvement]
+Requirements: [CLI/GUI compatibility, automation support, etc.]
+
+Please show small, targeted improvements that preserve existing functionality.
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="-template-discovery-prompt">🔍 Template Discovery Prompt</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre>I need to: [describe task]
+Available templates: [run Manage-Templates -Type Command -Action List]
+
+Please suggest a template workflow or identify if new templates are needed.
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<hr />
+
+<h2 id="-quick-navigation">📖 Quick Navigation</h2>
+
+<p><strong>Core Documentation:</strong></p>
+<ul>
+  <li><a href="/CheckIT-Documentation/archive/developer-guide.html">Developer Guide</a> - Core patterns and development workflow</li>
+  <li><a href="/CheckIT-Documentation/archive/api-reference.html">API Reference</a> - Complete function library</li>
+  <li><a href="/CheckIT-Documentation/archive/quick-reference.html">Quick Reference</a> - Common task cheat sheet</li>
+</ul>
+
+<p><strong>For AI Assistants:</strong></p>
+<ul>
+  <li><a href="/CheckIT-Documentation/archive/implementation-status.html">Implementation Status</a> - Function readiness verification</li>
+  <li><a href="/CheckIT-Documentation/archive/troubleshooting.html">Troubleshooting</a> - Error patterns and solutions</li>
+</ul>
+
+<p><strong>Project Overview:</strong></p>
+<ul>
+  <li><a href="../README.md">Main README</a> - Getting started and overview</li>
+  <li><a href="/CheckIT-Documentation/CHANGELOG.html">Changelog</a> - Recent development history</li>
+</ul>
+
+<hr />
+
+<p><em>This guide focuses on practical collaboration patterns for CheckIT-Core development. For complete technical details, see the Developer Guide and API Reference.</em></p>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

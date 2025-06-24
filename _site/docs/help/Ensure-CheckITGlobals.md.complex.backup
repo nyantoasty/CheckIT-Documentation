@@ -1,0 +1,119 @@
+# Ensure-CheckITGlobals
+
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+
+# Ensure-CheckITGlobals
+
+## SYNOPSIS
+
+Ensures all global CheckIT stores and variables are properly initialized with correct types.
+
+## SYNTAX
+
+
+
+
+
+Ensure-CheckITGlobals [<CommonParameters>]
+
+
+
+
+
+## DESCRIPTION
+
+Initializes and validates all global CheckIT stores including CheckIT_Preferences, nodeList,
+SkipNodes, CheckIT_StackDepth, CredStore, and Reports with their required structure.
+Safe to call multiple times - only initializes missing stores and keys.
+Ensures Reports hashtable contains all required keys (NodeList, TaskLog, ErrorLog, Reports,
+Preferences, Templates) and that Templates has proper substructure (Command, Test, Codebase).
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+
+
+
+
+Ensure-CheckITGlobals
+# Initializes all global stores if they don't exist
+
+
+
+
+
+## PARAMETERS
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+### None. Function initializes global variables as side effect
+
+### Ensure all global stores and keys exist and are the correct type
+
+## NOTES
+
+Core Initialization:
+
+- Called automatically by other functions that need global stores
+- Safe to call multiple times - only initializes missing stores and keys
+- Ensures all global stores exist with correct types before any CheckIT operations
+
+Global Store Structure:
+
+- $global:CheckIT_Preferences: User configuration hashtable
+- $global:nodeList: Array of standardized node objects
+- $global:SkipNodes: Array of node names to exclude from operations
+- $global:CheckIT_StackDepth: Recursion depth counter for stack overflow protection
+- $global:CredStore: Credential management with Expiration and Credentials hashtables
+- $global:Reports: Master hashtable containing all CheckIT data stores
+
+Reports Store Keys:
+
+- NodeList: Computer inventory with status tracking
+- TaskLog: Comprehensive audit trail for all operations
+- ErrorLog: Centralized error tracking and analysis
+- Reports: Business reporting with versioning and export capabilities
+- Preferences: User configuration and customization settings
+- Templates: Reusable command and test templates (Command, Test, Codebase)
+
+Implementation Notes:
+
+- Uses hashtable structure for Reports with bracket notation access
+- Templates structure includes Command, Test, and Codebase sub-stores
+- All arrays are initialized as proper PowerShell arrays, not single objects
+- CredStore.Credentials is always initialized as empty hashtable for security
+
+Best Practices:
+
+- Always call this before accessing any global CheckIT stores
+- Use bracket notation when accessing Reports stores: $global:Reports\['Templates'\]\['Command'\]
+- Never modify the structure directly - use provided store management functions
+- This function is the foundation for all other CheckIT operations
+
+Security Features:
+
+- Credentials are session-only and never persisted to disk
+- Global stores are type-checked to prevent corruption
+- Stack depth monitoring prevents infinite recursion
+
+Related Functions:
+
+- Get-CheckITStore: Safe access to individual stores
+- Manage-Store: Interactive store management
+- Save-CheckITDataCore/Load-CheckITDataCore: Persistence operations
+
+## RELATED LINKS
+
+
+

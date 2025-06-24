@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get-ValidCredStatus | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Get-ValidCredStatus</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="get-validcredstatus">Get-ValidCredStatus</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="get-validcredstatus-1">Get-ValidCredStatus</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Lightweight wrapper for Get-ValidCred that returns only node names and credential status for quick credential validation across multiple nodes.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Get-ValidCredStatus [-Nodes] &lt;Object[]&gt; [-Silent] [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Provides a simplified interface to Get-ValidCred that returns only essential credential status information (Node and Status) without the overhead of full credential objects or additional metadata. This function is optimized for scenarios where you need to quickly check credential availability across many nodes without retrieving the actual credentials.</p>
+
+<p>The function leverages the full Get-ValidCred functionality internally while providing a streamlined output format ideal for status checks, batch validation, and integration with other CheckIT functions that need to determine credential readiness.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li><strong>Lightweight output</strong> with only Node and Status properties</li>
+  <li><strong>Batch credential validation</strong> across multiple nodes efficiently</li>
+  <li><strong>Silent operation support</strong> for automation and background processing</li>
+  <li><strong>Pipeline compatibility</strong> with standard CheckIT node processing patterns</li>
+  <li><strong>Performance optimized</strong> for large-scale credential status checks</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-credential-status-check">EXAMPLE 1: Basic Credential Status Check</h3>
+
+<p>$credStatus = Get-ValidCredStatus -Nodes $global:nodeList
+$credStatus | Format-Table Node, Status -AutoSize</p>
+
+<p>Checks credential status for all nodes in the NodeList and displays results in a clean table format.</p>
+
+<h3 id="example-2-filter-nodes-by-credential-status">EXAMPLE 2: Filter Nodes by Credential Status</h3>
+
+<p>$allNodes = $global:nodeList | Select-Object -ExpandProperty Node
+$credStatus = Get-ValidCredStatus -Nodes $allNodes -Silent</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$readyNodes = $credStatus</td>
+      <td>Where-Object { $_.Status -eq “OK” }</td>
+      <td>Select-Object -ExpandProperty Node</td>
+    </tr>
+    <tr>
+      <td>$missingCreds = $credStatus</td>
+      <td>Where-Object { $_.Status -eq “Missing” }</td>
+      <td>Select-Object -ExpandProperty Node</td>
+    </tr>
+    <tr>
+      <td>$expiredCreds = $credStatus</td>
+      <td>Where-Object { $_.Status -eq “Expired” }</td>
+      <td>Select-Object -ExpandProperty Node</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Write-Host “Ready for operations: $($readyNodes.Count) nodes”
+Write-Host “Missing credentials: $($missingCreds.Count) nodes”<br />
+Write-Host “Expired credentials: $($expiredCreds.Count) nodes”</p>
+
+<p>Demonstrates filtering nodes based on credential status for batch operations and reporting.</p>
+
+<h3 id="example-3-pre-operation-credential-validation">EXAMPLE 3: Pre-operation Credential Validation</h3>
+
+<p>function Invoke-BatchOperation {
+    param([string[]]$NodeNames, [scriptblock]$Operation)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre># Quick credential check before proceeding
+$credCheck = Get-ValidCredStatus -Nodes $NodeNames -Silent
+$validNodes = $credCheck | Where-Object { $_.Status -eq "OK" } | Select-Object -ExpandProperty Node
+
+if ($validNodes.Count -eq 0) {
+    Write-Warning "No nodes have valid credentials. Operation cancelled."
+    return
+}
+
+if ($validNodes.Count -lt $NodeNames.Count) {
+    $missing = $NodeNames.Count - $validNodes.Count
+    Write-Warning "Proceeding with $($validNodes.Count) nodes. $missing nodes lack credentials."
+}
+
+# Proceed with operation using only nodes with valid credentials
+&amp; $Operation $validNodes }
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Shows integration pattern for pre-validating credentials before expensive operations.</p>
+
+<h3 id="example-4-credential-status-monitoring">EXAMPLE 4: Credential Status Monitoring</h3>
+
+<h1 id="create-a-credential-monitoring-dashboard">Create a credential monitoring dashboard</h1>
+<p>$monitoringNodes = @(“CRITICAL-SERVER-01”, “CRITICAL-SERVER-02”, “LAB-PC-01”, “LAB-PC-02”)</p>
+
+<p>while ($true) {
+    Clear-Host
+    Write-Host “=== CheckIT Credential Status Monitor ===” -ForegroundColor Cyan
+    Write-Host “Last Updated: $(Get-Date)” -ForegroundColor Gray
+    Write-Host “”</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre>$status = Get-ValidCredStatus -Nodes $monitoringNodes -Silent
+$status | Format-Table Node, Status -AutoSize
+
+$summary = $status | Group-Object Status | ForEach-Object {
+    "$($_.Name): $($_.Count)"
+}
+Write-Host "Summary: $($summary -join ' | ')" -ForegroundColor Yellow
+
+Start-Sleep -Seconds 30 }
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Demonstrates real-time credential status monitoring for critical systems.</p>
+
+<h3 id="example-5-pipeline-integration-with-other-checkit-functions">EXAMPLE 5: Pipeline Integration with Other CheckIT Functions</h3>
+
+<h1 id="get-nodes-that-need-credential-refresh-and-process-them">Get nodes that need credential refresh and process them</h1>
+<p>$global:nodeList | 
+    Get-ValidCredStatus -Silent | 
+    Where-Object { $<em>.Status -in @(“Missing”, “Expired”) } |
+    ForEach-Object {
+        Write-Host “Node $($</em>.Node) needs credential refresh (Status: $($_.Status))”
+        # Could integrate with Passman here for automatic refresh
+    }</p>
+
+<p>Shows pipeline usage for identifying and processing nodes that need credential attention.</p>
+
+<h3 id="example-6-automated-credential-health-report">EXAMPLE 6: Automated Credential Health Report</h3>
+
+<p>function New-CredentialHealthReport {
+    param([string[]]$NodeList = $global:nodeList.Node)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre>$credStatus = Get-ValidCredStatus -Nodes $NodeList -Silent
+$report = [PSCustomObject]@{
+    TotalNodes = $NodeList.Count
+    ValidCredentials = ($credStatus | Where-Object Status -eq "OK").Count
+    MissingCredentials = ($credStatus | Where-Object Status -eq "Missing").Count  
+    ExpiredCredentials = ($credStatus | Where-Object Status -eq "Expired").Count
+    HealthPercentage = [math]::Round((($credStatus | Where-Object Status -eq "OK").Count / $NodeList.Count) * 100, 1)
+    Timestamp = Get-Date
+    Details = $credStatus
+}
+
+return $report }
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>$healthReport = New-CredentialHealthReport
+Write-Host “Credential Health: $($healthReport.HealthPercentage)% ($($healthReport.ValidCredentials)/$($healthReport.TotalNodes) nodes ready)”</p>
+
+<p>Creates comprehensive credential health reporting for management dashboards.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-nodes">-Nodes</h3>
+
+<p>Array of node names or node objects for credential status validation. Supports the same flexible input formats as Get-ValidCred.</p>
+
+<p><strong>Supported Input Types:</strong></p>
+
+<ul>
+  <li><strong>String arrays</strong>: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>@("PC1", "PC2", "PC3")
+</pre></td></tr></tbody></table></code></li>
+  <li><strong>Node objects</strong>: Objects with <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>.Node
+</pre></td></tr></tbody></table></code> property from NodeList</li>
+  <li><strong>Mixed arrays</strong>: Combination of strings and node objects</li>
+  <li><strong>Pipeline input</strong>: Via ValueFromPipeline support</li>
+</ul>
+
+<p><strong>Input Processing:</strong></p>
+
+<ul>
+  <li>Strings are processed directly as node names</li>
+  <li>Objects are inspected for <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>.Node
+</pre></td></tr></tbody></table></code> property</li>
+  <li>Case-insensitive node name handling</li>
+  <li>Automatic trimming and normalization</li>
+  <li>Empty or invalid entries are filtered out</li>
+</ul>
+
+<p><strong>Performance Considerations:</strong></p>
+
+<ul>
+  <li>Optimized for large node lists</li>
+  <li>Efficient memory usage with status-only output</li>
+  <li>No credential object creation overhead</li>
+  <li>Suitable for frequent status polling</li>
+</ul>
+
+<p>```yaml
+Type: Object[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False</p>
+
+<h3 id="-silent">-Silent</h3>
+
+<p>Suppresses console output and user prompts for automation and background processing scenarios.</p>
+
+<p><strong>When Present:</strong></p>
+
+<ul>
+  <li>No console output except critical errors</li>
+  <li>No user interaction or prompts</li>
+  <li>Suppresses progress indicators and status messages</li>
+  <li>Returns structured data only</li>
+  <li>Suitable for background monitoring and automation</li>
+</ul>
+
+<p><strong>When Not Present (Default):</strong></p>
+
+<ul>
+  <li>Allows standard Get-ValidCred console output</li>
+  <li>Shows progress for large node lists</li>
+  <li>Displays status messages and warnings</li>
+  <li>Suitable for interactive troubleshooting</li>
+</ul>
+
+<p><strong>Impact on Performance:</strong></p>
+
+<ul>
+  <li>Silent mode provides better performance for large batches</li>
+  <li>Reduces console I/O overhead</li>
+  <li>Enables background processing without user interruption</li>
+  <li>Ideal for scheduled monitoring and health checks</li>
+</ul>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>Standard PowerShell progress action preference for controlling built-in progress display behavior.</p>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="systemobject">System.Object[]</h3>
+
+<p>Array of node names (strings) or node objects with Node properties.</p>
+
+<h3 id="in-systemstring">IN System.String[]</h3>
+
+<p>Array of computer names for credential status validation.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="out-systemobject">OUT System.Object[]</h3>
+
+<p>Array of PSCustomObjects containing only Node and Status information:</p>
+
+<p><strong>Output Object Structure:</strong></p>
+
+<p>[PSCustomObject]@{
+    Node   = “PC123”        # Node name (normalized to uppercase)
+    Status = “OK”           # Credential status: “OK”, “Missing”, or “Expired”
+}</p>
+
+<p><strong>Status Values:</strong></p>
+
+<ul>
+  <li><strong>“OK”</strong>: Valid credentials available in credential store</li>
+  <li><strong>“Missing”</strong>: No credentials found for the node</li>
+  <li><strong>“Expired”</strong>: Credentials exist but have expired (store-wide expiration)</li>
+</ul>
+
+<p><strong>Output Characteristics:</strong></p>
+
+<ul>
+  <li><strong>Lightweight</strong>: Only essential properties included</li>
+  <li><strong>Consistent</strong>: Standardized format across all nodes</li>
+  <li><strong>Filterable</strong>: Easy to filter and group by status</li>
+  <li><strong>Sortable</strong>: Can be sorted by Node or Status for reporting</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Relationship to Get-ValidCred:</strong></p>
+
+<ul>
+  <li>Internally calls Get-ValidCred with identical validation logic</li>
+  <li>Strips out all properties except Node and Status</li>
+  <li>Maintains the same credential validation accuracy</li>
+  <li>Provides identical expiration handling and store management</li>
+</ul>
+
+<p><strong>Performance Optimizations:</strong></p>
+
+<ul>
+  <li>No PSCredential object creation overhead</li>
+  <li>Reduced memory footprint for large node lists</li>
+  <li>Faster processing when credential objects aren’t needed</li>
+  <li>Efficient for repeated status polling scenarios</li>
+</ul>
+
+<p><strong>Use Cases:</strong></p>
+
+<ul>
+  <li><strong>Batch Validation</strong>: Check credential status before expensive operations</li>
+  <li><strong>Health Monitoring</strong>: Regular credential availability monitoring</li>
+  <li><strong>Status Dashboards</strong>: Real-time credential health displays</li>
+  <li><strong>Pre-flight Checks</strong>: Validate credentials before automated workflows</li>
+  <li><strong>Reporting</strong>: Generate credential status reports for management</li>
+  <li><strong>Pipeline Filtering</strong>: Filter nodes by credential availability</li>
+</ul>
+
+<p><strong>Integration Patterns:</strong></p>
+
+<h1 id="common-usage-patterns">Common usage patterns</h1>
+<p>$credStatus = Get-ValidCredStatus -Nodes $nodeList -Silent</p>
+
+<h1 id="filter-for-ready-nodes">Filter for ready nodes</h1>
+<p>$readyNodes = $credStatus | Where-Object Status -eq “OK” | Select-Object -ExpandProperty Node</p>
+
+<h1 id="group-by-status-for-reporting">Group by status for reporting</h1>
+<p>$statusSummary = $credStatus | Group-Object Status | ForEach-Object { “$($<em>.Name): $($</em>.Count)” }</p>
+
+<h1 id="find-problem-nodes">Find problem nodes</h1>
+<p>$problemNodes = $credStatus | Where-Object Status -ne “OK”</p>
+
+<p><strong>Comparison with Get-ValidCred:</strong></p>
+
+<ul>
+  <li><strong>Get-ValidCredStatus</strong>: Fast, lightweight, status-only information</li>
+  <li><strong>Get-ValidCred</strong>: Full credential objects, expiration details, FQDN, Passman flags</li>
+  <li>Use Get-ValidCredStatus for status checks and filtering</li>
+  <li>Use Get-ValidCred when you need the actual credentials or detailed information</li>
+</ul>
+
+<p><strong>Best Practices:</strong></p>
+
+<ul>
+  <li>Use for pre-operation credential validation</li>
+  <li>Implement in monitoring and health check scripts</li>
+  <li>Cache results when processing multiple operations on same nodes</li>
+  <li>Combine with Get-ValidCred for two-stage credential workflows</li>
+  <li>Use Silent mode for background and automated processes</li>
+</ul>
+
+<p><strong>Troubleshooting:</strong></p>
+
+<ul>
+  <li>Results reflect the same credential store state as Get-ValidCred</li>
+  <li>Empty results indicate no valid node names provided</li>
+  <li>All “Missing” status may indicate credential store needs initialization</li>
+  <li>All “Expired” status indicates global credential store expiration</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-ValidCred.html">Get-ValidCred</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-NodeCredAndFQDN.html">Get-NodeCredAndFQDN</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Passman.html">Passman</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Show-CredentialClipboard.html">Show-CredentialClipboard</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Ensure-GlobalCredStore.html">Ensure-GlobalCredStore</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

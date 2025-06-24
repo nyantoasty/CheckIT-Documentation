@@ -1,0 +1,362 @@
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+# Export-ToExcel
+
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+
+# Export-ToExcel
+
+## SYNOPSIS
+
+Exports objects or report data to an Excel file using the Excel COM object (no ImportExcel dependency).
+
+## SYNTAX
+
+
+
+
+
+Export-ToExcel [[-InputObject] <Object[]>] [[-Path] <String>] [[-Title] <String>] [[-Columns] <String[]>]
+ [[-Sheets] <Hashtable>] [[-PromptUser] <Boolean>] [[-AutoOpen] <Boolean>] [-Pivot]
+ [[-SheetColumns] <Hashtable>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+
+
+
+
+
+## DESCRIPTION
+
+Exports the provided objects (such as report data) to an Excel file, auto-sizing columns and formatting as a table.
+Supports exporting a single table or multiple tables as separate worksheets using the -Sheets parameter.
+Handles both CLI and GUI/automation scenarios, and normalizes data for consistent output.
+
+The function includes comprehensive cleaning of column names to ensure Excel pivot table compatibility:
+
+- Removes special characters that cause Excel issues
+- Replaces spaces with underscores for better pivot table compatibility
+- Trims names to 31 characters (Excel's column name limit)
+- Ensures unique column names by adding numeric suffixes when needed
+- Maintains consistent formatting across all sheets
+
+## PARAMETERS
+
+### -InputObject
+
+The objects to export (accepts pipeline input).
+Ignored if -Sheets is used.
+
+```yaml
+Type: Object[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+
+
+
+
+
+### -Path
+
+The path to save the Excel file.
+Defaults to the user preference or C:\Transcripts\ with a generated name.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -Title
+
+Base name for the Excel file and default worksheet.
+The current timestamp will be appended to the filename.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: "Report"
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -Columns
+
+Specific column names to include (all columns included if not specified).
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -Sheets
+
+Hashtable of sheet names and their data.
+Example: @{ 'Sheet1' = $data1; 'Sheet2' = $data2 }
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -PromptUser
+
+Whether to display CLI prompts and feedback.
+Set to $false for automation scenarios.
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -AutoOpen
+
+Whether to automatically open the Excel file after creation.
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 6
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -Pivot
+
+Switch to indicate pivot table should be created.
+When specified, triggers Invoke-Pivotizer automatically.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -SheetColumns
+
+Hashtable specifying columns for each sheet name.
+Example: @{ 'Sheet1' = @('Col1', 'Col2'); 'Sheet2' = @('Col3', 'Col4') }
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -ProgressAction
+
+Controls the progress output as per PowerShell's common parameters.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## EXAMPLES
+
+### Example 1: Basic Excel export with automatic column cleaning
+
+
+
+
+
+$report.Data | Export-ToExcel -Title $report.ReportName
+
+
+
+
+
+Exports report data to Excel with automatic column name cleaning for Excel compatibility.
+
+### Example 2: Multiple worksheets in one Excel file
+
+
+
+
+
+Export-ToExcel -Sheets @{
+    'DefaultSoftware' = $result.DefaultSoftware
+    'SoftwareResults' = $result.SoftwareResults
+}
+
+
+
+
+
+Creates an Excel file with two worksheets, each containing different data.
+
+### Example 3: Specific columns and automated pivot table
+
+
+
+
+
+$data | Export-ToExcel -Title "SystemReport" -Columns @("Computer", "OS", "Memory", "Status") -Pivot
+
+
+
+
+
+Exports only specified columns and automatically creates a pivot table in a new sheet.
+
+### Example 4: Column selection per sheet
+
+
+
+
+
+Export-ToExcel -Sheets $sheets -SheetColumns @{ 
+    SoftwareResults = @('Node','ProductName','Status')
+    SummaryData = @('Group','Total','Success','Failed') 
+}
+
+
+
+
+
+Creates multiple sheets with different column selections for each.
+
+### Example 5: Non-interactive export for automation
+
+
+
+
+
+$excelFile = Export-ToExcel -Sheets $results -Title "AutomatedReport" -PromptUser:$false
+Invoke-Pivotizer -ExcelPath $excelFile -SourceSheet "Sheet1" -RowFields @("Status") -SlicerFields @("Department")
+
+
+
+
+
+Exports data without user prompts and adds a pivot table with slicers programmatically.
+
+## INPUTS
+
+### System.Object[]
+
+Accepts objects via pipeline that will be exported to Excel.
+
+## OUTPUTS
+
+### System.String
+
+Returns the path to the created Excel file when PromptUser is false.
+
+## NOTES
+
+- Sheet names are trimmed to 31 characters for Excel compatibility
+- Column names are automatically cleaned for Excel compatibility:
+  - Special characters are replaced with underscores
+  - Spaces are converted to underscores
+  - Names are trimmed to 31 characters (Excel limit)
+  - Duplicate names are made unique by adding suffixes
+- When accessing data, original column names are used even though display names are cleaned
+- For optimal pivot table and slicer compatibility, consider using Set-Report with -CleanData
+
+## RELATED LINKS
+
+[Invoke-Pivotizer](Invoke-Pivotizer.md)
+[Set-Report](Set-Report.md)
+[Convert-ReportData](Convert-ReportData.md)
+
+
+

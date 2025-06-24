@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ℹ️ About | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <div class="docs-header">
+  <div class="icon-container">
+    
+  </div>
+  
+  <div class="title-container">
+    <h1>ℹ️ About</h1>
+    
+      <p class="page-subtitle">Custom PowerShell toolkit for Windows environment management</p>
+    
+  </div>
+  
+  <div class="status-container">
+    <span class="version-pill">Version 1.5.0</span>
+    <span class="status-pill">Open Beta</span>
+  </div>
+</div>
+
+<div class="page-content">
+  <blockquote>
+  <p>CheckIT is a comprehensive PowerShell module designed for IT professionals managing Windows computer environments at scale. It streamlines diagnostics, reporting, and management tasks with templated workflows and session automation capabilities, perfect for educational institutions and enterprise environments.</p>
+</blockquote>
+
+<h2 id="-documentation">📚 Documentation</h2>
+
+<ul>
+  <li><strong><a href="/CheckIT-Documentation/docs/README.html">ℹ️ About</a></strong> - Complete overview of CheckIT capabilities</li>
+  <li><strong><a href="/CheckIT-Documentation/docs/get-started.html">🚀 Get Started</a></strong> - Installation and initial setup</li>
+  <li><strong><a href="/CheckIT-Documentation/docs/api-reference.html">📘 API Reference</a></strong> - Complete function library (75+ functions)</li>
+  <li><strong><a href="/CheckIT-Documentation/docs/quick-reference.html">⚡ Quick Reference</a></strong> - Essential patterns and workflows</li>
+  <li><strong><a href="/CheckIT-Documentation/docs/templateInfo.html">🧩 Template System</a></strong> - Detailed template capabilities (30+ templates)</li>
+  <li><strong><a href="/CheckIT-Documentation/docs/troubleshooting.html">🔍 Troubleshooting</a></strong> - Solutions for common issues</li>
+  <li><strong><a href="/CheckIT-Documentation/docs/internal-helpers.html">🔧 Internal Helper Functions</a></strong> - Non-exported utility functions</li>
+  <li><strong><a href="/CheckIT-Documentation/CHANGELOG.html">📋 Changelog</a></strong> - Version history and updates</li>
+</ul>
+
+<h2 id="-key-features">🚀 Key Features</h2>
+
+<ul>
+  <li><strong>Template Workflow System</strong>: Multi-template execution with Excel export and session automation</li>
+  <li><strong>Centralized Node Management</strong>: Domain computer inventory with seamless AD integration</li>
+  <li><strong>Secure Authentication</strong>: Passman integration with credential checkout and secure storage</li>
+  <li><strong>Parallel Processing</strong>: High-performance operations across multiple computers simultaneously</li>
+  <li><strong>Session Persistence</strong>: Save and restore work sessions, node lists, and preferences between sessions</li>
+  <li><strong>Comprehensive Reporting</strong>: Structured data collection with multi-sheet Excel export capabilities</li>
+  <li><strong>Documentation Automation</strong>: Changelog generation and cross-reference validation</li>
+</ul>
+
+<h2 id="-template-system">🧩 Template System</h2>
+
+<p>CheckIT’s modular template system provides standardized approaches to common tasks across three categories:</p>
+
+<h3 id="command-templates-20-built-in">Command Templates (20 built-in)</h3>
+
+<p>Execute standardized remote PowerShell commands across multiple systems:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c"># Execute a command template</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s2">"Get OS Info"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="test-templates-5-built-in">Test Templates (5 built-in)</h3>
+
+<p>Interactive functionality tests to validate configurations and troubleshoot issues:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c"># Run a test template</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s2">"Default Functionality Test"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="codebase-templates-5-built-in">Codebase Templates (5 built-in)</h3>
+
+<p>Development patterns for extending functionality and maintaining code standards:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c"># Get a development pattern</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Preview</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-quick-start-guide">⚡ Quick Start Guide</h2>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c"># Add computers to your working list</span><span class="w">
+</span><span class="n">NodeList</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Add</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="p">@(</span><span class="s2">"LAB01-PC01"</span><span class="p">,</span><span class="w"> </span><span class="s2">"LAB01-PC02"</span><span class="p">)</span><span class="w">
+
+</span><span class="c"># Get Administrator credentials</span><span class="w">
+</span><span class="n">Passman</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w">
+
+</span><span class="c"># Execute template workflow with Excel export</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Check Disk Space"</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"System_Audit"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-usage-examples">📊 Usage Examples</h2>
+
+<h3 id="template-workflow">Template Workflow</h3>
+
+<p>Combine multiple templates into a single workflow with automated Excel reporting:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c"># Comprehensive system audit with Excel export</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="w">
+    </span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"Check Disk Space"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"List Installed Apps"</span><span class="w">
+</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"Complete_Audit"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+
+</span><span class="c"># Session automation - prompts once, remembers choice</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Check Disk Space"</span><span class="p">)</span><span class="w"> </span><span class="nt">-Confirm</span><span class="w"> </span><span class="s2">"Auto"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="software-inventory">Software Inventory</h3>
+
+<p>Multiple approaches for software inventory management:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c"># Template approach - standardized</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s2">"List Installed Apps"</span><span class="w">
+
+</span><span class="c"># Traditional approach - customizable</span><span class="w">
+</span><span class="n">Get-Software</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w"> </span><span class="nt">-Mode</span><span class="w"> </span><span class="nx">Specific</span><span class="w"> </span><span class="nt">-SearchStrings</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Office"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Chrome"</span><span class="p">)</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="session-management">Session Management</h3>
+
+<p>Save and restore your complete working environment:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c"># Save your session</span><span class="w">
+</span><span class="n">Save-CheckITDataCore</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"C:\CheckIT\Lab_Audit.json"</span><span class="w">
+
+</span><span class="c"># Restore your session later</span><span class="w">
+</span><span class="n">Load-CheckITDataCore</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"C:\CheckIT\Lab_Audit.json"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-installation--prerequisites">🔧 Installation &amp; Prerequisites</h2>
+
+<h3 id="system-requirements">System Requirements</h3>
+
+<ul>
+  <li><strong>PowerShell</strong>: Windows PowerShell 5.1 or PowerShell 7+</li>
+  <li><strong>Environment</strong>: Domain environment with Active Directory access</li>
+  <li><strong>Authentication</strong>: Passman credential management system</li>
+  <li><strong>Reporting</strong>: Microsoft Excel (optional) for enhanced reporting features</li>
+</ul>
+
+<h3 id="installation">Installation</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c"># Install from directory</span><span class="w">
+</span><span class="n">cd</span><span class="w"> </span><span class="s2">"CheckIT-Core-v1.5.0"</span><span class="w">
+</span><span class="o">.</span><span class="n">\install.ps1</span><span class="w">
+
+</span><span class="c"># Import the module</span><span class="w">
+</span><span class="n">Import-Module</span><span class="w"> </span><span class="nx">CheckIT-Core</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="️-support--resources">🛠️ Support &amp; Resources</h2>
+
+<ul>
+  <li><strong>Version Status</strong>: v1.5.0 Beta (open to feature requests)</li>
+  <li><strong>Issues &amp; Requests</strong>: Contact KJA through internal ticketing system</li>
+  <li><strong>Documentation</strong>: Comprehensive guides available in the Documentation section above</li>
+  <li><strong>Development</strong>: Custom templates and workflows available upon request</li>
+</ul>
+
+<h2 id="-license--acknowledgements">📄 License &amp; Acknowledgements</h2>
+
+<p>CheckIT is developed and maintained by KJA for institutional use. All rights reserved.
+Special thanks to contributors from the IT department for testing and feedback.</p>
+
+<hr />
+
+<h2 id="last-updated-june-13-2025"><em>Last updated: June 13, 2025</em></h2>
+
+</div>
+
+<div class="docs-footer">
+  <div class="footer-nav">
+    <a href="/CheckIT-Documentation/index">🏠 Home</a>
+    <a href="/CheckIT-Documentation/docs/README">ℹ️ About</a>
+    <a href="/CheckIT-Documentation/docs/get-started">🚀 Get Started</a>
+    <a href="/CheckIT-Documentation/docs/api-reference">📘 API Reference</a>
+    <a href="/CheckIT-Documentation/docs/quick-reference">⚡ Quick Reference</a><br>
+    <a href="/CheckIT-Documentation/docs/templateInfo">🧩 Template System</a>
+    <a href="/CheckIT-Documentation/docs/troubleshooting">🔍 Troubleshooting</a>
+    <a href="/CheckIT-Documentation/docs/internal-helpers">🔧 Internal Helper Functions</a>
+    <a href="/CheckIT-Documentation/CHANGELOG">📋 Changelog</a>
+  </div>
+  
+  <div class="footer-info">
+    <div class="footer-badge-container">
+      <span class="footer-badge">1.5.0</span>
+      <span class="footer-badge status">Open Beta</span>
+      <span class="footer-badge">75+ Functions</span>
+    </div>
+    <p>CheckIT-Core • <a href="https://nyantoasty.github.io/CheckIT-Documentation/">Repository</a> • Maintained by KJA • MIT License</p>
+    <p class="footer-updated">Last updated: 2025-06-13</p>
+  </div>
+</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

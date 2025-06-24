@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get-OUComputerSummary | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Get-OUComputerSummary</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="get-oucomputersummary">Get-OUComputerSummary</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="get-oucomputersummary-1">Get-OUComputerSummary</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Generates comprehensive organizational unit summaries with computer counts, OS distribution, and connectivity status from Active Directory.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Get-OUComputerSummary [[-BaseOU] <String>] [[-StringSearch] &lt;String[]&gt;] [[-WindowsOnly] <Boolean>]
+ [[-OS] &lt;String[]&gt;] [[-StatusCallback] <ScriptBlock>] [<CommonParameters>]</CommonParameters></ScriptBlock></Boolean></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Queries Active Directory to generate detailed summaries of organizational units and their computer memberships. This function provides comprehensive statistics including computer counts, operating system distribution, and real-time connectivity status for each OU.</p>
+
+<p>The function supports both broad OU enumeration and targeted searches, making it suitable for both discovery and focused analysis scenarios. It includes built-in mappings for common OU structures and provides real-time connectivity testing with progress reporting.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li><strong>OU discovery and enumeration</strong> with flexible search capabilities</li>
+  <li><strong>Real-time connectivity testing</strong> via Test-Connection for online/offline status</li>
+  <li><strong>OS categorization</strong> with intelligent Windows version grouping</li>
+  <li><strong>Progress reporting</strong> via callback functions for GUI integration</li>
+  <li><strong>Filtering capabilities</strong> for Windows-only systems and specific OS versions</li>
+  <li><strong>Built-in OU mappings</strong> for common organizational structures</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-ou-summary-for-lab-computers">EXAMPLE 1: Basic OU Summary for Lab Computers</h3>
+
+<p>$result = Get-OUComputerSummary -BaseOU “Lab”
+$result.OUSummaries | Format-Table</p>
+
+<p>Uses built-in mapping to query the Labs OU and returns summary statistics for all contained sub-OUs.</p>
+
+<h3 id="example-2-search-for-specific-ou-patterns">EXAMPLE 2: Search for Specific OU Patterns</h3>
+
+<p>$result = Get-OUComputerSummary -StringSearch @(“CIS”, “Engineering”, “Science”)
+$result.OUSummaries | Where-Object { $_.Members -gt 0 }</p>
+
+<p>Searches for OUs containing “CIS”, “Engineering”, or “Science” and filters to show only populated OUs.</p>
+
+<h3 id="example-3-windows-only-analysis-with-progress-callback">EXAMPLE 3: Windows-Only Analysis with Progress Callback</h3>
+
+<p>$callback = { param($status, $current, $total) 
+    Write-Progress -Activity “Scanning OUs” -Status $status -PercentComplete (($current/$total)*100)
+}
+$result = Get-OUComputerSummary -WindowsOnly:$true -StatusCallback $callback</p>
+
+<p>Analyzes only Windows computers with real-time progress reporting for GUI applications.</p>
+
+<h3 id="example-4-specific-os-version-filtering">EXAMPLE 4: Specific OS Version Filtering</h3>
+
+<p>$result = Get-OUComputerSummary -OS @(“Windows 11”, “Windows 10”) -BaseOU “Classroom”
+$win11Count = ($result.OUComputersDict.Values | ForEach-Object { $_ } | Where-Object { $_.OS -like “<em>Windows 11</em>” }).Count
+Write-Host “Windows 11 systems in classrooms: $win11Count”</p>
+
+<p>Filters for specific Windows versions and calculates totals across all classroom OUs.</p>
+
+<h3 id="example-5-comprehensive-domain-analysis">EXAMPLE 5: Comprehensive Domain Analysis</h3>
+
+<p>$result = Get-OUComputerSummary
+$totalSummary = $result.OUSummaries | Where-Object { $_.OU -eq “TOTAL” }
+Write-Host “Domain Statistics:”
+Write-Host “Total Computers: $($totalSummary.Members)”
+Write-Host “Online: $($totalSummary.Online)”
+Write-Host “Offline: $($totalSummary.Offline)”
+Write-Host “OS Distribution: $($totalSummary.’OS Info’)”</p>
+
+<p>Performs domain-wide analysis and displays comprehensive statistics.</p>
+
+<h3 id="example-6-detailed-computer-inventory">EXAMPLE 6: Detailed Computer Inventory</h3>
+
+<p>$result = Get-OUComputerSummary -StringSearch @(“Lab”)
+foreach ($ouIndex in $result.OUComputersDict.Keys) {
+    $computers = $result.OUComputersDict[$ouIndex]
+    $ouName = $result.OUSummaries[$ouIndex].OU
+    Write-Host “`n$ouName Computers:”
+    $computers | Select-Object Node, OS, Online | Format-Table -AutoSize
+}</p>
+
+<p>Demonstrates accessing detailed computer information for inventory purposes.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-baseou">-BaseOU</h3>
+
+<p>Specifies the base organizational unit for the search. Supports built-in mappings for common OU structures.</p>
+
+<p><strong>Built-in Mappings:</strong></p>
+
+<ul>
+  <li>
+    <p><strong>“Lab”</strong>: Maps to `OU=Labs,OU=Workstations,OU=Domain Computers,DC=SHSU,DC=EDU</p>
+  </li>
+  <li>
+    <p><strong>“Classroom”</strong>: Maps to `OU=Classroom,OU=Workstations,OU=Domain Computers,DC=SHSU,DC=EDU</p>
+  </li>
+</ul>
+
+<p><strong>Custom Values:</strong></p>
+
+<ul>
+  <li>Any valid Distinguished Name for custom OU targeting</li>
+  <li>If not provided or not in built-in mappings, defaults to domain root</li>
+</ul>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 0
+Default value: Domain root DN
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-stringsearch">-StringSearch</h3>
+
+<p>Array of search strings to filter organizational units by name. Uses wildcard matching to find OUs containing any of the specified strings.</p>
+
+<p><strong>Search Behavior:</strong></p>
+
+<ul>
+  <li>Case-insensitive wildcard matching</li>
+  <li>Searches both the base OU and its immediate children</li>
+  <li>Multiple strings create an OR condition (matches any)</li>
+  <li>Results are deduplicated and sorted by Distinguished Name</li>
+</ul>
+
+<p><strong>Examples:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>@("Lab", "Computer")
+</pre></td></tr></tbody></table></code> - Finds OUs with “Lab” OR “Computer” in the name</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>@("CIS-")
+</pre></td></tr></tbody></table></code> - Finds department-specific OUs like “CIS-Faculty”, “CIS-Students”</li>
+</ul>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: None (returns all OUs)
+Accept pipeline input: False
+Accept wildcard characters: True</p>
+
+<h3 id="-windowsonly">-WindowsOnly</h3>
+
+<p>Filters results to include only computers with Windows operating systems.</p>
+
+<p><strong>When $true:</strong></p>
+
+<ul>
+  <li>Excludes non-Windows systems (Linux, macOS, etc.)</li>
+  <li>
+    <p>Only includes computers where `OperatingSystem -like “<em>Windows</em>”</p>
+  </li>
+  <li>Useful for Windows-specific management and reporting</li>
+</ul>
+
+<p><strong>When $false (default):</strong></p>
+
+<ul>
+  <li>Includes all computer objects regardless of OS</li>
+  <li>Provides complete inventory including mixed environments</li>
+</ul>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-os">-OS</h3>
+
+<p>Array of operating system filters for more granular OS-based filtering. Works in conjunction with WindowsOnly parameter.</p>
+
+<p><strong>Filter Behavior:</strong></p>
+
+<ul>
+  <li>Uses wildcard matching against the OperatingSystem property</li>
+  <li>Multiple values create an OR condition</li>
+  <li>Case-insensitive matching</li>
+  <li>Applied after WindowsOnly filtering if both are specified</li>
+</ul>
+
+<p><strong>Common Examples:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>@("Windows 10", "Windows 11")
+</pre></td></tr></tbody></table></code> - Modern Windows versions only</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>@("Server 2019", "Server 2022")
+</pre></td></tr></tbody></table></code> - Server operating systems</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>@("Windows 11")
+</pre></td></tr></tbody></table></code> - Specific version targeting</li>
+</ul>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: None (includes all OS types)
+Accept pipeline input: False
+Accept wildcard characters: True</p>
+
+<h3 id="-statuscallback">-StatusCallback</h3>
+
+<p>ScriptBlock for progress reporting during OU enumeration and connectivity testing. Essential for GUI integration and long-running operations.</p>
+
+<p><strong>Callback Parameters:</strong></p>
+
+<ul>
+  <li><strong>$status</strong> (string): Current operation description</li>
+  <li><strong>$current</strong> (int): Current item number being processed</li>
+  <li><strong>$total</strong> (int): Total number of items to process</li>
+</ul>
+
+<p><strong>Example Implementation:</strong></p>
+
+<p>$callback = { 
+    param($status, $current, $total)
+    $percent = if ($total -gt 0) { ($current / $total) * 100 } else { 0 }
+    Write-Progress -Activity “OU Analysis” -Status $status -PercentComplete $percent
+}</p>
+
+<p>```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="none">None</h3>
+
+<p>This function does not accept pipeline input.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="systemcollectionshashtable">System.Collections.Hashtable</h3>
+
+<p>Returns a hashtable with two keys containing comprehensive OU and computer data:</p>
+
+<p><strong>OUSummaries</strong> (Array of PSCustomObject):
+Each summary object contains:</p>
+
+<ul>
+  <li><strong>Index</strong>: Formatted index number (e.g., “01”, “02”, “–” for totals)</li>
+  <li><strong>OU</strong>: Display name of the organizational unit</li>
+  <li><strong>Members</strong>: Total number of computers in the OU</li>
+  <li><strong>OS Info</strong>: Formatted string showing OS distribution (e.g., “Windows 10: 15; Windows 11: 8”)</li>
+  <li><strong>Online</strong>: Count of computers responding to ping</li>
+  <li><strong>Offline</strong>: Count of computers not responding to ping</li>
+</ul>
+
+<p><strong>OUComputersDict</strong> (Hashtable):
+Dictionary indexed by OU number containing arrays of computer objects:</p>
+
+<ul>
+  <li><strong>Node</strong>: Computer name</li>
+  <li><strong>Group</strong>: OU name (used as group identifier)</li>
+  <li><strong>OS</strong>: Operating system from Active Directory</li>
+  <li><strong>OU</strong>: OU name for organizational reference</li>
+  <li><strong>Online</strong>: “Online” or “Offline” based on connectivity test</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Performance Considerations:</strong></p>
+
+<ul>
+  <li>Each computer requires a Test-Connection operation for online/offline status</li>
+  <li>Large OUs may take significant time to process due to connectivity testing</li>
+  <li>Progress callbacks help manage user expectations during long operations</li>
+  <li>Consider using filtering parameters to reduce scope for better performance</li>
+</ul>
+
+<p><strong>Active Directory Requirements:</strong></p>
+
+<ul>
+  <li>Requires ActiveDirectory PowerShell module</li>
+  <li>Needs read permissions to query computer objects and OU structure</li>
+  <li>Uses Get-ADOrganizationalUnit and Get-ADComputer cmdlets</li>
+  <li>Network connectivity to domain controllers required</li>
+</ul>
+
+<p><strong>Operating System Categorization:</strong>
+The function intelligently categorizes operating systems:</p>
+
+<ul>
+  <li><strong>Windows 10</strong>: Systems matching “Windows 10” pattern</li>
+  <li><strong>Windows 11</strong>: Systems matching “Windows 11” pattern</li>
+  <li><strong>Other Windows</strong>: Windows systems not matching specific versions</li>
+  <li><strong>[Actual OS Name]</strong>: Non-Windows systems show their actual OS</li>
+  <li><strong>Unknown</strong>: Systems with no OS information</li>
+</ul>
+
+<p><strong>Connectivity Testing:</strong></p>
+
+<ul>
+  <li>
+    <p>Uses `Test-Connection -Count 1 -TimeoutSeconds 1 -Quiet</p>
+  </li>
+  <li>Quick timeout for responsive testing in large environments</li>
+  <li>Results cached per execution (not persistent)</li>
+  <li>Network conditions affect accuracy of online/offline status</li>
+</ul>
+
+<p><strong>Built-in OU Mappings:</strong>
+Designed for SHSU domain structure but easily customizable:</p>
+
+<ul>
+  <li>Lab mapping targets student computer areas</li>
+  <li>Classroom mapping targets instructional computers</li>
+  <li>Mappings can be modified in the function source for other environments</li>
+</ul>
+
+<p><strong>Error Handling:</strong></p>
+
+<ul>
+  <li>Graceful handling of AD connection failures</li>
+  <li>Empty OU results return appropriate empty structures</li>
+  <li>Individual computer query failures don’t stop overall processing</li>
+  <li>Missing or inaccessible OUs are skipped with appropriate logging</li>
+</ul>
+
+<p><strong>Integration Patterns:</strong></p>
+
+<ul>
+  <li>Commonly used with Select-OUComputers for interactive selection</li>
+  <li>Output format designed for GUI consumption and CLI display</li>
+  <li>Results suitable for further analysis and reporting</li>
+  <li>Compatible with CheckIT’s standard object patterns</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Select-OUComputers.html">Select-OUComputers</a></p>
+
+<p><a href="https://docs.microsoft.com/en-us/powershell/module/activedirectory/get-adcomputer">Get-ADComputer</a></p>
+
+<p><a href="https://docs.microsoft.com/en-us/powershell/module/activedirectory/get-adorganizationalunit">Get-ADOrganizationalUnit</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/NodeList.html">NodeList</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Update-Progress.html">Update-Progress</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clean-ExcelColumnName | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Clean-ExcelColumnName</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="clean-excelcolumnname">Clean-ExcelColumnName</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+<p>Sanitizes column names for Excel compatibility, especially for pivot tables and slicers.</p>
+
+<h2 id="description">DESCRIPTION</h2>
+<p>Transforms column names to ensure compatibility with Excel, particularly for features like
+pivot tables and slicers that have strict naming requirements. This function applies several
+transformations to make column names Excel-friendly:</p>
+
+<ol>
+  <li>Removes special characters that cause Excel issues</li>
+  <li>Replaces spaces with underscores for better slicer compatibility</li>
+  <li>Trims names to 31 characters (Excel’s column name limit)</li>
+  <li>Ensures names aren’t empty after cleaning</li>
+</ol>
+
+<p>This function is automatically used by Export-ToExcel when processing column headers.
+It can also be used directly when preparing data for Excel export in other contexts.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-nodes">-Nodes</h3>
+<p>Array of node objects or node names.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="na">Type</span><span class="pi">:</span> <span class="s">Array</span>
+<span class="na">Parameter Sets</span><span class="pi">:</span> <span class="s">(All)</span>
+<span class="na">Aliases</span><span class="pi">:</span>
+
+<span class="na">Required</span><span class="pi">:</span> <span class="s">True</span>
+<span class="na">Position</span><span class="pi">:</span> <span class="m">1</span>
+<span class="na">Default value</span><span class="pi">:</span> <span class="s">None</span>
+<span class="na">Accept pipeline input</span><span class="pi">:</span> <span class="s">False</span>
+<span class="na">Accept wildcard characters</span><span class="pi">:</span> <span class="s">False</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Clean-ExcelColumnName -Nodes @("PC001")
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Basic usage example.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h2 id="notes">NOTES</h2>
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

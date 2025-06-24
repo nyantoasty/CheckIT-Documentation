@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>README | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">README</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="readme">README</h1>
+
+<h1 id="checkit-core-help-documentation">CheckIT-Core Help Documentation</h1>
+
+<p>This directory contains markdown-based help files for the CheckIT-Core PowerShell module.</p>
+
+<h2 id="documentation-structure">Documentation Structure</h2>
+
+<ul>
+  <li><strong>Markdown Help Files</strong>: Individual <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>.md
+</pre></td></tr></tbody></table></code> files for each function (used as source files)</li>
+  <li><strong>XML Help</strong>: Generated XML help file in the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>en-US
+</pre></td></tr></tbody></table></code> directory (used by PowerShell)</li>
+  <li><strong>About Topics</strong>: Conceptual help files (about_CheckIT-Core.md, etc.)</li>
+</ul>
+
+<h2 id="documentation-workflow">Documentation Workflow</h2>
+
+<ol>
+  <li><strong>Create/Edit</strong> markdown help files in this directory</li>
+  <li><strong>Run</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Update-HelpFiles.ps1
+</pre></td></tr></tbody></table></code> to generate XML help</li>
+  <li><strong>Test</strong> help with `Get-Help Function-Name -Full</li>
+</ol>
+
+<h2 id="markdown-help-format">Markdown Help Format</h2>
+
+<p>Each function’s markdown help file follows this structure:</p>
+
+<h2 id="markdown">```markdown</h2>
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="function-name">Function-Name</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+<p>Brief one-line summary</p>
+
+<h2 id="syntax">SYNTAX</h2>
+<p>Function syntax</p>
+
+<h2 id="description">DESCRIPTION</h2>
+<p>Detailed description</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+<p>Parameter descriptions</p>
+
+<h2 id="examples">EXAMPLES</h2>
+<p>Usage examples</p>
+
+<h2 id="inputs">INPUTS</h2>
+<p>Input types</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+<p>Output types</p>
+
+<h2 id="notes">NOTES</h2>
+<p>Additional notes</p>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href=".md"></a> functions</p>
+
+<h2 id="documentation-coverage-progress">Documentation Coverage Progress</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Count</th>
+      <th>Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Functions with complete help</td>
+      <td>X</td>
+      <td>X%</td>
+    </tr>
+    <tr>
+      <td>Functions with partial help</td>
+      <td>X</td>
+      <td>X%</td>
+    </tr>
+    <tr>
+      <td>Functions without help</td>
+      <td>X</td>
+      <td>X%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Check-HelpFiles.ps1
+</pre></td></tr></tbody></table></code> to generate a current report.</p>
+
+<h2 id="documentation-priority">Documentation Priority</h2>
+
+<ol>
+  <li><strong>High Priority</strong>: Core functions used directly by end users</li>
+  <li><strong>Medium Priority</strong>: Supporting functions referenced by other functions</li>
+  <li><strong>Low Priority</strong>: Internal utility functions</li>
+</ol>
+
+<h2 id="recently-updated-functions">Recently Updated Functions</h2>
+
+<ul>
+  <li>Generate-DocumentationAnalysisPrompt</li>
+  <li>Add-ChangelogEntry</li>
+  <li>Convert-ReportData</li>
+  <li>Export-ToExcel</li>
+  <li>Clean-ExcelColumnName</li>
+</ul>
+
+<h2 id="functions-needing-documentation">Functions Needing Documentation</h2>
+
+<ul>
+  <li>(Run Check-HelpFiles.ps1 for current list)</li>
+</ul>
+
+<h2 id="editing-guidelines">Editing Guidelines</h2>
+
+<ol>
+  <li>Keep SYNOPSIS to a single line</li>
+  <li>Include practical EXAMPLES</li>
+  <li>Document all PARAMETERS</li>
+  <li>Include RELATED LINKS to related functions</li>
+  <li>Fix any lint errors before generating XML</li>
+</ol>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

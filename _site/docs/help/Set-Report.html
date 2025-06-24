@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Set-Report | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Set-Report</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="set-report">Set-Report</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="set-report-1">Set-Report</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Adds or manages a report entry in the global Reports store for CheckIT.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Set-Report [-ReportName] <String> [-Function] <String> [-Data] <Array> [[-Groups] &lt;String[]&gt;]
+ [[-Author] <String>] [[-Timestamp] <DateTime>] [[-PromptUser] <Boolean>] [[-Errors] <object>] [-Task]
+ [[-TaskParams] <Hashtable>] [[-Caller] <String>] [[-OnDuplicate] <String>] [-Full]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></String></String></Hashtable></object></Boolean></DateTime></String></Array></String></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Adds a new report object to $global:Reports[‘Reports’], including metadata such as ReportName, Function, Groups, Author, Timestamp, and Data.
+Handles duplicates with options to append, overwrite, rename, or cancel.
+CLI prompts are suppressed in GUI mode.
+Ensures $global:Reports is always a hashtable with all required keys for CLI/GUI safety.
+Tracks creation and append history with CreatedTimestamp, LastAppendedTimestamp, AppendedValues, and TotalUpdates.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<p>Set-Report -ReportName “LabA” -Function “Get-Software” -Data $results -Groups @(“LabA”)</p>
+
+<h3 id="example-2">EXAMPLE 2</h3>
+
+<h1 id="excel-optimized-reporting-workflow">Excel-optimized reporting workflow</h1>
+<p>$results = Get-InstalledSoftware -Nodes $computers
+Set-Report -ReportName “Software Inventory” -Function “Get-Software” -Data $results -CleanData
+$report = Get-CheckITStore -Store Reports | Where-Object { $_.ReportName -eq “Software Inventory” }
+$report.Data | Export-ToExcel -Title “Software_Inventory”</p>
+
+<p>Creates a report with Excel-optimized data and exports it with clean column names.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-reportname">-ReportName</h3>
+
+<p>Name of the report.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-function">-Function</h3>
+
+<p>The function or context for the report.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-data">-Data</h3>
+
+<p>The main data array for the report.</p>
+
+<p>```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-cleandata">-CleanData</h3>
+
+<p>When specified, applies Convert-ReportData processing to clean and standardize data for better Excel export compatibility.</p>
+
+<p>This parameter provides several important benefits:</p>
+
+<ul>
+  <li>Converts WMI dates to readable Excel-friendly format</li>
+  <li>Standardizes null values for consistent display</li>
+  <li>Applies human-readable formatting for file sizes and memory values</li>
+  <li>Ensures data types are compatible with Excel export</li>
+  <li>Improves pivot table and slicer compatibility</li>
+</ul>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-groups">-Groups</h3>
+
+<p>Array of group names for the report.</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-author">-Author</h3>
+
+<p>Author of the report (default: current user).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: $env:USERNAME
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-timestamp">-Timestamp</h3>
+
+<p>Timestamp for the report (default: now).</p>
+
+<p>```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: (Get-Date)
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>If true, enables CLI prompts and colored output.
+If false, disables prompts for GUI/automation.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 7
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-errors">-Errors</h3>
+
+<p>Optional.
+Array of error objects for the report.</p>
+
+<p>```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 8
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-task">-Task</h3>
+
+<p>If set, triggers task log logic.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-taskparams">-TaskParams</h3>
+
+<p>Hashtable of additional parameters for the report.</p>
+
+<p>```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 9
+Default value: @{}
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-caller">-Caller</h3>
+
+<p>The calling function (default: current function).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 10
+Default value: $MyInvocation.MyCommand.Name
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-onduplicate">-OnDuplicate</h3>
+
+<p>How to handle duplicates: Append, Overwrite, Rename, or Prompt (default: Prompt).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 11
+Default value: Prompt
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-full">-Full</h3>
+
+<p>If set, returns the full report object instead of a status hashtable.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-cleandata-1">-CleanData</h3>
+
+<p>When specified, applies Convert-ReportData processing to clean and standardize the data for better Excel export formatting.</p>
+
+<p>Converts WMI dates to readable format, standardizes null values, applies human-readable formatting for sizes, and ensures Excel compatibility. Original raw data is preserved in TaskLog for audit purposes.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h2 id="notes">NOTES</h2>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

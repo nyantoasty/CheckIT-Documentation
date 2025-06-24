@@ -1,0 +1,88 @@
+# ConvertTo-PSCustomObject
+
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+
+# ConvertTo-PSCustomObject
+
+## SYNOPSIS
+
+Recursively converts hashtables to PSCustomObjects with deep conversion support.
+
+## SYNTAX
+
+
+
+
+
+ConvertTo-PSCustomObject [[-ht] <Hashtable>] [<CommonParameters>]
+
+
+
+
+
+## DESCRIPTION
+
+Converts hashtables and nested hashtables to PSCustomObjects while preserving structure.
+Handles arrays, nested hashtables, and mixed data types.
+Useful for ensuring consistent
+object types throughout CheckIT operations.
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+
+
+
+
+$hash = @{ Name = "Test"; Data = @{ Sub1 = "Value1"; Sub2 = @("A","B") } }
+$obj = ConvertTo-PSCustomObject $hash
+
+
+
+
+
+## PARAMETERS
+
+### -ht
+
+The hashtable to convert to PSCustomObject.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+### [PSCustomObject] with all nested hashtables converted to PSCustomObjects
+
+## NOTES
+
+This function recursively processes nested structures and preserves array contents.
+String values and other primitive types are preserved as-is.
+
+## RELATED LINKS
+
+
+

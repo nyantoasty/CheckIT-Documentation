@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export-ToExcel | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Export-ToExcel</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="export-toexcel">Export-ToExcel</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="export-toexcel-1">Export-ToExcel</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Exports objects or report data to an Excel file using the Excel COM object (no ImportExcel dependency).</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Export-ToExcel [[-InputObject] &lt;Object[]&gt;] [[-Path] <String>] [[-Title] <String>] [[-Columns] &lt;String[]&gt;]
+ [[-Sheets] <Hashtable>] [[-PromptUser] <Boolean>] [[-AutoOpen] <Boolean>] [-Pivot]
+ [[-SheetColumns] <Hashtable>] [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></Hashtable></Boolean></Boolean></Hashtable></String></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Exports the provided objects (such as report data) to an Excel file, auto-sizing columns and formatting as a table.
+Supports exporting a single table or multiple tables as separate worksheets using the -Sheets parameter.
+Handles both CLI and GUI/automation scenarios, and normalizes data for consistent output.</p>
+
+<p>The function includes comprehensive cleaning of column names to ensure Excel pivot table compatibility:</p>
+
+<ul>
+  <li>Removes special characters that cause Excel issues</li>
+  <li>Replaces spaces with underscores for better pivot table compatibility</li>
+  <li>Trims names to 31 characters (Excel’s column name limit)</li>
+  <li>Ensures unique column names by adding numeric suffixes when needed</li>
+  <li>Maintains consistent formatting across all sheets</li>
+</ul>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-inputobject">-InputObject</h3>
+
+<p>The objects to export (accepts pipeline input).
+Ignored if -Sheets is used.</p>
+
+<p>```yaml
+Type: Object[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 0
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False</p>
+
+<h3 id="-path">-Path</h3>
+
+<p>The path to save the Excel file.
+Defaults to the user preference or C:\Transcripts\ with a generated name.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-title">-Title</h3>
+
+<p>Base name for the Excel file and default worksheet.
+The current timestamp will be appended to the filename.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: “Report”
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-columns">-Columns</h3>
+
+<p>Specific column names to include (all columns included if not specified).</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-sheets">-Sheets</h3>
+
+<p>Hashtable of sheet names and their data.
+Example: @{ ‘Sheet1’ = $data1; ‘Sheet2’ = $data2 }</p>
+
+<p>```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>Whether to display CLI prompts and feedback.
+Set to $false for automation scenarios.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-autoopen">-AutoOpen</h3>
+
+<p>Whether to automatically open the Excel file after creation.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-pivot">-Pivot</h3>
+
+<p>Switch to indicate pivot table should be created.
+When specified, triggers Invoke-Pivotizer automatically.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-sheetcolumns">-SheetColumns</h3>
+
+<p>Hashtable specifying columns for each sheet name.
+Example: @{ ‘Sheet1’ = @(‘Col1’, ‘Col2’); ‘Sheet2’ = @(‘Col3’, ‘Col4’) }</p>
+
+<p>```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 7
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>Controls the progress output as per PowerShell’s common parameters.</p>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-commonparameters">-CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-excel-export-with-automatic-column-cleaning">Example 1: Basic Excel export with automatic column cleaning</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$report.Data</td>
+      <td>Export-ToExcel -Title $report.ReportName</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Exports report data to Excel with automatic column name cleaning for Excel compatibility.</p>
+
+<h3 id="example-2-multiple-worksheets-in-one-excel-file">Example 2: Multiple worksheets in one Excel file</h3>
+
+<p>Export-ToExcel -Sheets @{
+    ‘DefaultSoftware’ = $result.DefaultSoftware
+    ‘SoftwareResults’ = $result.SoftwareResults
+}</p>
+
+<p>Creates an Excel file with two worksheets, each containing different data.</p>
+
+<h3 id="example-3-specific-columns-and-automated-pivot-table">Example 3: Specific columns and automated pivot table</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$data</td>
+      <td>Export-ToExcel -Title “SystemReport” -Columns @(“Computer”, “OS”, “Memory”, “Status”) -Pivot</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Exports only specified columns and automatically creates a pivot table in a new sheet.</p>
+
+<h3 id="example-4-column-selection-per-sheet">Example 4: Column selection per sheet</h3>
+
+<p>Export-ToExcel -Sheets $sheets -SheetColumns @{ 
+    SoftwareResults = @(‘Node’,’ProductName’,’Status’)
+    SummaryData = @(‘Group’,’Total’,’Success’,’Failed’) 
+}</p>
+
+<p>Creates multiple sheets with different column selections for each.</p>
+
+<h3 id="example-5-non-interactive-export-for-automation">Example 5: Non-interactive export for automation</h3>
+
+<p>$excelFile = Export-ToExcel -Sheets $results -Title “AutomatedReport” -PromptUser:$false
+Invoke-Pivotizer -ExcelPath $excelFile -SourceSheet “Sheet1” -RowFields @(“Status”) -SlicerFields @(“Department”)</p>
+
+<p>Exports data without user prompts and adds a pivot table with slicers programmatically.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="systemobject">System.Object[]</h3>
+
+<p>Accepts objects via pipeline that will be exported to Excel.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="systemstring">System.String</h3>
+
+<p>Returns the path to the created Excel file when PromptUser is false.</p>
+
+<h2 id="notes">NOTES</h2>
+
+<ul>
+  <li>Sheet names are trimmed to 31 characters for Excel compatibility</li>
+  <li>Column names are automatically cleaned for Excel compatibility:
+    <ul>
+      <li>Special characters are replaced with underscores</li>
+      <li>Spaces are converted to underscores</li>
+      <li>Names are trimmed to 31 characters (Excel limit)</li>
+      <li>Duplicate names are made unique by adding suffixes</li>
+    </ul>
+  </li>
+  <li>When accessing data, original column names are used even though display names are cleaned</li>
+  <li>For optimal pivot table and slicer compatibility, consider using Set-Report with -CleanData</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Invoke-Pivotizer.html">Invoke-Pivotizer</a>
+<a href="/CheckIT-Documentation/docs/help/Set-Report.html">Set-Report</a>
+<a href="/CheckIT-Documentation/docs/help/Convert-ReportData.html">Convert-ReportData</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

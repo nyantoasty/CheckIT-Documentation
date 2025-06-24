@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoke-CCMPackageDeployment | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Invoke-CCMPackageDeployment</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="invoke-ccmpackagedeployment">Invoke-CCMPackageDeployment</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="invoke-ccmpackagedeployment-1">Invoke-CCMPackageDeployment</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>SCCM package deployment with package discovery and selection using All/Specific search modes.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Invoke-CCMPackageDeployment [-Nodes] <Array> [[-Mode] <String>] [[-SearchStrings] <Array>]
+ [[-PackageID] <String>] [[-Method] <String>] [-AuditSoftware] [-DryRun] [[-PromptUser] <Boolean>]
+ [[-StatusCallback] <ScriptBlock>] [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></ScriptBlock></Boolean></String></String></Array></String></Array></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Leverages existing CheckIT infrastructure with consistent search patterns matching Get-Software.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<p>Invoke-CCMPackageDeployment -Nodes $nodes -Mode All</p>
+
+<h3 id="example-2">EXAMPLE 2</h3>
+
+<p>Invoke-CCMPackageDeployment -Nodes $nodes -Mode Specific -SearchStrings @(“Office”, “Chrome”) -AuditSoftware</p>
+
+<h3 id="example-3">EXAMPLE 3</h3>
+
+<p>Invoke-CCMPackageDeployment -Nodes $nodes -PackageID “ABC00123” -DryRun</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-nodes">-Nodes</h3>
+
+<p>Array of node objects or node names.</p>
+
+<p>```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-mode">-Mode</h3>
+
+<p>‘All’ to show all available packages, ‘Specific’ to search for specific packages by name.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: All
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-searchstrings">-SearchStrings</h3>
+
+<p>Array of package names to search for (used when Mode is ‘Specific’).</p>
+
+<p>```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-packageid">-PackageID</h3>
+
+<p>Specific Package ID if known (bypasses discovery).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-method">-Method</h3>
+
+<p>Deployment method: TriggerEvaluation, TriggerInstall, PowerShellMethod, ScheduleInstall.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: TriggerEvaluation
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-auditsoftware">-AuditSoftware</h3>
+
+<p>If set, runs Get-Software before and after deployment for comparison.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-dryrun">-DryRun</h3>
+
+<p>If set, shows what would be executed without running commands.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>CLI vs GUI mode control.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-statuscallback">-StatusCallback</h3>
+
+<p>```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 7
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h2 id="notes">NOTES</h2>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

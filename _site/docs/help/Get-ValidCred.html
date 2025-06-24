@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get-ValidCred | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Get-ValidCred</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="get-validcred">Get-ValidCred</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="get-validcred-1">Get-ValidCred</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Checks for valid credentials for one or more nodes, and optionally retrieves them via Passman if missing or expired with comprehensive validation and automatic management.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Get-ValidCred [-Nodes] &lt;Object[]&gt; [-Silent] [-AutoPassman] [[-StatusCallback] <ScriptBlock>]
+ [-ReturnCredential] [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></ScriptBlock></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Core credential validation function for the CheckIT system that provides comprehensive credential status checking, automatic expiration handling, and optional credential retrieval integration. This function serves as the foundation for all credential-dependent operations in CheckIT.</p>
+
+<p>The function performs intelligent credential validation against the global credential store, handles expiration scenarios gracefully, and provides flexible output formats for both interactive and programmatic use. It integrates seamlessly with Passman for automatic credential retrieval when credentials are missing or expired.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li><strong>Comprehensive credential validation</strong> with expiration checking</li>
+  <li><strong>Automatic credential store management</strong> with expiration handling</li>
+  <li><strong>Flexible input processing</strong> supporting various node formats</li>
+  <li><strong>Optional Passman integration</strong> for automatic credential retrieval</li>
+  <li><strong>Multiple output formats</strong> for different use case requirements</li>
+  <li><strong>Status callback support</strong> for progress reporting and GUI integration</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-credential-status-check">EXAMPLE 1: Basic Credential Status Check</h3>
+
+<p>$credStatus = Get-ValidCred -Nodes @(“PC123”, “PC124”, “PC125”)
+$credStatus | Format-Table Node, Status, FQDN</p>
+
+<p>Checks credential status for multiple nodes and displays results in table format.</p>
+
+<h3 id="example-2-credential-retrieval-with-full-objects">EXAMPLE 2: Credential Retrieval with Full Objects</h3>
+
+<p>$nodes = $global:nodeList | Where-Object { $_.Group -eq “Lab Computers” }
+$credResults = Get-ValidCred -Nodes $nodes -ReturnCredential
+foreach ($result in $credResults) {
+    if ($result.Status -eq “OK”) {
+        Write-Host “✓ $($result.Node): Credentials available”
+        Write-Host “  Username: $($result.Credential.UserName)”
+        Write-Host “  Expires: $($result.Expiration)”
+    }
+}</p>
+
+<p>Retrieves full credential objects for lab computers with detailed status reporting.</p>
+
+<h3 id="example-3-automatic-credential-retrieval-via-passman">EXAMPLE 3: Automatic Credential Retrieval via Passman</h3>
+
+<p>$nodes = @(“NEW-PC-01”, “NEW-PC-02”)
+$credResults = Get-ValidCred -Nodes $nodes -AutoPassman
+$readyNodes = $credResults | Where-Object { $_.Status -eq “OK” }
+Write-Host “Ready for operations: $($readyNodes.Count) of $($nodes.Count) nodes”</p>
+
+<p>Automatically retrieves missing credentials via Passman and reports ready nodes.</p>
+
+<h3 id="example-4-silent-mode-for-automation">EXAMPLE 4: Silent Mode for Automation</h3>
+
+<p>$credCheck = Get-ValidCred -Nodes $global:nodeList -Silent -ReturnCredential
+$validCreds = $credCheck | Where-Object { $<em>.Status -eq “OK” }
+$expiredCreds = $credCheck | Where-Object { $</em>.Status -eq “Expired” }
+$missingCreds = $credCheck | Where-Object { $_.Status -eq “Missing” }</p>
+
+<p>Write-Host “Credential Summary:”
+Write-Host “  Valid: $($validCreds.Count)”
+Write-Host “  Expired: $($expiredCreds.Count)”
+Write-Host “  Missing: $($missingCreds.Count)”</p>
+
+<p>Silent credential audit for the entire NodeList with comprehensive reporting.</p>
+
+<h3 id="example-5-progress-callback-for-gui-integration">EXAMPLE 5: Progress Callback for GUI Integration</h3>
+
+<p>$callback = { 
+    param($status, $current, $total)
+    Write-Progress -Activity “Validating Credentials” -Status $status -PercentComplete (($current/$total)*100)
+    [System.Windows.Forms.Application]::DoEvents()  # For WinForms GUI
+}</p>
+
+<p>$credResults = Get-ValidCred -Nodes $largeNodeList -StatusCallback $callback -Silent</p>
+
+<p>Demonstrates progress reporting for GUI applications processing large node lists.</p>
+
+<h3 id="example-6-credential-store-validation-and-maintenance">EXAMPLE 6: Credential Store Validation and Maintenance</h3>
+
+<h1 id="check-global-credential-store-status">Check global credential store status</h1>
+<p>$allNodes = $global:nodeList | Select-Object -ExpandProperty Node
+$credStatus = Get-ValidCred -Nodes $allNodes -Silent</p>
+
+<h1 id="identify-nodes-needing-credential-refresh">Identify nodes needing credential refresh</h1>
+<p>$needsRefresh = $credStatus | Where-Object { $_.Status -in @(“Missing”, “Expired”) }</p>
+
+<p>if ($needsRefresh.Count -gt 0) {
+    Write-Host “Found $($needsRefresh.Count) nodes needing credential refresh”
+    $refreshed = Get-ValidCred -Nodes $needsRefresh.Node -AutoPassman
+}</p>
+
+<p>Demonstrates proactive credential store maintenance and refresh workflows.</p>
+
+<h3 id="example-7-error-handling-and-retry-logic">EXAMPLE 7: Error Handling and Retry Logic</h3>
+
+<p>$nodes = @(“PC1”, “PC2”, “INVALID”)
+$maxRetries = 3
+$retryCount = 0</p>
+
+<p>do {
+    $credResults = Get-ValidCred -Nodes $nodes -Silent
+    $failedNodes = $credResults | Where-Object { $_.Status -eq “Missing” }</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre>if ($failedNodes.Count -gt 0 -and $retryCount -lt $maxRetries) {
+    Write-Host "Retry $($retryCount + 1): Attempting Passman for $($failedNodes.Count) nodes"
+    $retryNodes = $failedNodes | Select-Object -ExpandProperty Node
+    Get-ValidCred -Nodes $retryNodes -AutoPassman | Out-Null
+    $retryCount++
+} else {
+    break
+} } while ($retryCount -lt $maxRetries)
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Shows robust error handling with retry logic for credential retrieval failures.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-nodes">-Nodes</h3>
+
+<p>Array of node names or node objects for credential validation. Supports flexible input formats for seamless integration with CheckIT workflows.</p>
+
+<p><strong>Supported Input Types:</strong></p>
+
+<ul>
+  <li>
+    <p><strong>String arrays</strong>: `@(“PC1”, “PC2”, “PC3”)</p>
+  </li>
+  <li><strong>Node objects</strong>: Objects with <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>.Node
+</pre></td></tr></tbody></table></code> property from NodeList</li>
+  <li><strong>Mixed arrays</strong>: Combination of strings and node objects</li>
+  <li><strong>Pipeline input</strong>: Via ValueFromPipeline support</li>
+</ul>
+
+<p><strong>Input Processing:</strong></p>
+
+<ul>
+  <li>Strings are processed directly as node names</li>
+  <li>Objects are inspected for <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>.Node
+</pre></td></tr></tbody></table></code> property</li>
+  <li>Case-insensitive node name normalization</li>
+  <li>Automatic trimming and validation</li>
+  <li>Empty or invalid entries are filtered out</li>
+</ul>
+
+<p><strong>Batch Processing:</strong></p>
+
+<ul>
+  <li>Optimized for large node lists</li>
+  <li>Parallel credential lookups where possible</li>
+  <li>Efficient memory usage for extensive operations</li>
+  <li>Progress reporting support for long-running validations</li>
+</ul>
+
+<p>```yaml
+Type: Object[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False</p>
+
+<h3 id="-silent">-Silent</h3>
+
+<p>Suppresses user prompts and interactive output for automation and GUI scenarios.</p>
+
+<p><strong>When Present:</strong></p>
+
+<ul>
+  <li>No console output except critical errors</li>
+  <li>No user prompts or confirmations</li>
+  <li>Suppresses colored output and progress messages</li>
+  <li>Returns structured data only</li>
+  <li>Suitable for background processing and automation</li>
+</ul>
+
+<p><strong>When Not Present (Default):</strong></p>
+
+<ul>
+  <li>Allows user interaction and prompts</li>
+  <li>Shows colored status output</li>
+  <li>Displays progress information</li>
+  <li>Enables interactive credential retrieval</li>
+  <li>Suitable for manual operations and troubleshooting</li>
+</ul>
+
+<p><strong>Impact on Operations:</strong></p>
+
+<ul>
+  <li>Controls Passman integration behavior with AutoPassman</li>
+  <li>Affects error reporting verbosity</li>
+  <li>Influences progress callback activation</li>
+  <li>Determines GUI vs CLI operation mode</li>
+</ul>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-autopassman">-AutoPassman</h3>
+
+<p>Automatically invokes Passman for nodes with missing or expired credentials.</p>
+
+<p><strong>When Present:</strong></p>
+
+<ul>
+  <li>Automatically calls Passman for credential retrieval</li>
+  <li>Processes only nodes with missing/expired credentials</li>
+  <li>Updates credential store with retrieved credentials</li>
+  <li>Re-validates credentials after Passman completion</li>
+  <li>Returns updated status information</li>
+</ul>
+
+<p><strong>When Not Present (Default):</strong></p>
+
+<ul>
+  <li>Only performs credential validation</li>
+  <li>Does not attempt credential retrieval</li>
+  <li>Returns current credential status only</li>
+  <li>Suitable for status checking without modification</li>
+</ul>
+
+<p><strong>Interaction with Silent:</strong></p>
+
+<ul>
+  <li>Silent:$false + AutoPassman:$true = Interactive Passman prompts</li>
+  <li>Silent:$true + AutoPassman:$true = No Passman interaction (disabled)</li>
+  <li>AutoPassman only works in interactive mode for security</li>
+</ul>
+
+<p><strong>Use Cases:</strong></p>
+
+<ul>
+  <li>Automated credential refresh workflows</li>
+  <li>Pre-operation credential validation with auto-fix</li>
+  <li>Maintenance scripts requiring credential availability</li>
+  <li>Interactive troubleshooting with automatic resolution</li>
+</ul>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-statuscallback">-StatusCallback</h3>
+
+<p>ScriptBlock for progress reporting during credential validation operations.</p>
+
+<p><strong>Callback Signature:</strong></p>
+
+<p>$callback = { 
+    param($status, $current, $total)
+    # Your progress handling code here
+}</p>
+
+<p><strong>Parameters Provided:</strong></p>
+
+<ul>
+  <li><strong>$status</strong> (string): Current operation description</li>
+  <li><strong>$current</strong> (int): Current item being processed (0-based)</li>
+  <li><strong>$total</strong> (int): Total number of items to process</li>
+</ul>
+
+<p><strong>Common Implementations:</strong></p>
+
+<h1 id="console-progress-bar">Console progress bar</h1>
+<p>$callback = { param($status, $current, $total)
+    Write-Progress -Activity “Validating Credentials” -Status $status -PercentComplete (($current/$total)*100)
+}</p>
+
+<h1 id="gui-progress-update">GUI progress update</h1>
+<p>$callback = { param($status, $current, $total)
+    $global:ProgressBar.Value = ($current / $total) * 100
+    $global:StatusLabel.Text = $status
+    [System.Windows.Forms.Application]::DoEvents()
+}</p>
+
+<p>```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-returncredential">-ReturnCredential</h3>
+
+<p>Includes the actual PSCredential objects in the return data for immediate use.</p>
+
+<p><strong>When Present:</strong></p>
+
+<ul>
+  <li>Returns full PSCredential objects in results</li>
+  <li>Enables immediate credential usage</li>
+  <li>Increases memory usage for large node lists</li>
+  <li>Provides complete credential information</li>
+</ul>
+
+<p><strong>When Not Present (Default):</strong></p>
+
+<ul>
+  <li>Returns credential status information only</li>
+  <li>Lighter memory footprint</li>
+  <li>Suitable for status checking without credential usage</li>
+  <li>Can retrieve credentials later as needed</li>
+</ul>
+
+<p><strong>Security Implications:</strong></p>
+
+<ul>
+  <li>PSCredential objects contain SecureString passwords</li>
+  <li>Credentials remain in memory until garbage collection</li>
+  <li>Consider memory cleanup for security-sensitive operations</li>
+  <li>Suitable for immediate use scenarios</li>
+</ul>
+
+<p><strong>Output Impact:</strong></p>
+
+<ul>
+  <li>Adds <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Credential
+</pre></td></tr></tbody></table></code> property to each result object</li>
+  <li>Contains <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>[System.Management.Automation.PSCredential]
+</pre></td></tr></tbody></table></code> object</li>
+  <li>
+    <p>Username format: `NODENAME.shsu.edu\Administrator</p>
+  </li>
+  <li>Password as SecureString for security</li>
+</ul>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>Standard PowerShell progress action preference for controlling built-in progress display.</p>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="in-systemobject">IN System.Object[]</h3>
+
+<p>Array of node names (strings) or node objects with Node properties.</p>
+
+<h3 id="systemstring">System.String[]</h3>
+
+<p>Array of computer names for credential validation.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="out-systemobject">OUT System.Object[]</h3>
+
+<p>Array of PSCustomObjects containing comprehensive credential validation results:</p>
+
+<p><strong>Result Object Structure:</strong></p>
+
+<p>[PSCustomObject]@{
+    Node       = “PC123”                     # Node name (normalized)
+    Status     = “OK”                        # Credential status
+    FQDN       = “PC123.shsu.edu”           # Fully qualified domain name
+    Credential = [PSCredential]              # Credential object (if ReturnCredential)
+    Expiration = [DateTime]                  # Credential expiration time
+    Passman    = $true                       # Whether node has Passman credentials
+}</p>
+
+<p><strong>Status Values:</strong></p>
+
+<ul>
+  <li><strong>“OK”</strong>: Valid credentials available in credential store</li>
+  <li><strong>“Missing”</strong>: No credentials found for the node</li>
+  <li><strong>“Expired”</strong>: Credentials exist but have expired</li>
+</ul>
+
+<p><strong>Additional Properties:</strong></p>
+
+<ul>
+  <li><strong>Node</strong>: Normalized node name (uppercase)</li>
+  <li><strong>FQDN</strong>: Standard CheckIT FQDN format</li>
+  <li><strong>Expiration</strong>: Global credential store expiration time</li>
+  <li><strong>Passman</strong>: Boolean indicating if node has Passman-retrieved credentials</li>
+  <li><strong>Credential</strong>: PSCredential object (only if ReturnCredential specified)</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Credential Store Integration:</strong></p>
+
+<ul>
+  <li>Automatically initializes global credential store if needed</li>
+  <li>Handles credential store expiration gracefully</li>
+  <li>Maintains case-insensitive credential lookups</li>
+  <li>Updates NodeList Passman status flags automatically</li>
+  <li>Integrates with Ensure-GlobalCredStore for consistency</li>
+</ul>
+
+<p><strong>Expiration Handling:</strong></p>
+
+<ul>
+  <li>Checks global credential store expiration automatically</li>
+  <li>Clears expired credentials from memory</li>
+  <li>Updates all NodeList entries to reflect expiration</li>
+  <li>Provides clear status indication for expired credentials</li>
+  <li>Supports automatic refresh via AutoPassman parameter</li>
+</ul>
+
+<p><strong>Performance Optimization:</strong></p>
+
+<ul>
+  <li>Efficient batch processing for large node lists</li>
+  <li>Case-insensitive credential key lookups</li>
+  <li>Minimal memory allocation for status-only checks</li>
+  <li>Optimized object creation and property access</li>
+  <li>Suitable for high-frequency validation scenarios</li>
+</ul>
+
+<p><strong>AutoPassman Integration:</strong></p>
+
+<ul>
+  <li>Only activates in interactive mode (Silent:$false)</li>
+  <li>Processes only nodes with missing/expired credentials</li>
+  <li>Updates results after successful credential retrieval</li>
+  <li>Maintains result consistency after Passman operations</li>
+  <li>Provides seamless credential acquisition workflow</li>
+</ul>
+
+<p><strong>Error Handling:</strong></p>
+
+<ul>
+  <li>Never throws exceptions; returns status information</li>
+  <li>Handles invalid node names gracefully</li>
+  <li>Manages credential store corruption scenarios</li>
+  <li>Provides meaningful error context in results</li>
+  <li>Maintains operation continuity for batch processing</li>
+</ul>
+
+<p><strong>Thread Safety:</strong></p>
+
+<ul>
+  <li>Safe for concurrent access to credential store</li>
+  <li>Handles global variable access appropriately</li>
+  <li>Suitable for parallel processing scenarios</li>
+  <li>Maintains data consistency during updates</li>
+</ul>
+
+<p><strong>Memory Management:</strong></p>
+
+<ul>
+  <li>Efficient object creation for large result sets</li>
+  <li>PSCredential objects use SecureString internally</li>
+  <li>Automatic garbage collection for unused credentials</li>
+  <li>Memory-conscious processing for extensive node lists</li>
+</ul>
+
+<p><strong>Integration Patterns:</strong></p>
+
+<h1 id="standard-checkit-credential-validation">Standard CheckIT credential validation</h1>
+<p>$credResults = Get-ValidCred -Nodes $nodeList -Silent
+$validNodes = $credResults | Where-Object { $_.Status -eq “OK” }</p>
+
+<h1 id="pre-operation-credential-check-with-auto-fix">Pre-operation credential check with auto-fix</h1>
+<p>$credResults = Get-ValidCred -Nodes $nodes -AutoPassman
+if ($credResults | Where-Object { $_.Status -ne “OK” }) {
+    Write-Warning “Some nodes still lack credentials after Passman”
+}</p>
+
+<h1 id="credential-audit-and-reporting">Credential audit and reporting</h1>
+<p>$auditResults = Get-ValidCred -Nodes $allNodes -Silent -ReturnCredential
+$report = $auditResults | Group-Object Status | ForEach-Object {
+    “$($<em>.Name): $($</em>.Count) nodes”
+}</p>
+
+<p><strong>Best Practices:</strong></p>
+
+<ul>
+  <li>Use Silent mode for automation and batch processing</li>
+  <li>Implement progress callbacks for long-running operations</li>
+  <li>Check Status before using Credential objects</li>
+  <li>Use AutoPassman judiciously to avoid unnecessary prompts</li>
+  <li>Cache results when performing multiple operations</li>
+  <li>Handle expiration scenarios in long-running applications</li>
+</ul>
+
+<p><strong>Common Troubleshooting:</strong></p>
+
+<ul>
+  <li>Verify global credential store initialization</li>
+  <li>Check NodeList for correct node names</li>
+  <li>Validate Passman connectivity and authentication</li>
+  <li>Review credential store expiration settings</li>
+  <li>Ensure proper case handling for node names</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-NodeCredAndFQDN.html">Get-NodeCredAndFQDN</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Passman.html">Passman</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Show-CredentialClipboard.html">Show-CredentialClipboard</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-ValidCredStatus.html">Get-ValidCredStatus</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Ensure-GlobalCredStore.html">Ensure-GlobalCredStore</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/NodeList.html">NodeList</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

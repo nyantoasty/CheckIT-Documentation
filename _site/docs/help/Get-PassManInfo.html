@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get-PassManInfo | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Get-PassManInfo</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="get-passmaninfo">Get-PassManInfo</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="get-passmaninfo-1">Get-PassManInfo</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Interactively collects and validates work order number and reason for Passman credential requests with comprehensive input sanitization.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Get-PassManInfo [[-TargetNodes] &lt;String[]&gt;] [<CommonParameters>]</CommonParameters></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Internal utility function that provides secure, interactive collection of work order numbers and reasons required for Passman credential requests. Implements comprehensive input validation, sanitization, and user-friendly error handling to ensure compliance with organizational audit requirements.</p>
+
+<p>This function is primarily called by the Passman function during interactive operations but can be used independently for testing validation logic or building custom credential management workflows.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li><strong>Rigorous input validation</strong> with format enforcement</li>
+  <li><strong>Content sanitization</strong> to prevent injection attacks</li>
+  <li><strong>User-friendly error messages</strong> with clear requirements</li>
+  <li><strong>Retry logic</strong> for invalid inputs with guidance</li>
+  <li><strong>Security-focused design</strong> with dangerous character removal</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-interactive-collection">EXAMPLE 1: Basic Interactive Collection</h3>
+
+<p>$info = Get-PassManInfo -TargetNodes @(“PC123”, “PC124”)
+Write-Host “Work Order: $($info.WO)”
+Write-Host “Reason: $($info.Reason)”
+Write-Host “Target Nodes: $($info.TargetNodes -join ‘, ‘)”</p>
+
+<p>Interactively collects work order and reason information for the specified target nodes.</p>
+
+<h3 id="example-2-validation-testing">EXAMPLE 2: Validation Testing</h3>
+
+<h1 id="test-various-work-order-formats">Test various work order formats</h1>
+<p>$testNodes = @(“TEST-PC”)
+$info = Get-PassManInfo -TargetNodes $testNodes</p>
+
+<h1 id="function-will-prompt-and-validate">Function will prompt and validate:</h1>
+<h1 id="valid-wo2024-001-ticket_12345-maint-system">Valid: “WO2024-001”, “TICKET_12345”, “MAINT-SYSTEM”</h1>
+<h1 id="invalid-wo-2024-001-spaces-wo2024-special-chars">Invalid: “WO 2024-001” (spaces), “WO@2024” (special chars)</h1>
+
+<p>Demonstrates the validation process for different work order formats.</p>
+
+<h3 id="example-3-integration-in-custom-workflows">EXAMPLE 3: Integration in Custom Workflows</h3>
+
+<p>function Custom-CredentialWorkflow {
+    param([string[]]$ComputerNames)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre>try {
+    $passmanInfo = Get-PassManInfo -TargetNodes $ComputerNames
+    Write-Host "Collected valid Passman information:"
+    Write-Host "  WO: $($passmanInfo.WO)"
+    Write-Host "  Reason: $($passmanInfo.Reason)"
+    Write-Host "  Targets: $($passmanInfo.TargetNodes.Count) nodes"
+    
+    # Use the validated information for custom processing
+    return $passmanInfo
+} catch {
+    Write-Error "Failed to collect Passman information: $($_.Exception.Message)"
+} }
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Shows integration in custom credential management workflows.</p>
+
+<h3 id="example-4-error-handling-and-retry-logic">EXAMPLE 4: Error Handling and Retry Logic</h3>
+
+<p>$nodes = @(“SERVER01”, “SERVER02”)
+try {
+    $info = Get-PassManInfo -TargetNodes $nodes
+    # Function automatically retries on invalid input
+    # User sees helpful error messages like:
+    # “Invalid WO: Only letters, numbers, dashes, and underscores allowed.”
+    # “Reason must be 1-100 characters.”
+} catch {
+    Write-Warning “User cancelled or persistent validation failure”
+}</p>
+
+<p>Demonstrates the built-in retry logic and user guidance for invalid inputs.</p>
+
+<h3 id="example-5-security-testing-and-sanitization">EXAMPLE 5: Security Testing and Sanitization</h3>
+
+<h1 id="the-function-will-automatically-sanitize-dangerous-content">The function will automatically sanitize dangerous content:</h1>
+<h1 id="input-software-install-alerttest-and-config">Input: “Software install <script>alert('test')</script> and config”</h1>
+<h1 id="sanitized-software-install--and-config">Sanitized: “Software install  and config”</h1>
+<p>#</p>
+<h1 id="input-troubleshootingrnmultiplernlines">Input: “Troubleshooting\r\nMultiple\r\nLines”</h1>
+<h1 id="sanitized-troubleshooting-multiple-lines">Sanitized: “Troubleshooting Multiple Lines”</h1>
+
+<p>$info = Get-PassManInfo -TargetNodes @(“SECURE-PC”)</p>
+<h1 id="all-dangerous-characters-are-automatically-removed">All dangerous characters are automatically removed</h1>
+
+<p>Shows how the function protects against potentially dangerous input content.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-targetnodes">-TargetNodes</h3>
+
+<p>Array of target computer names that will receive the credential request. Used for context and included in the returned information but does not affect validation logic.</p>
+
+<p><strong>Purpose:</strong></p>
+
+<ul>
+  <li>Provides context for the credential request</li>
+  <li>Included in returned hashtable for downstream processing</li>
+  <li>Used by calling functions to maintain node association</li>
+  <li>Does not influence validation rules or processing logic</li>
+</ul>
+
+<p><strong>Format:</strong></p>
+
+<ul>
+  <li>Array of strings representing computer names</li>
+  <li>Typically NetBIOS names or FQDNs</li>
+  <li>No validation performed on node names by this function</li>
+  <li>Passed through unchanged to returned data structure</li>
+</ul>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="none">None</h3>
+
+<p>This function does not accept pipeline input. All data is collected through interactive prompts.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="systemcollectionshashtable">System.Collections.Hashtable</h3>
+
+<p>Returns a hashtable containing validated work order, reason, and target node information:</p>
+
+<p><strong>Hashtable Structure:</strong></p>
+
+<p>@{
+    WO = “WO2024-001”                    # Validated work order number
+    Reason = “Software deployment”       # Sanitized reason description<br />
+    TargetNodes = @(“PC1”, “PC2”)      # Pass-through target nodes array
+}</p>
+
+<p><strong>Key Properties:</strong></p>
+
+<ul>
+  <li><strong>WO</strong>: Work order number that passed format validation</li>
+  <li><strong>Reason</strong>: Reason text that passed length and content validation</li>
+  <li><strong>TargetNodes</strong>: Original target nodes array (unchanged)</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Work Order Validation Rules:</strong></p>
+
+<ul>
+  <li><strong>Required</strong>: Cannot be empty or whitespace-only</li>
+  <li>
+    <p><strong>Format</strong>: Must match pattern `^[A-Za-z0-9-_]+$</p>
+  </li>
+  <li><strong>Allowed Characters</strong>: Letters (a-z, A-Z), numbers (0-9), hyphens (-), underscores (_)</li>
+  <li><strong>Prohibited</strong>: Spaces, special characters, punctuation (except - and _)</li>
+  <li>
+    <p><strong>Examples of Valid WO</strong>: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>WO2024-001
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>TICKET_12345
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>MAINT-Q1
+</pre></td></tr></tbody></table></code>, `DEPLOY_APP</p>
+  </li>
+  <li><strong>Examples of Invalid WO</strong>: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>WO 2024-001
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>WO@2024
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>WO.2024
+</pre></td></tr></tbody></table></code>, `WO#123</li>
+</ul>
+
+<p><strong>Reason Validation and Sanitization:</strong></p>
+
+<ul>
+  <li><strong>Length Requirements</strong>: 1-100 characters (enforced strictly)</li>
+  <li>
+    <p><strong>Content Sanitization</strong>: Removes dangerous characters `[&lt;&gt;;&amp;”’\]</p>
+  </li>
+  <li><strong>Normalization</strong>: Converts line breaks (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>\r\n
+</pre></td></tr></tbody></table></code>) to single spaces</li>
+  <li><strong>Trimming</strong>: Removes leading and trailing whitespace</li>
+  <li><strong>Empty Check</strong>: Rejects empty strings after trimming and sanitization</li>
+</ul>
+
+<p><strong>Security Features:</strong></p>
+
+<ul>
+  <li><strong>Injection Prevention</strong>: Removes HTML/script characters that could be dangerous</li>
+  <li><strong>Content Filtering</strong>: Strips potentially malicious character sequences</li>
+  <li><strong>Input Validation</strong>: Enforces strict format requirements for audit compliance</li>
+  <li><strong>Sanitization</strong>: Cleans input while preserving legitimate content</li>
+</ul>
+
+<p><strong>User Experience Design:</strong></p>
+
+<ul>
+  <li><strong>Clear Error Messages</strong>: Specific guidance for each validation failure</li>
+  <li><strong>Retry Logic</strong>: Allows users to correct invalid input without restarting</li>
+  <li><strong>Progressive Validation</strong>: Checks each field completely before moving to next</li>
+  <li><strong>Helpful Prompts</strong>: Clear instructions for required format and content</li>
+</ul>
+
+<p><strong>Integration Patterns:</strong></p>
+
+<ul>
+  <li><strong>Called by Passman</strong>: Primary use case for interactive credential requests</li>
+  <li><strong>Custom Workflows</strong>: Can be used in custom credential management functions</li>
+  <li><strong>Testing Utilities</strong>: Useful for testing validation logic independently</li>
+  <li><strong>GUI Integration</strong>: Results can be used to populate form fields</li>
+</ul>
+
+<p><strong>Performance Characteristics:</strong></p>
+
+<ul>
+  <li><strong>Blocking Operation</strong>: Waits for user input (not suitable for automation)</li>
+  <li><strong>Lightweight Processing</strong>: Minimal CPU usage during validation</li>
+  <li><strong>Memory Efficient</strong>: Small memory footprint for validation operations</li>
+  <li><strong>Fast Validation</strong>: Regular expression matching is very fast</li>
+</ul>
+
+<p><strong>Error Conditions:</strong></p>
+
+<ul>
+  <li><strong>User Cancellation</strong>: If user provides invalid input repeatedly</li>
+  <li><strong>Terminal Errors</strong>: If console input is not available</li>
+  <li><strong>Validation Failures</strong>: When input cannot be sanitized to valid format</li>
+</ul>
+
+<p><strong>Best Practices:</strong></p>
+
+<ul>
+  <li>Use only in interactive scenarios where user input is required</li>
+  <li>Implement timeout handling for automated environments</li>
+  <li>Validate returned data before using in sensitive operations</li>
+  <li>Consider using predefined values for automation scenarios</li>
+  <li>Test validation logic with edge cases and security inputs</li>
+</ul>
+
+<p><strong>Common Use Cases:</strong></p>
+
+<ul>
+  <li>Interactive credential request workflows</li>
+  <li>Manual troubleshooting operations requiring audit trails</li>
+  <li>Testing and validation of organizational compliance requirements</li>
+  <li>Custom applications requiring validated work order information</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Passman.html">Passman</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-ValidCred.html">Get-ValidCred</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Ensure-GlobalCredStore.html">Ensure-GlobalCredStore</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Write-Color.html">Write-Color</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

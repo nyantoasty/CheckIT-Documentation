@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoke-TemplateWorkflow | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Invoke-TemplateWorkflow</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="invoke-templateworkflow">Invoke-TemplateWorkflow</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="invoke-templateworkflow-1">Invoke-TemplateWorkflow</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Executes multiple templates in sequence with optional Excel export.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Invoke-TemplateWorkflow [-Nodes] <Array> [-Templates] &lt;String[]&gt; [-WorkflowName] <String>
+ [[-PromptUser] <Boolean>] [[-Confirm] <object>] [-ExportToExcel] [[-StatusCallback] <ScriptBlock>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></ScriptBlock></object></Boolean></String></Array></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Orchestrates the execution of multiple CheckIT templates in a defined sequence, providing:</p>
+
+<ul>
+  <li><strong>Sequential template execution</strong> with comprehensive error handling</li>
+  <li><strong>Excel reporting</strong> with separate data and audit sheets</li>
+  <li><strong>Flexible confirmation modes</strong> (Auto, Manual, Disabled) with session persistence</li>
+  <li><strong>Progress tracking</strong> and status callbacks for GUI integration</li>
+  <li><strong>Automatic error aggregation</strong> and reporting</li>
+  <li><strong>Mixed template support</strong> (Command and Test templates in same workflow)</li>
+</ul>
+
+<p>Perfect for system maintenance workflows, comprehensive system checks,
+standardized deployment procedures, and automated compliance reporting.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<h1 id="execute-templates---each-creates-its-own-report">Execute templates - each creates its own report</h1>
+<p>Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @(“Get OS Info”, “Check Disk Space”) -WorkflowName “System_Audit”</p>
+
+<h3 id="example-2">EXAMPLE 2</h3>
+
+<h1 id="execute-and-combine-into-excel">Execute and combine into Excel</h1>
+<p>Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @(“Get OS Info”, “Check Disk Space”) -WorkflowName “System_Audit” -ExportToExcel</p>
+
+<h3 id="example-3">EXAMPLE 3</h3>
+
+<h1 id="auto-execute-without-confirmation-and-export-to-excel">Auto-execute without confirmation and export to Excel</h1>
+<p>Invoke-TemplateWorkflow -Nodes $global:nodeList -Templates @(“Get OS Info”, “Check Disk Space”) -WorkflowName “System_Audit” -Confirm:$false -ExportToExcel</p>
+
+<h3 id="example-4-mixed-template-workflow">EXAMPLE 4: Mixed Template Workflow</h3>
+
+<p>$mixedTemplates = @(“Get OS Info”, “Default Functionality Test”, “Check Disk Space”)
+$nodes = Get-CheckITStore -Store NodeList | Where-Object Group -eq “Servers”</p>
+
+<p>Invoke-TemplateWorkflow -Nodes $nodes -Templates $mixedTemplates -WorkflowName “Monthly_Compliance_Check” -ExportToExcel -Confirm “Auto”</p>
+
+<p>Combines Command and Test templates in a single workflow with automatic confirmation.</p>
+
+<h3 id="example-5-error-handling-and-resume">EXAMPLE 5: Error Handling and Resume</h3>
+
+<h1 id="initial-run-with-some-failures">Initial run with some failures</h1>
+<p>$result = Invoke-TemplateWorkflow -Nodes $allNodes -Templates $templates -WorkflowName “Deployment_Check” -ExportToExcel</p>
+
+<h1 id="resume-with-only-failed-nodes">Resume with only failed nodes</h1>
+<p>$failedNodes = $result.TemplateResults.Values | Where-Object Status -eq “Error” | Select-Object -ExpandProperty Node
+Invoke-TemplateWorkflow -Nodes $failedNodes -Templates $templates -WorkflowName “Deployment_Check_Retry” -ExportToExcel</p>
+
+<h3 id="example-6-gui-integration">EXAMPLE 6: GUI Integration</h3>
+
+<p>$statusCallback = {
+    param($activity, $current, $total)
+    # Update GUI progress bar
+    $progressBar.Value = ($current / $total) * 100
+    $statusLabel.Text = $activity
+}</p>
+
+<p>$result = Invoke-TemplateWorkflow -Nodes $selectedNodes -Templates $templateList -WorkflowName $workflowName -PromptUser:$false -StatusCallback $statusCallback -ExportToExcel</p>
+
+<h2 id="excel-output-structure">EXCEL OUTPUT STRUCTURE</h2>
+
+<p>When <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>-ExportToExcel
+</pre></td></tr></tbody></table></code> is specified, the function creates a comprehensive Excel workbook with:</p>
+
+<h3 id="individual-template-sheets">Individual Template Sheets</h3>
+
+<ul>
+  <li><strong>Sheet Names</strong>: Cleaned template names (max 31 chars, special chars removed)</li>
+  <li><strong>Content</strong>: Clean business data only (OS info, disk space, test results, etc.)</li>
+  <li><strong>Format</strong>: User-friendly columns without CheckIT metadata</li>
+  <li><strong>Purpose</strong>: For business analysis and reporting</li>
+</ul>
+
+<h3 id="summary-sheet">Summary Sheet</h3>
+
+<ul>
+  <li><strong>Content</strong>: Complete CheckIT execution metadata and audit trail</li>
+  <li><strong>Includes</strong>: All execution details, errors, timing, credentials used, etc.</li>
+  <li><strong>Format</strong>: Full CheckIT result objects with all tracking properties</li>
+  <li><strong>Purpose</strong>: For technical analysis, debugging, and compliance auditing</li>
+</ul>
+
+<h2 id="confirmation-modes">CONFIRMATION MODES</h2>
+
+<h3 id="manual-mode-default-confirm--true">Manual Mode (Default: Confirm = $true)</h3>
+
+<ul>
+  <li>Prompts for each workflow execution</li>
+  <li>Supports “Yes to All” and “No to All” options</li>
+  <li>Session-wide choices are remembered</li>
+</ul>
+
+<h3 id="auto-mode-confirm--auto">Auto Mode (Confirm = “Auto”)</h3>
+
+<ul>
+  <li>Prompts once, remembers choice for entire session</li>
+  <li>Perfect for multiple workflows in sequence</li>
+  <li>Clear indication of auto-proceed/auto-cancel status</li>
+</ul>
+
+<h3 id="disabled-mode-confirm--false">Disabled Mode (Confirm = $false)</h3>
+
+<ul>
+  <li>No confirmation prompts</li>
+  <li>Immediate execution</li>
+  <li>Suitable for automated scripts</li>
+</ul>
+
+<h2 id="workflow-execution-behavior">WORKFLOW EXECUTION BEHAVIOR</h2>
+
+<h3 id="template-type-detection">Template Type Detection</h3>
+
+<p>The function automatically detects template types:</p>
+
+<ul>
+  <li><strong>Command Templates</strong>: Executed via <a href="/CheckIT-Documentation/docs/help/Invoke-TemplateCommand.html"><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Invoke-TemplateCommand
+</pre></td></tr></tbody></table></code></a></li>
+  <li><strong>Test Templates</strong>: Executed via <a href="/CheckIT-Documentation/docs/help/Start-Test.html"><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Start-Test
+</pre></td></tr></tbody></table></code></a></li>
+  <li><strong>Mixed Workflows</strong>: Supports both types in same workflow</li>
+</ul>
+
+<h3 id="error-handling">Error Handling</h3>
+
+<ul>
+  <li>Individual template failures don’t stop the workflow</li>
+  <li>Comprehensive error collection and reporting</li>
+  <li>Failed templates are excluded from Excel export</li>
+  <li>Detailed error information in console and logs</li>
+</ul>
+
+<h3 id="progress-reporting">Progress Reporting</h3>
+
+<ul>
+  <li>Real-time progress updates for CLI mode</li>
+  <li>StatusCallback support for GUI integration</li>
+  <li>Template-by-template execution tracking</li>
+  <li>Overall workflow completion status</li>
+</ul>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-nodes">-Nodes</h3>
+
+<p>Target nodes for all templates.</p>
+
+<p>```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-templates">-Templates</h3>
+
+<p>Array of template names to execute in sequence.</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-workflowname">-WorkflowName</h3>
+
+<p>Name for the Excel file (only used when -ExportToExcel is specified).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>If true (default), enables CLI prompts and colored output.
+If false, operates silently for GUI use.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-confirm">-Confirm</h3>
+
+<p>Controls execution confirmation:</p>
+
+<ul>
+  <li>$true (default): Prompts for confirmation before execution with enhanced options</li>
+  <li>$false: Executes immediately without confirmation</li>
+  <li>“Auto”: Prompts once, then remembers choice for session</li>
+</ul>
+
+<p>```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-exporttoexcel">-ExportToExcel</h3>
+
+<p>If set, exports all template results to Excel with separate sheets named by template.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-statuscallback">-StatusCallback</h3>
+
+<p>Optional scriptblock for progress reporting in GUI scenarios.</p>
+
+<p>```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Performance Considerations:</strong></p>
+
+<ul>
+  <li>Each template creates its own individual report</li>
+  <li>Excel export combines all successful template results</li>
+  <li>Large workflows may take significant time for Excel generation</li>
+  <li>Progress callbacks help track long-running operations</li>
+</ul>
+
+<p><strong>Session Management:</strong></p>
+
+<ul>
+  <li>Confirmation choices persist across multiple workflow executions</li>
+  <li>Template execution inherits workflow confirmation settings</li>
+  <li>Session state reset requires PowerShell session restart</li>
+</ul>
+
+<p><strong>Integration Patterns:</strong></p>
+
+<ul>
+  <li>Works seamlessly with CheckIT’s parallel processing engine</li>
+  <li>Leverages existing credential management and node handling</li>
+  <li>Follows CheckIT’s standard reporting and audit patterns</li>
+  <li>Compatible with all CheckIT store management functions</li>
+</ul>
+
+<p><strong>Best Practices:</strong></p>
+
+<ul>
+  <li>Use descriptive workflow names for Excel file identification</li>
+  <li>Test individual templates before including in workflows</li>
+  <li>Monitor disk space when exporting large datasets to Excel</li>
+  <li>Use Auto confirmation mode for batch operations</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

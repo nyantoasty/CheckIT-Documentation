@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🛠️ Internal Helper Functions | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <div class="docs-header">
+  <div class="icon-container">
+    
+  </div>
+  
+  <div class="title-container">
+    <h1>🛠️ Internal Helper Functions</h1>
+    
+  </div>
+  
+  <div class="status-container">
+    <span class="version-pill">Version 1.5.0</span>
+    <span class="status-pill">Open Beta</span>
+  </div>
+</div>
+
+<div class="page-content">
+  <blockquote>
+  <p>This document describes internal helper functions used within the CheckIT-Core module.
+These functions are not exported and are only for internal use by other module functions.</p>
+</blockquote>
+
+<h2 id="internal-helper-functions">Internal Helper Functions</h2>
+
+<h3 id="apply-standardcleaning">Apply-StandardCleaning</h3>
+
+<p><strong>Purpose:</strong> Standardizes and cleans data values for consistent reporting and display.</p>
+
+<p><strong>Used by:</strong> [[Convert-ReportData]], various data processing functions</p>
+
+<p><strong>Description:</strong> Takes raw data values and applies context-aware cleaning rules based on the property name and value type.</p>
+
+<h3 id="get-defaultdisplayvalue">Get-DefaultDisplayValue</h3>
+
+<p><strong>Purpose:</strong> Provides context-aware default values for empty or missing data.</p>
+
+<p><strong>Used by:</strong> Data processing and reporting functions</p>
+
+<p><strong>Description:</strong> Returns appropriate placeholder text based on property name when a value is null or empty.</p>
+
+<h3 id="sanitize-preferenceinput">Sanitize-PreferenceInput</h3>
+
+<p><strong>Purpose:</strong> Validates and normalizes user preference inputs.</p>
+
+<p><strong>Used by:</strong> [[Set-UserPreference]], preference management functions</p>
+
+<p><strong>Description:</strong> Ensures preference values meet expected format and constraints.</p>
+
+<h3 id="sanitize-input">Sanitize-Input</h3>
+
+<p><strong>Purpose:</strong> Generic input sanitization for security and validation.</p>
+
+<p><strong>Used by:</strong> Multiple functions requiring input validation</p>
+
+<p><strong>Description:</strong> Removes potentially harmful characters and ensures inputs meet expected formats.</p>
+
+<h3 id="convertto-safedate">ConvertTo-SafeDate</h3>
+
+<p><strong>Purpose:</strong> Safely converts various date/time formats to standard DateTime objects.</p>
+
+<p><strong>Used by:</strong> Date processing functions, WMI date conversions</p>
+
+<p><strong>Description:</strong> Handles multiple date formats and provides graceful error handling for invalid dates.</p>
+
+<h2 id="maintenance-notes">Maintenance Notes</h2>
+
+<ul>
+  <li>Internal helper functions should be placed in the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>#region Internal Helper Functions
+</pre></td></tr></tbody></table></code> section</li>
+  <li>These functions should never be exported in the module manifest</li>
+  <li>When adding or modifying helper functions, update this documentation file</li>
+  <li>Helper function names should clearly indicate their internal status (e.g., prefix with “Internal-“)</li>
+</ul>
+
+<hr />
+
+</div>
+
+<div class="docs-footer">
+  <div class="footer-nav">
+    <a href="/CheckIT-Documentation/index">🏠 Home</a>
+    <a href="/CheckIT-Documentation/docs/README">ℹ️ About</a>
+    <a href="/CheckIT-Documentation/docs/get-started">🚀 Get Started</a>
+    <a href="/CheckIT-Documentation/docs/api-reference">📘 API Reference</a>
+    <a href="/CheckIT-Documentation/docs/quick-reference">⚡ Quick Reference</a><br>
+    <a href="/CheckIT-Documentation/docs/templateInfo">🧩 Template System</a>
+    <a href="/CheckIT-Documentation/docs/troubleshooting">🔍 Troubleshooting</a>
+    <a href="/CheckIT-Documentation/docs/internal-helpers">🔧 Internal Helper Functions</a>
+    <a href="/CheckIT-Documentation/CHANGELOG">📋 Changelog</a>
+  </div>
+  
+  <div class="footer-info">
+    <div class="footer-badge-container">
+      <span class="footer-badge">1.5.0</span>
+      <span class="footer-badge status">Open Beta</span>
+      <span class="footer-badge">75+ Functions</span>
+    </div>
+    <p>CheckIT-Core • <a href="https://nyantoasty.github.io/CheckIT-Documentation/">Repository</a> • Maintained by KJA • MIT License</p>
+    <p class="footer-updated">Last updated: 2025-06-13</p>
+  </div>
+</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

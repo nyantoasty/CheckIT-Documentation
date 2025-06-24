@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start-Test | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Start-Test</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="start-test">Start-Test</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="start-test-1">Start-Test</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Runs a dynamic test template (manual and automated steps) against local or remote nodes, supporting CLI and GUI, resuming, and parallel unattended execution.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Start-Test [[-TemplateName] <String>] [[-Template] <object>] [[-Nodes] <Array>] [-Self]
+ [[-PromptUser] <Boolean>] [-Unattended] [[-Existing] <Array>] [[-GuiPromptCallback] <ScriptBlock>]
+ [[-StatusCallback] <ScriptBlock>]</ScriptBlock></ScriptBlock></Array></Boolean></Array></object></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Loads a test template (by name or object), runs all steps using Invoke-TestStep, supports resuming incomplete runs, and exporting results.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<p>Start-Test -TemplateName “Default Functionality Test” -Nodes @(“PC123”,”PC124”)</p>
+
+<h3 id="example-2">EXAMPLE 2</h3>
+
+<p>Start-Test -Self -TemplateName “Custom Test”</p>
+
+<h3 id="example-3-unattended-execution">EXAMPLE 3: Unattended Execution</h3>
+
+<h1 id="run-only-automated-steps-canunattend--true">Run only automated steps (CanUnattend = $true)</h1>
+<p>Start-Test -TemplateName “System Health Check” -Nodes $serverList -Unattended -PromptUser $false</p>
+
+<h3 id="example-4-resumefill-existing-results">EXAMPLE 4: Resume/Fill Existing Results</h3>
+
+<h1 id="get-previous-results">Get previous results</h1>
+<p>$existingResults = Get-CheckITStore -Store Reports | Where-Object ReportName -like “<em>TestRun</em>” | Select-Object -Last 1</p>
+
+<h1 id="resume-testing-filling-in-missing-steps">Resume testing, filling in missing steps</h1>
+<p>Start-Test -TemplateName “Comprehensive Test” -Nodes $nodes -Existing $existingResults.Data</p>
+
+<h3 id="example-5-gui-integration-with-callbacks">EXAMPLE 5: GUI Integration with Callbacks</h3>
+
+<p>$guiCallback = {
+    param($step, $node)
+    # Custom GUI prompt handling
+    return Show-CustomTestDialog -Step $step -Node $node
+}</p>
+
+<p>$statusCallback = {
+    param($activity, $current, $total)
+    Update-ProgressBar -Activity $activity -Current $current -Total $total
+}</p>
+
+<p>Start-Test -TemplateName “Interactive Test” -Nodes $nodes -PromptUser $false -GuiPromptCallback $guiCallback -StatusCallback $statusCallback</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-templatename">-TemplateName</h3>
+
+<p>Name of the test template to use (from $global:Reports[‘Templates’][‘Test’]).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-template">-Template</h3>
+
+<p>Pass a template object directly.</p>
+
+<p>```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-nodes">-Nodes</h3>
+
+<p>Array of node names or objects to test.</p>
+
+<p>```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-self">-Self</h3>
+
+<p>If set, runs the test on the local computer.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>If $true (default), prompts for manual steps.
+If $false, runs in GUI/automation mode.</p>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-unattended">-Unattended</h3>
+
+<p>If set, only runs steps that can be unattended.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-existing">-Existing</h3>
+
+<p>Existing results to review/fill or resume.</p>
+
+<p>```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-guipromptcallback">-GuiPromptCallback</h3>
+
+<p>Optional.
+Scriptblock to call for GUI input.
+Receives ($Step, $Node) as arguments.</p>
+
+<p>```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-statuscallback">-StatusCallback</h3>
+
+<p>Optional.
+Scriptblock for progress/status updates.</p>
+
+<p>```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 7
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h2 id="notes">NOTES</h2>
+
+<h2 id="execution-modes">EXECUTION MODES</h2>
+
+<h3 id="attended-mode-default">Attended Mode (Default)</h3>
+
+<ul>
+  <li>All template steps execute in sequence</li>
+  <li>Manual steps prompt for user interaction</li>
+  <li>Screenshots and file uploads are supported</li>
+  <li>Full interactive testing capability</li>
+</ul>
+
+<h3 id="unattended-mode--unattended">Unattended Mode (-Unattended)</h3>
+
+<ul>
+  <li>
+    <p>Only executes steps with `CanUnattend = $true</p>
+  </li>
+  <li>Skips manual verification steps</li>
+  <li>Automated validation only</li>
+  <li>Perfect for scheduled testing scenarios</li>
+</ul>
+
+<h3 id="resumefill-mode--existing">Resume/Fill Mode (-Existing)</h3>
+
+<ul>
+  <li>Reviews existing test results</li>
+  <li>Only executes missing or failed steps</li>
+  <li>Preserves successful step results</li>
+  <li>Enables interrupted test continuation</li>
+</ul>
+
+<h2 id="step-execution-behavior">STEP EXECUTION BEHAVIOR</h2>
+
+<h3 id="parallel-node-processing">Parallel Node Processing</h3>
+
+<p>Tests execute against multiple nodes simultaneously using CheckIT’s parallel processing engine:</p>
+
+<ul>
+  <li>Each node processes all steps sequentially</li>
+  <li>Multiple nodes are processed in parallel</li>
+  <li>Progress tracking across all nodes and steps</li>
+  <li>Comprehensive error handling per node</li>
+</ul>
+
+<h3 id="step-result-tracking">Step Result Tracking</h3>
+
+<p>Each step execution generates detailed results:</p>
+
+<p>@{
+    Node = “ComputerName”
+    StepName = “StepKey”
+    StepType = “Manual|Invoke|Screenshot|FileUpload”
+    Result = “Step execution result”
+    StartTime = “Execution start timestamp”
+    EndTime = “Execution end timestamp”
+    Duration = “Seconds”
+    Status = “OK|Error|NoCreds|UnknownStepType”
+    Error = “Error message if applicable”
+}</p>
+
+<h2 id="credential-handling">CREDENTIAL HANDLING</h2>
+
+<h3 id="automatic-credential-resolution">Automatic Credential Resolution</h3>
+
+<ul>
+  <li>Uses CheckIT’s centralized credential store</li>
+  <li>Automatic FQDN resolution for remote connections</li>
+  <li>Invoke steps authenticate using stored Administrator credentials</li>
+  <li>Manual steps execute in user context</li>
+</ul>
+
+<h3 id="error-handling">Error Handling</h3>
+
+<ul>
+  <li>“NoCreds” status when credentials unavailable</li>
+  <li>Graceful degradation for credential failures</li>
+  <li>Clear error messages for troubleshooting</li>
+  <li>Automatic credential validation before execution</li>
+</ul>
+
+<h2 id="reporting-and-audit-trail">REPORTING AND AUDIT TRAIL</h2>
+
+<h3 id="automatic-report-generation">Automatic Report Generation</h3>
+
+<ul>
+  <li>Creates timestamped test run reports</li>
+  <li>Both task logging and business reporting</li>
+  <li>Excel export capability for analysis</li>
+  <li>Comprehensive audit trail maintenance</li>
+</ul>
+
+<h3 id="result-structure">Result Structure</h3>
+
+<p>Test results are stored with complete metadata:</p>
+
+<ul>
+  <li>Node identification and grouping</li>
+  <li>Step-by-step execution details</li>
+  <li>Timing and performance metrics</li>
+  <li>Error classification and troubleshooting data</li>
+</ul>
+
+<h2 id="gui-integration-features">GUI INTEGRATION FEATURES</h2>
+
+<h3 id="callback-support">Callback Support</h3>
+
+<ul>
+  <li><strong>GuiPromptCallback</strong>: Custom UI for manual steps</li>
+  <li><strong>StatusCallback</strong>: Progress reporting for GUI applications</li>
+  <li><strong>Return Values</strong>: Structured objects for programmatic processing</li>
+</ul>
+
+<h3 id="automation-compatibility">Automation Compatibility</h3>
+
+<ul>
+  <li>Silent operation with PromptUser = $false</li>
+  <li>Structured error objects for programmatic handling</li>
+  <li>Export capabilities for data integration</li>
+  <li>Session management for large-scale testing</li>
+</ul>
+
+<h2 id="notes-additional">NOTES (Additional)</h2>
+
+<p><strong>Performance Considerations:</strong></p>
+
+<ul>
+  <li>Large node sets benefit from parallel execution</li>
+  <li>Unattended mode significantly faster than attended</li>
+  <li>Network latency affects remote step execution</li>
+  <li>Excel export time scales with result set size</li>
+</ul>
+
+<p><strong>Template Compatibility:</strong></p>
+
+<ul>
+  <li>Works with all templates created by <a href="/CheckIT-Documentation/docs/help/New-TestTemplate.html"><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>New-TestTemplate
+</pre></td></tr></tbody></table></code></a></li>
+  <li>Compatible with built-in system test templates</li>
+  <li>Supports mixed step types in single template</li>
+  <li>Template validation ensures execution compatibility</li>
+</ul>
+
+<p><strong>Error Recovery:</strong></p>
+
+<ul>
+  <li>Individual step failures don’t halt entire test</li>
+  <li>Node-specific error isolation</li>
+  <li>Resume capability for interrupted tests</li>
+  <li>Comprehensive error classification for troubleshooting</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/New-TestTemplate.html">New-TestTemplate</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Invoke-TestStep.html">Invoke-TestStep</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Manage-Templates.html">Manage-Templates</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/New-SystemTestTemplate.html">New-SystemTestTemplate</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

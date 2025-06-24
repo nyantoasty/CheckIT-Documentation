@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Process-Parallel | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Process-Parallel</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="process-parallel">Process-Parallel</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="process-parallel-1">Process-Parallel</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Runs a scriptblock in parallel for each input object, collecting results with credential support and real-time progress reporting</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Process-Parallel [[-InputObject] &lt;Object[]&gt;] [-ScriptBlock] <ScriptBlock> [[-MaxParallel] <Int32>]
+ [[-ArgumentList] &lt;Object[]&gt;] [[-StatusCallback] <ScriptBlock>] [[-SkipFlagDirectory] <String>]
+ [[-CoreModulePath] <String>] [-UseCredentials] [-RequireCredentials] [[-CredentialMap] <Hashtable>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></Hashtable></String></String></ScriptBlock></Int32></ScriptBlock></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Process-Parallel is the core parallel processing engine for CheckIT-Core, providing robust background job management with comprehensive credential support, intelligent error handling, and real-time progress reporting. It automatically handles credential pre-resolution, job lifecycle management, timeout protection, and result normalization.</p>
+
+<p>The function serves as the foundation for most CheckIT operations that need to execute across multiple nodes simultaneously, ensuring consistent performance, reliability, and security across all parallel workflows.</p>
+
+<h3 id="key-features">Key Features</h3>
+
+<ul>
+  <li><strong>Automatic credential management</strong> with pre-resolution and secure passing to jobs</li>
+  <li><strong>Intelligent performance optimization</strong> with serial execution for small datasets</li>
+  <li><strong>Robust job lifecycle management</strong> with timeout protection and guaranteed cleanup</li>
+  <li><strong>Comprehensive error detection</strong> with CCM/WMI data recognition</li>
+  <li><strong>Real-time progress reporting</strong> compatible with both CLI and GUI scenarios</li>
+  <li><strong>Skip flag support</strong> for graceful user cancellation during execution</li>
+  <li><strong>Resource leak prevention</strong> with automatic job and temp file cleanup</li>
+</ul>
+
+<h3 id="execution-flow">Execution Flow</h3>
+
+<ol>
+  <li><strong>Pipeline accumulation</strong> - Collects all input for accurate progress reporting</li>
+  <li><strong>Credential pre-resolution</strong> - Resolves all credentials before job submission (if UseCredentials)</li>
+  <li><strong>Performance optimization</strong> - Uses serial execution for small datasets (&lt; 2 items)</li>
+  <li><strong>Parallel job management</strong> - Submits and manages jobs within MaxParallel limits</li>
+  <li><strong>Result processing</strong> - Normalizes results and applies intelligent error detection</li>
+  <li><strong>Cleanup and return</strong> - Guarantees resource cleanup and returns structured results</li>
+</ol>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-parallel-processing">Example 1: Basic Parallel Processing</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>PS C:&gt; $nodeArray</td>
+      <td>Process-Parallel -ScriptBlock { param($node) Test-Connection $node.Node }</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Executes Test-Connection in parallel for each node in the array. Results are automatically normalized to PSCustomObjects for consistent handling.</p>
+
+<h3 id="example-2-with-credentials-most-common-checkit-pattern">Example 2: With Credentials (Most Common CheckIT Pattern)</h3>
+
+<p>PS C:&gt; $nodeArray | Process-Parallel -ScriptBlock { 
+    param($node, $param1, $credential, $fqdn)
+    Invoke-Command -ComputerName $fqdn -Credential $credential -ScriptBlock { Get-Service }
+} -ArgumentList @($someParameter) -UseCredentials</p>
+
+<p>Demonstrates the standard CheckIT pattern with automatic credential resolution. The scriptblock receives the input object, any ArgumentList items, then credential and FQDN as final parameters.</p>
+
+<h3 id="example-3-skip-flag-for-user-cancellation">Example 3: Skip Flag for User Cancellation</h3>
+
+<p>PS C:&gt; # Create skip flag to cancel processing for specific node
+PS C:&gt; New-Item -Path “$env:TEMP\checkit_skip_PC123.flag” -ItemType File
+PS C:&gt; $nodes | Process-Parallel -ScriptBlock { param($node) Start-Sleep 10; “Processed $($node.Node)” }</p>
+
+<p>Shows how users can create skip flag files to gracefully cancel processing for specific nodes during execution.</p>
+
+<h3 id="example-4-gui-integration-with-progress-callback">Example 4: GUI Integration with Progress Callback</h3>
+
+<p>PS C:&gt; $progressCallback = { param($activity, $current, $total) Update-StatusBar “$activity ($current/$total)” }
+PS C:&gt; $results = $nodes | Process-Parallel -ScriptBlock $script -StatusCallback $progressCallback</p>
+
+<p>Demonstrates GUI integration with custom progress reporting. The callback receives activity description, current count, and total count for real-time status updates.</p>
+
+<h3 id="example-5-credential-filtering-with-requirecredentials">Example 5: Credential Filtering with RequireCredentials</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>PS C:&gt; $results = $nodes</td>
+      <td>Process-Parallel -ScriptBlock $script -UseCredentials -RequireCredentials</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Automatically filters out nodes without valid credentials before processing, preventing wasted job slots and improving overall performance.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-inputobject">-InputObject</h3>
+
+<p>The objects to process (accepts pipeline input). Can be node objects, strings, or any data type. Objects with a .Node property are automatically recognized for credential resolution.</p>
+
+<p>```yaml
+Type: Object[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False</p>
+
+<h3 id="-scriptblock">-ScriptBlock</h3>
+
+<p>The scriptblock to run for each input object. When UseCredentials is set, receives additional $credential and $fqdn parameters automatically.</p>
+
+<p><strong>Parameter Order</strong>: InputObject, ArgumentList items, Credential (if UseCredentials), FQDN (if UseCredentials)</p>
+
+<p>```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-maxparallel">-MaxParallel</h3>
+
+<p>Maximum number of parallel jobs to run simultaneously. Default is 8, which provides good balance between performance and resource usage.</p>
+
+<p><strong>Performance Notes</strong>:</p>
+
+<ul>
+  <li>Higher values may improve throughput but increase resource usage</li>
+  <li>Lower values reduce resource usage but may slow processing</li>
+  <li>Network and target system capabilities should guide this setting</li>
+</ul>
+
+<p>```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: 8
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-argumentlist">-ArgumentList</h3>
+
+<p>Additional arguments to pass to the scriptblock after the input object. These arguments are passed before credential information (if UseCredentials is set).</p>
+
+<p>```yaml
+Type: Object[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-statuscallback">-StatusCallback</h3>
+
+<p>Optional scriptblock for progress reporting in GUI scenarios. Receives activity description, current count, and total count parameters.</p>
+
+<p><strong>Callback Signature</strong>: `param($activity, $current, $total)</p>
+
+<p><strong>Usage</strong>: Ideal for updating progress bars, status labels, or logging progress in GUI applications.</p>
+
+<p>```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-skipflagdirectory">-SkipFlagDirectory</h3>
+
+<p>Directory to check for per-node skip flags. Default is $env:TEMP. Create “checkit_skip_$NodeName.flag” files to skip processing for specific nodes.</p>
+
+<p><strong>Skip Flag Format</strong>: `checkit_skip_NODENAME.flag</p>
+
+<p><strong>Behavior</strong>: When a skip flag is found, the node is marked as “Skipped” and the flag file is automatically removed.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: $env:TEMP
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-coremodulepath">-CoreModulePath</h3>
+
+<p>Optional path to the CheckIT core module for importing into background jobs. Enables CheckIT functions to be used within the parallel scriptblock.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 7
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-usecredentials">-UseCredentials</h3>
+
+<p>If set, automatically resolves and passes credentials from the CheckIT credential store to background jobs. Credentials are pre-resolved for performance and passed securely to each job.</p>
+
+<p><strong>Credential Resolution</strong>: Uses Get-NodeCredAndFQDN for each input object that has a .Node property or is a string representing a node name.</p>
+
+<p><strong>Security</strong>: Credentials are passed as secure PSCredential objects and automatically reconstructed in background jobs.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-requirecredentials">-RequireCredentials</h3>
+
+<p>If set with UseCredentials, automatically filters out input objects that don’t have valid credentials available. This prevents wasted job slots and improves performance.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-credentialmap">-CredentialMap</h3>
+
+<p>Pre-resolved credential mapping (hashtable with NodeName -&gt; CredInfo). When provided, overrides the UseCredentials automatic resolution process.</p>
+
+<p><strong>Format</strong>: `@{ “NodeName” = @{ FQDN=”node.domain”; Username=”user”; SecurePassword=[SecureString]; Status=”OK” } }</p>
+
+<p><strong>Use Case</strong>: Useful when credentials have already been resolved or when using custom credential sources.</p>
+
+<p>```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 8
+Default value: @{}
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="systemobject">System.Object[]</h3>
+
+<p>Accepts any objects via pipeline. Objects with .Node properties are automatically recognized for credential resolution when UseCredentials is specified.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="systemcollectionshashtable">System.Collections.Hashtable</h3>
+
+<p>Returns hashtable with Results, Errors, and OverallDuration properties:</p>
+
+<ul>
+  <li><strong>Results</strong>: Array of processed results from all jobs, normalized to PSCustomObjects</li>
+  <li><strong>Errors</strong>: Array of error messages from failed jobs or system issues</li>
+  <li><strong>OverallDuration</strong>: Total execution time in seconds for performance analysis</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<h3 id="performance-optimization">Performance Optimization</h3>
+
+<ul>
+  <li><strong>Serial Execution</strong>: Automatically uses serial execution for datasets with less than 2 items to avoid parallel overhead</li>
+  <li><strong>Credential Pre-resolution</strong>: Resolves all credentials before job submission to prevent delays during parallel execution</li>
+  <li><strong>Job Lifecycle Management</strong>: Efficiently manages job submission, completion detection, and cleanup to maximize throughput</li>
+</ul>
+
+<h3 id="error-handling-and-detection">Error Handling and Detection</h3>
+
+<p>Process-Parallel includes sophisticated error detection logic that recognizes legitimate data vs. actual errors:</p>
+
+<p><strong>Intelligent Error Classification</strong>:</p>
+
+<ul>
+  <li>Detects explicit error prefixes (“ERROR:”, “Exception”, etc.)</li>
+  <li>Recognizes PowerShell error patterns and connection failures</li>
+  <li><strong>Preserves legitimate data</strong>: Specifically excludes CCM/WMI structured data that contains status words</li>
+  <li>Handles timeout detection with appropriate thresholds</li>
+</ul>
+
+<p><strong>CCM/WMI Data Protection</strong>:</p>
+
+<ul>
+  <li>Data containing “InstallState”, “EvaluationState”, “PSComputerName” is treated as valid</li>
+  <li>Prevents false error classification of legitimate SCCM and system data</li>
+  <li>Maintains data integrity for downstream processing</li>
+</ul>
+
+<h3 id="resource-management">Resource Management</h3>
+
+<ul>
+  <li><strong>Automatic Cleanup</strong>: Guarantees removal of background jobs and temporary files</li>
+  <li><strong>Timeout Protection</strong>: 10-minute maximum per job with 15-minute absolute maximum for all jobs</li>
+  <li><strong>Memory Management</strong>: Efficient result collection and job cleanup prevents resource leaks</li>
+  <li><strong>File System</strong>: Automatic cleanup of temporary result files</li>
+</ul>
+
+<h3 id="security-features">Security Features</h3>
+
+<ul>
+  <li><strong>Secure Credential Passing</strong>: PSCredential objects are securely serialized and reconstructed in jobs</li>
+  <li><strong>Credential Validation</strong>: Validates credential availability before job submission</li>
+  <li><strong>Safe Execution</strong>: Background jobs run in isolated contexts with proper error boundaries</li>
+</ul>
+
+<h3 id="integration-with-checkit-ecosystem">Integration with CheckIT Ecosystem</h3>
+
+<ul>
+  <li><strong>Credential Store Integration</strong>: Seamless integration with CheckIT credential management (Passman, CredStore)</li>
+  <li><strong>Progress Reporting</strong>: Compatible with both CLI Write-Progress and GUI StatusCallback patterns</li>
+  <li><strong>Error Handling</strong>: Follows CheckIT error handling patterns for consistent behavior</li>
+  <li><strong>Node Support</strong>: Automatic recognition of CheckIT node objects and string node names</li>
+</ul>
+
+<h3 id="best-practices">Best Practices</h3>
+
+<ul>
+  <li>Use UseCredentials for any operations requiring remote authentication</li>
+  <li>Implement StatusCallback for long-running operations in GUI scenarios</li>
+  <li>Consider RequireCredentials to improve performance when credential availability varies</li>
+  <li>Monitor MaxParallel settings based on network and target system capabilities</li>
+  <li>Use Verbose output for troubleshooting job execution and timing issues</li>
+</ul>
+
+<h2 id="troubleshooting">TROUBLESHOOTING</h2>
+
+<h3 id="common-issues">Common Issues</h3>
+
+<p><strong>Jobs hanging or not completing</strong>:</p>
+
+<ul>
+  <li>Check network connectivity and target system responsiveness</li>
+  <li>Reduce MaxParallel if overwhelming target systems or network</li>
+  <li>Verify scriptblock doesn’t contain blocking operations</li>
+  <li>Monitor job timeouts (10 minutes per job, 15 minutes absolute maximum)</li>
+</ul>
+
+<p><strong>Credential-related failures</strong>:</p>
+
+<ul>
+  <li>Ensure CheckIT credential store is properly initialized (run Passman)</li>
+  <li>Verify credentials haven’t expired using Get-ValidCred</li>
+  <li>Check domain trust relationships and authentication requirements</li>
+</ul>
+
+<p><strong>Performance issues</strong>:</p>
+
+<ul>
+  <li>Adjust MaxParallel based on network capacity and target system specifications</li>
+  <li>Use RequireCredentials to avoid processing nodes without credentials</li>
+  <li>Consider breaking large datasets into smaller batches for better resource management</li>
+</ul>
+
+<p><strong>Memory or resource consumption</strong>:</p>
+
+<ul>
+  <li>Monitor job cleanup completion using Verbose output</li>
+  <li>Ensure scriptblocks don’t create large objects or memory leaks</li>
+  <li>Reduce MaxParallel if system resources are constrained</li>
+</ul>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

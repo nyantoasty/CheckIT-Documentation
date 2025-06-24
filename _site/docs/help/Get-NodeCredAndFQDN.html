@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get-NodeCredAndFQDN | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Get-NodeCredAndFQDN</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="get-nodecredandfqdn">Get-NodeCredAndFQDN</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="get-nodecredandfqdn-1">Get-NodeCredAndFQDN</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Retrieves the credential and FQDN for a node object or node name with comprehensive credential validation and error handling.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Get-NodeCredAndFQDN [-Node] <object> [[-PromptUser] <Boolean>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]</CommonParameters></ActionPreference></Boolean></object></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Provides a unified interface for retrieving both credentials and FQDN information for CheckIT nodes. This function serves as a bridge between node identification and credential resolution, handling various input formats and providing consistent output structure for downstream operations.</p>
+
+<p>The function integrates with the CheckIT credential management system, leveraging Get-ValidCred for credential validation while providing additional FQDN construction and enhanced error handling specifically designed for CheckIT’s standard patterns.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li><strong>Flexible input handling</strong> supporting both strings and node objects</li>
+  <li><strong>Automatic FQDN construction</strong> using CheckIT’s domain standards</li>
+  <li><strong>Integrated credential validation</strong> via Get-ValidCred integration</li>
+  <li><strong>Comprehensive error handling</strong> with detailed status reporting</li>
+  <li><strong>Consistent output format</strong> suitable for CheckIT function patterns</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-credential-and-fqdn-retrieval">EXAMPLE 1: Basic Credential and FQDN Retrieval</h3>
+
+<p>$credInfo = Get-NodeCredAndFQDN -Node “PC123”
+if ($credInfo.Status -eq “OK”) {
+    Write-Host “Node: $($credInfo.Node)”
+    Write-Host “FQDN: $($credInfo.FQDN)”
+    Write-Host “Username: $($credInfo.Credential.UserName)”
+}</p>
+
+<p>Retrieves credential and FQDN information for a single node with basic validation.</p>
+
+<h3 id="example-2-using-with-node-objects-from-nodelist">EXAMPLE 2: Using with Node Objects from NodeList</h3>
+
+<p>$nodeObj = $global:nodeList | Where-Object { $_.Node -eq “LAB-PC-01” }
+$credInfo = Get-NodeCredAndFQDN -Node $nodeObj -PromptUser $false</p>
+
+<p>Demonstrates usage with node objects from the global NodeList, suitable for automation scenarios.</p>
+
+<h3 id="example-3-batch-processing-with-error-handling">EXAMPLE 3: Batch Processing with Error Handling</h3>
+
+<p>$nodes = @(“PC1”, “PC2”, “INVALID-PC”)
+$credResults = @()</p>
+
+<p>foreach ($node in $nodes) {
+    $credInfo = Get-NodeCredAndFQDN -Node $node -PromptUser $false
+    $credResults += $credInfo</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre>if ($credInfo.Status -ne "OK") {
+    Write-Warning "Failed to get credentials for $($node): $($credInfo.ErrorMessage)"
+} }
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>$validNodes = $credResults | Where-Object { $_.Status -eq “OK” }
+Write-Host “Successfully processed $($validNodes.Count) of $($nodes.Count) nodes”</p>
+
+<p>Shows batch processing with comprehensive error handling and result filtering.</p>
+
+<h3 id="example-4-integration-with-checkit-functions">EXAMPLE 4: Integration with CheckIT Functions</h3>
+
+<h1 id="standard-checkit-function-pattern">Standard CheckIT function pattern</h1>
+<p>$credInfo = Get-NodeCredAndFQDN -Node $nodeName -PromptUser:$false</p>
+
+<p>if ($credInfo.Status -eq “OK” -and $credInfo.Credential) {
+    $credential = $credInfo.Credential
+    $fqdn = $credInfo.FQDN</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre># Use credential for remote operations
+Invoke-Command -ComputerName $fqdn -Credential $credential -ScriptBlock {
+    Get-ComputerInfo | Select-Object WindowsProductName, TotalPhysicalMemory
+} } else {
+Write-Host "Credentials not available for $($nodeName): $($credInfo.ErrorMessage)" }
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Demonstrates the standard CheckIT pattern for credential resolution and usage.</p>
+
+<h3 id="example-5-credential-status-validation">EXAMPLE 5: Credential Status Validation</h3>
+
+<p>$nodes = $global:nodeList | Select-Object -First 5
+$credentialStatus = @()</p>
+
+<p>foreach ($nodeObj in $nodes) {
+    $credInfo = Get-NodeCredAndFQDN -Node $nodeObj -PromptUser $false
+    $credentialStatus += [PSCustomObject]@{
+        Node = $credInfo.Node
+        FQDN = $credInfo.FQDN
+        Status = $credInfo.Status
+        HasCredential = $null -ne $credInfo.Credential
+        ErrorMessage = $credInfo.ErrorMessage
+    }
+}</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$credentialStatus</td>
+      <td>Format-Table -AutoSize</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Shows how to create credential status reports for multiple nodes.</p>
+
+<h3 id="example-6-silent-vs-interactive-modes">EXAMPLE 6: Silent vs Interactive Modes</h3>
+
+<h1 id="silent-mode---no-user-interaction">Silent mode - no user interaction</h1>
+<p>$credInfo1 = Get-NodeCredAndFQDN -Node “PC123” -PromptUser $false</p>
+
+<h1 id="interactive-mode---allows-prompts-for-missing-credentials">Interactive mode - allows prompts for missing credentials</h1>
+<p>$credInfo2 = Get-NodeCredAndFQDN -Node “PC123” -PromptUser $true</p>
+
+<p>Compares silent automation mode with interactive mode for different use cases.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-node">-Node</h3>
+
+<p>The node object or node name for which to retrieve credentials and FQDN information. Supports flexible input formats for seamless integration with CheckIT workflows.</p>
+
+<p><strong>Supported Input Types:</strong></p>
+
+<ul>
+  <li><strong>String</strong>: Simple node name (e.g., “PC123”, “LAB-PC-01”)</li>
+  <li><strong>Node Object</strong>: Any object with a <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>.Node
+</pre></td></tr></tbody></table></code> property from NodeList</li>
+  <li><strong>PSCustomObject</strong>: Custom objects containing node information</li>
+</ul>
+
+<p><strong>Input Processing:</strong></p>
+
+<ul>
+  <li>Strings are used directly as node names</li>
+  <li>Objects are inspected for <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>.Node
+</pre></td></tr></tbody></table></code> property</li>
+  <li>Invalid or empty inputs return appropriate error status</li>
+  <li>Node names are normalized and validated</li>
+</ul>
+
+<p><strong>Validation Rules:</strong></p>
+
+<ul>
+  <li>Node name cannot be null, empty, or whitespace-only</li>
+  <li>Must be compatible with FQDN construction</li>
+  <li>Case-insensitive processing for consistency</li>
+</ul>
+
+<p>```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>Controls the interaction mode for credential retrieval and error reporting.</p>
+
+<p><strong>When $true (Interactive Mode - Default):</strong></p>
+
+<ul>
+  <li>Enables user prompts for missing credentials</li>
+  <li>Shows colored output for status messages</li>
+  <li>Provides detailed error information to console</li>
+  <li>Allows integration with Passman for credential retrieval</li>
+  <li>Suitable for manual operations and troubleshooting</li>
+</ul>
+
+<p><strong>When $false (Silent Mode):</strong></p>
+
+<ul>
+  <li>Suppresses all user interaction and prompts</li>
+  <li>No console output except for critical errors</li>
+  <li>Returns status information in structured format only</li>
+  <li>Suitable for automation, scripts, and GUI applications</li>
+  <li>Prevents blocking operations in unattended scenarios</li>
+</ul>
+
+<p><strong>Impact on Get-ValidCred Integration:</strong></p>
+
+<ul>
+  <li>Passed through to underlying Get-ValidCred calls</li>
+  <li>Controls whether credential retrieval prompts are shown</li>
+  <li>Affects debug output and status reporting verbosity</li>
+</ul>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>Standard PowerShell progress action preference for controlling built-in progress display behavior.</p>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="systemobject">System.Object</h3>
+
+<p>Accepts any object that can be resolved to a node name, including strings and objects with Node properties.</p>
+
+<h3 id="systemstring">System.String</h3>
+
+<p>Direct node name input for simple scenarios.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="systemcollectionshashtable">System.Collections.Hashtable</h3>
+
+<p>Returns a hashtable with comprehensive node credential and connection information:</p>
+
+<p><strong>Hashtable Structure:</strong></p>
+
+<p>@{
+    Node         = “PC123”                    # Normalized node name
+    FQDN         = “PC123.shsu.edu”          # Fully qualified domain name
+    Credential   = [PSCredential]            # PowerShell credential object (if available)
+    Status       = “OK”                      # Status: “OK”, “Missing”, “Error”
+    ErrorMessage = “”                        # Error description (empty if successful)
+}</p>
+
+<p><strong>Status Values:</strong></p>
+
+<ul>
+  <li><strong>“OK”</strong>: Credentials found and available for use</li>
+  <li><strong>“Missing”</strong>: No credentials available in credential store</li>
+  <li><strong>“Error”</strong>: Processing error occurred (invalid input, lookup failure, etc.)</li>
+</ul>
+
+<p><strong>Credential Object:</strong></p>
+
+<ul>
+  <li>
+    <p><strong>Type</strong>: `[System.Management.Automation.PSCredential]</p>
+  </li>
+  <li>
+    <p><strong>UserName</strong>: Always in format `NODENAME.shsu.edu\Administrator</p>
+  </li>
+  <li><strong>Password</strong>: SecureString containing the administrator password</li>
+  <li><strong>Null</strong>: When status is not “OK” or credentials unavailable</li>
+</ul>
+
+<p><strong>FQDN Construction:</strong></p>
+
+<ul>
+  <li>
+    <p><strong>Format</strong>: Always `NODENAME.shsu.edu</p>
+  </li>
+  <li><strong>Consistency</strong>: Standardized domain suffix for all CheckIT operations</li>
+  <li><strong>Usage</strong>: Ready for PowerShell remoting and network operations</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Integration with CheckIT Credential System:</strong></p>
+
+<ul>
+  <li>Uses Get-ValidCred for underlying credential validation</li>
+  <li>Respects global credential store expiration settings</li>
+  <li>Handles credential store initialization automatically</li>
+  <li>Supports both interactive and automated credential retrieval workflows</li>
+</ul>
+
+<p><strong>Error Handling Philosophy:</strong></p>
+
+<ul>
+  <li>Never throws exceptions; always returns status information</li>
+  <li>Provides detailed error messages for troubleshooting</li>
+  <li>Differentiates between input errors and credential lookup failures</li>
+  <li>Maintains consistent return structure regardless of success or failure</li>
+</ul>
+
+<p><strong>FQDN Standards:</strong></p>
+
+<ul>
+  <li>
+    <p>Always constructs FQDN as `NODENAME.shsu.edu</p>
+  </li>
+  <li>Consistent with CheckIT’s domain infrastructure requirements</li>
+  <li>Compatible with PowerShell remoting, WinRM, and network share access</li>
+  <li>Case-insensitive node name handling with proper domain suffix</li>
+</ul>
+
+<p><strong>Performance Characteristics:</strong></p>
+
+<ul>
+  <li>Lightweight wrapper around Get-ValidCred</li>
+  <li>Minimal processing overhead for FQDN construction</li>
+  <li>Cached credential lookups through global credential store</li>
+  <li>Fast execution suitable for batch processing scenarios</li>
+</ul>
+
+<p><strong>Return Type Handling:</strong>
+The function handles various return formats from Get-ValidCred:</p>
+
+<ul>
+  <li><strong>PSCustomObject</strong>: Standard Get-ValidCred return format</li>
+  <li><strong>Boolean</strong>: Legacy compatibility mode</li>
+  <li><strong>Hashtable</strong>: Alternative format handling</li>
+  <li><strong>Null/Empty</strong>: Error condition processing</li>
+</ul>
+
+<p><strong>Common Usage Patterns:</strong></p>
+
+<h1 id="standard-checkit-pattern">Standard CheckIT pattern</h1>
+<p>$credInfo = Get-NodeCredAndFQDN -Node $nodeName -PromptUser:$false
+if ($credInfo.Status -eq “OK” -and $credInfo.Credential) {
+    # Use $credInfo.Credential and $credInfo.FQDN for remote operations
+}</p>
+
+<h1 id="batch-validation">Batch validation</h1>
+<p>$nodes | ForEach-Object {
+    $credInfo = Get-NodeCredAndFQDN -Node $_ -PromptUser:$false
+    # Process based on $credInfo.Status
+}</p>
+
+<p><strong>Security Considerations:</strong></p>
+
+<ul>
+  <li>Returns PSCredential objects with SecureString passwords</li>
+  <li>No plaintext password exposure in normal operations</li>
+  <li>Respects credential store security boundaries</li>
+  <li>Maintains audit trail through underlying Get-ValidCred calls</li>
+</ul>
+
+<p><strong>Troubleshooting Tips:</strong></p>
+
+<ul>
+  <li>
+    <p>Check credential store status with `Get-ValidCred</p>
+  </li>
+  <li>Verify node exists in global NodeList</li>
+  <li>Ensure Passman credentials have been retrieved</li>
+  <li>Validate network connectivity to target FQDN</li>
+  <li>Review CheckIT global variables initialization</li>
+</ul>
+
+<p><strong>Best Practices:</strong></p>
+
+<ul>
+  <li>Always check Status before using Credential</li>
+  <li>Use PromptUser:$false for automation scenarios</li>
+  <li>Implement proper error handling for missing credentials</li>
+  <li>Cache results when processing multiple operations on same node</li>
+  <li>Combine with Get-ValidCred for advanced credential management</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-ValidCred.html">Get-ValidCred</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Passman.html">Passman</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Show-CredentialClipboard.html">Show-CredentialClipboard</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Ensure-GlobalCredStore.html">Ensure-GlobalCredStore</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/NodeList.html">NodeList</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

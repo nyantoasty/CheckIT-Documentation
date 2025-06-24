@@ -1,0 +1,1142 @@
+/***********************************
+ * CORE LAYOUT & CONTAINER STYLES
+ ***********************************/
+
+/* Main content container - centered with responsive width */
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+/* Basic body styling with gradient background */
+body {
+  background: linear-gradient(135deg,#1a1f29 0%, #0f1419 100%);
+  color: #e6e8eb;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0 1rem;
+}
+
+/* Site container with overall gradient and padding */
+.site-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #1a1f29, #111827);
+  padding: 0 1rem;
+}
+
+/* Page content spacing */
+.page-content {
+  padding: 2rem 0;
+}
+
+/* Force dark theme on all content containers */
+.main-content,
+.page-content,
+.post-content,
+.content,
+.wrapper > *,
+article,
+main,
+.site-content {
+  background: #1a1f29;
+  color: #e6e8eb;
+}
+
+/* Prevent horizontal overflow */
+.wrapper,
+.main-content,
+.page-content {
+  padding: 2rem 0;
+}
+
+/***********************************
+ * TYPOGRAPHY & TEXT ELEMENTS
+ ***********************************/
+
+/* --- Improved Heading Hierarchy & Contrast --- */
+h1 {
+  color: #2563eb;
+  font-size: 2.2rem;
+  border-bottom: 2px solid #374151;
+  padding-bottom: 0.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  color: #60a5fa;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #374151;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.3rem;
+  letter-spacing: 0.01em;
+  background: rgba(37,99,235,0.07);
+  border-radius: 0.3rem 0.3rem 0 0;
+  padding-left: 0.5rem;
+}
+
+h3 {
+  color: #fbbf24;
+  font-size: 1.15rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  background: rgba(251,191,36,0.07);
+  border-left: 4px solid #fbbf24;
+  padding-left: 0.5rem;
+  border-radius: 0.2rem;
+}
+
+h4, h5, h6 {
+  color: #e6e8eb;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Add extra spacing before/after headings for clarity */
+h1, h2, h3, h4, h5, h6 {
+  scroll-margin-top: 5rem;
+}
+
+/* Link styling */
+a {
+  color: #2563eb;
+  text-decoration: none;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+a:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+/* Text wrapping for content */
+.main-content,
+.page-content,
+.post-content,
+.content,
+article {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-width: 100%;
+}
+
+/* Text wrapping for paragraph elements */
+p, li, td, th {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+li > strong {
+  color: #fbbf24;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/***********************************
+ * HEADER & NAVIGATION
+ ***********************************/
+
+/* Header styling */
+.site-header {
+  padding: 1rem 0;
+  background-color: rgba(17, 24, 39, 0.9);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #374151;
+}
+
+.site-header .wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Site title styling */
+.site-title {
+  color: #3b82f6;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.5rem 0;
+  margin-right: 2rem;
+  white-space: nowrap;
+  font-weight: 700;
+  color: #3b82f6;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Two-row navigation layout */
+.site-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.75rem;
+  width: 100%;
+}
+
+.nav-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0.5rem 0;
+  width: 100%;
+}
+
+/* Navigation link styling */
+.page-link {
+  color: #e5e7eb;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.page-link:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+/* Hide mobile menu elements */
+#nav-trigger,
+.menu-icon,
+.nav-trigger {
+  display: none;
+}
+
+/* Remove scrollbars */
+.site-nav::-webkit-scrollbar,
+.site-header .wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/***********************************
+ * DOCUMENTATION PAGE HEADER
+ ***********************************/
+
+/* Documentation header with icon + title */
+.docs-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #374151;
+  justify-content: space-between;
+}
+
+/* Icon container */
+.icon-container {
+  margin-right: 1rem;
+}
+
+.page-icon {
+  font-size: 2.5rem;
+  color: #3b82f6;
+}
+
+/* Title container */
+.title-container {
+  flex: 1;
+}
+
+.title-container h1 {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: 2rem;
+  color: #3b82f6;
+}
+
+.page-subtitle {
+  margin: 0.25rem 0 0;
+  color: #9ca3af;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+/* Status pills in header */
+.status-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.version-pill, .status-pill {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  color: white;
+}
+
+.version-pill {
+  background-color: #1f2937;
+}
+
+.status-pill {
+  background-color: #f59e0b;
+}
+
+/***********************************
+ * HOME PAGE HERO SECTION
+ ***********************************/
+
+/* Home hero section styling */
+.home-hero {
+  text-align: center;
+  padding: 3rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.hero-icon {
+  font-size: 3rem;
+  color: #3b82f6;
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  color: #3b82f6;
+  margin: 0 0 1rem;
+  padding: 0;
+  border: none;
+}
+
+.hero-description {
+  color: #9ca3af;
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto 1.5rem;
+}
+
+/* Hero section badges */
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background-color: #1f2937;
+  color: white;
+}
+
+.hero-badge:nth-child(2) {
+  background-color: #f59e0b;
+}
+
+.hero-badge:nth-child(3) {
+  background-color: #10b981;
+}
+
+/***********************************
+ * CARD & GRID LAYOUTS
+ ***********************************/
+
+/* Documentation card grid */
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+/* Document cards */
+.doc-card {
+  background: linear-gradient(135deg, #1f2937 0%, #242936 100%);
+  border-radius: 0.75rem;
+  padding: 1.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.doc-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.doc-card h3 {
+  margin-top: 0;
+  color: #3b82f6;
+  border-bottom: none;
+}
+
+.doc-card p {
+  color: #9ca3af;
+  margin: 1rem 0;
+}
+
+.card-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.card-link:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+/* Feature and highlight cards */
+.feature-card, 
+.highlight-card {
+  background: linear-gradient(135deg, #1a1f29 0%, #242936 100%);
+  border-radius: 0.75rem;
+  padding: 1.75rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+}
+
+.feature-card h2, 
+.highlight-card h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #3b82f6;
+}
+
+/* Feature list styling */
+.feature-list {
+  text-align: center;
+  line-height: 1.8;
+  margin: 1.5rem 0;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* New features section */
+.new-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.feature-item {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  border-left: 3px solid #3b82f6;
+}
+
+.feature-item h4 {
+  margin-top: 0;
+  color: #3b82f6;
+}
+
+/***********************************
+ * TABLE STYLING
+ ***********************************/
+
+/* Table container */
+table {
+  background: #2a2f3a;
+  border: none;
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Table headers */
+th {
+  background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+  color: #f3f4f6;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-weight: 600;
+  border: none;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Table cells */
+td {
+  background: #2a2f3a;
+  color: #d1d5db;
+  padding: 1rem 1.25rem;
+  border: none;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.3);
+}
+
+/* Alternating row styles */
+tr:nth-child(even) td {
+  background: #252a33;
+}
+
+tr:hover td {
+  background: #323742;
+  transition: all 0.2s ease;
+}
+
+
+/***********************************
+ * FOOTER STYLING
+ ***********************************/
+
+/* Footer container */
+.docs-footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #374151;
+  text-align: center;
+}
+
+/* Footer navigation */
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer-nav a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.35rem 0.65rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.footer-nav a:hover {
+  color: #60a5fa;
+  background-color: rgba(59, 130, 246, 0.1);
+  text-decoration: none;
+}
+
+/* Footer information */
+.footer-info {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+.footer-badge-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background-color: #1f2937;
+  color: white;
+}
+
+.footer-badge.status {
+  background-color: #3b82f6;
+}
+
+.footer-info a {
+  color: #3b82f6;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-info a:hover {
+  text-decoration: underline;
+}
+
+.footer-updated {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+/***********************************
+ * RESPONSIVE DESIGN
+ ***********************************/
+
+/* Desktop-first media queries */
+@media (min-width: 768px) {
+  .site-header .wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .site-nav {
+    margin-top: 0;
+  }
+}
+
+/* Mobile layout adjustments */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 0 1rem;
+  }
+  
+  .docs-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .nav-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .docs-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .status-container {
+    margin-top: 1rem;
+  }
+  
+  .footer-nav {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .footer-badge-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .site-header .wrapper {
+    justify-content: flex-start;
+    padding: 0 0.5rem;
+  }
+  
+  .site-nav .page-link {
+    margin: 0 0.25rem;
+    padding: 0.375rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .site-title {
+    margin-right: 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .hero-section {
+    padding: 1rem;
+  }
+  
+  .hero-section h1 {
+    font-size: 1.8rem;
+  }
+}
+
+/* ---------- FUNCTION LINKS ---------- */
+
+/* Function links styling for [[Function]] syntax */
+.fn {
+  color: #93c5fd;
+  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
+  background: transparent;
+  border-bottom: 1px dotted rgba(147, 197, 253, 0.4);
+  padding: 0;
+  margin: 0;
+  display: inline;
+}
+
+.fn:hover {
+  color: #60a5fa;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.8);
+  text-decoration: none;
+}
+
+.function-card {
+  background: linear-gradient(135deg, #23272f 0%, #181c23 100%);
+  border-radius: 0.75rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  border-left: 5px solid #3b82f6;
+  position: relative;
+  transition: box-shadow 0.2s;
+  max-height: 400px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0; /* Remove inner padding so header/tabs go edge-to-edge */
+  max-height: 540px; /* or your preferred height */
+  min-height: 350px;
+  overflow-y: auto;
+}
+.function-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+}
+
+/* Custom scrollbar styling */
+.function-card::-webkit-scrollbar {
+  width: 8px;
+}
+
+.function-card::-webkit-scrollbar-track {
+  background: #23272f;
+  border-radius: 4px;
+}
+
+.function-card::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 4px;
+  opacity: 0.7;
+}
+
+.function-card::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa;
+}
+
+.function-card .function-description {
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+.function-card .function-section {
+  margin-bottom: 0.5rem;
+}
+.function-card .function-section strong {
+  color: #fbbf24;
+}
+.function-card .param-list {
+  margin: 0.5rem 0 0.5rem 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.function-card .param-list li {
+  margin-bottom: 0.25rem;
+  padding-left: 1.5em;
+  position: relative;
+}
+.function-card .param-list li .param-icon {
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  font-size: 1.1em;
+  color: #60a5fa;
+}
+.function-card .returns-section {
+  margin-top: 0.5rem;
+  padding-left: 1.5em;
+  position: relative;
+  color: #10b981;
+}
+.function-card .returns-section .returns-icon {
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  font-size: 1.1em;
+  color: #10b981;
+}
+
+.examples-block {
+  background: linear-gradient(135deg, #134e5e 0%, #0c2b36 100%);
+  border-radius: 0.6rem;
+  margin: 1.5rem 0 0.5rem 0;
+  padding: 1.1rem 1.2rem 1rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+.example-item {
+  margin-bottom: 1.2rem;
+}
+.example-heading {
+  font-size: 0.95rem;
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.example-item pre {
+  margin: 0;
+}
+
+/* Sticky header for function name and tabs */
+.function-card > h3,
+.function-card > .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #181d28;
+}
+
+/* Ensure tab-content fills the rest and scrolls if needed */
+.function-card .tab-content {
+  padding: 1.2rem 1.5rem 1.5rem 1.5rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Optional: Prevent double scrollbars if content is long */
+/* Tab content area */
+.function-card .tab-content {
+  padding: 1.2rem 2rem 1.5rem 2rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.function-card .tab {
+  background: #23272f;
+  color: #60a5fa;
+  border: none;
+  border-radius: 0.4rem 0.4rem 0 0;
+  padding: 0.4rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  outline: none;
+}
+
+/* Sticky header for function name and tabs */
+.function-card > h3 {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  background: #181d28;
+  box-sizing: border-box;
+  padding: 1rem 2rem 0.5rem 2rem;
+  font-size: 1.25rem;
+  border-bottom: 1px solid #23293a;
+}
+
+
+.function-card > .tabs {
+  position: sticky;
+  top: 3.2rem; /* Adjust this value to match the height of h3 */
+  z-index: 2;
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  background: #181d28;
+  box-sizing: border-box;
+  padding: 0.5rem 2rem 0.5rem 2rem;
+  border-bottom: 1px solid #23293a;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.function-card .tab.active,
+.function-card .tab:focus {
+  background: #3b82f6;
+  color: #fff;
+}
+
+/***********************************
+ * CODE STYLING - CONSOLIDATED
+ ***********************************/
+
+/* Code block container */
+.code-example {
+  background: linear-gradient(135deg, #0f2c3a 0%, #0a2732 100%);
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  border: 1px solid rgba(30, 70, 85, 0.5);
+}
+
+/* Language label */
+.code-example::before {
+  content: attr(data-language);
+  display: block;
+  background: transparent;
+  color: #d1d5db;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+
+/* Multi-line code block (highlight) - blend better with container */
+.highlight {
+  background: #2a2f3a; /* Dark gray background like in your screenshot */
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: none;
+  width: 100%;
+  margin: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  transition: background 0.2s ease; /* Add transition for hover effect */
+}
+
+/* Hover effect for code blocks - brighten the background */
+.highlight:hover {
+  background: #323742; /* Lighter gray on hover */
+}
+
+/* Table styling for code blocks */
+.highlight table,
+.highlight .rouge-table {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border-collapse: collapse;
+  display: table;
+  table-layout: auto;
+  border: none;
+  background: transparent; /* Keep table background transparent */
+}
+
+.highlight tbody {
+  border: none;
+  background: transparent;
+  display: table-row-group;
+  width: 100%;
+}
+
+.highlight tr {
+  width: 100%;
+  display: table-row;
+  background: transparent;
+}
+
+/* Line number column - restore the separator */
+.highlight td.rouge-gutter {
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(100, 110, 130, 0.25);
+  padding: 0.5rem 0 0.5rem 0.5rem;
+  text-align: right;
+}
+
+/* Code column */
+.highlight td.rouge-code {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1.5rem 0.5rem 1rem;
+}
+
+/* Line numbers */
+.highlight .lineno {
+  color: #586e75;
+  display: inline-block;
+  padding: 0 0.5rem 0 0;
+  text-align: right;
+  min-width: 1rem;
+  user-select: none;
+  opacity: 0.6;
+  background: transparent;
+}
+
+/* Copy button */
+.copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background: rgba(59, 130, 246, 0.15);
+  color: #e5e7eb;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 15;
+}
+
+.copy-button:hover {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+/* ---------- UNIFIED SYNTAX HIGHLIGHTING ---------- */
+/* Use ONE consistent color scheme for all code */
+
+.highlight .c, .highlight .c1, .highlight .cm { color: #586e75; font-style: italic; }
+.highlight .k, .highlight .kd, .highlight .kt { color: #3b82f6; font-weight: bold; }
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb { color: #10b981; }
+.highlight .nv, .highlight .vg { color: #93c5fd; }
+.highlight .n { color: #93a1a1; }
+.highlight .nb { color: #f59e0b; }
+.highlight .m, .highlight .mi, .highlight .mf { color: #d33682; }
+.highlight .o, .highlight .ow { color: #f3f4f6; }
+.highlight .p, .highlight .bp, .highlight .vc, .highlight .vi, .highlight .il { color: #d1d5db; }
+.highlight .na { color: #a78bfa; }
+.highlight .err { color: #dc322f; background: none; }
+.highlight .nx { color: #60a5fa; }
+.highlight .nf { color: #60a5fa; }
+
+/* ...existing code... */
+
+/* ---------- INLINE CODE - FIXED APPROACH ---------- */
+
+/* Basic inline code styling */
+code {
+  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
+  color: #bfdbfe;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 0.15rem 0.3rem;
+  border-radius: 3px;
+  display: inline;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  border: none;
+  margin: 0 0.1rem;
+  font-size: 0.95em;
+  letter-spacing: -0.01em;
+}
+
+/* Jekyll's inline code class - COMPLETELY OVERRIDE Rouge styling */
+.language-plaintext.highlighter-rouge {
+  /* Force inline code appearance */
+  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
+  color: #bfdbfe !important;
+  background: rgba(15, 23, 42, 0.6) !important;
+  padding: 0.15rem 0.3rem !important;
+  border-radius: 3px !important;
+  font-size: 0.95em !important;
+  letter-spacing: -0.01em !important;
+  display: inline !important;
+  margin: 0 0.1rem !important;
+  border: none !important;
+  box-shadow: none !important;
+  
+  /* Override dimensions */
+  width: auto !important;
+  min-width: auto !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: auto !important;
+  
+  /* Override positioning */
+  position: static !important;
+  float: none !important;
+  
+  /* Override any table-related styles */
+  table-layout: auto !important;
+  border-collapse: separate !important;
+}
+
+.language-plaintext.highlighter-rouge {
+  all: unset !important;
+  font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace !important;
+  color: #bfdbfe !important;
+  background: rgba(15, 23, 42, 0.6) !important;
+  padding: 0.15rem 0.3rem !important;
+  border-radius: 3px !important;
+  font-size: 0.95em !important;
+  letter-spacing: -0.01em !important;
+  display: inline !important;
+  margin: 0 0.1rem !important;
+}
+
+.language-plaintext.highlighter-rouge * {
+  all: unset !important;
+  display: inline !important;
+  font-family: inherit !important;
+  color: inherit !important;
+  font-size: inherit !important;
+}
+
+/* HIDE LINE NUMBERS for inline code specifically */
+.language-plaintext.highlighter-rouge .rouge-gutter,
+.language-plaintext.highlighter-rouge .lineno,
+.language-plaintext.highlighter-rouge td.rouge-gutter,
+.language-plaintext.highlighter-rouge .rouge-table td:first-child {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  overflow: hidden !important;
+}
+
+/* Make sure the code content takes full width when line numbers are hidden */
+.language-plaintext.highlighter-rouge .rouge-code,
+.language-plaintext.highlighter-rouge td.rouge-code {
+  width: 100% !important;
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Hide the entire table structure for inline code */
+.language-plaintext.highlighter-rouge table,
+.language-plaintext.highlighter-rouge .rouge-table,
+.language-plaintext.highlighter-rouge tbody,
+.language-plaintext.highlighter-rouge tr {
+  display: inline !important;
+  width: auto !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-collapse: separate !important;
+  table-layout: auto !important;
+}
+
+
+/* Make sure table cells don't interfere */
+td .language-plaintext.highlighter-rouge,
+th .language-plaintext.highlighter-rouge {
+  vertical-align: baseline !important;
+  line-height: inherit !important;
+}
+
+/* Override for code in multi-line code blocks - keep this */
+pre code, 
+.highlight code,
+.code-example code {
+  background: transparent !important;
+  padding: 0 !important;
+  white-space: pre !important;
+  margin: 0 !important;
+  border: none !important;
+  color: inherit !important;
+  font-size: inherit !important;
+}
+
+/* ...existing code... */

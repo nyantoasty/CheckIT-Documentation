@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select-OUComputers | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Select-OUComputers</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="select-oucomputers">Select-OUComputers</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="select-oucomputers-1">Select-OUComputers</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Interactive organizational unit computer selection with automatic NodeList integration and comprehensive filtering options.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Select-OUComputers [[-BaseOU] <String>] [[-StringSearch] &lt;String[]&gt;] [[-PromptUser] <Boolean>]
+ [[-AddToNodeList] <Boolean>] [[-WindowsOnly] <Boolean>] [[-OS] &lt;String[]&gt;] [[-StatusCallback] <ScriptBlock>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></ScriptBlock></Boolean></Boolean></Boolean></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Provides interactive selection capabilities for computers within Active Directory organizational units. This function combines the discovery power of Get-OUComputerSummary with user-friendly selection interfaces and automatic CheckIT NodeList integration.</p>
+
+<p>Supports both interactive CLI mode with rich selection options and programmatic mode for GUI and automation scenarios. The function handles complex selection patterns including ranges, multiple selections, and bulk operations with comprehensive validation and error handling.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li><strong>Interactive OU selection</strong> with flexible input patterns (ranges, lists, wildcards)</li>
+  <li><strong>Automatic NodeList integration</strong> with optional group assignment</li>
+  <li><strong>Real-time filtering</strong> by OS, connectivity status, and OU characteristics</li>
+  <li><strong>Dual-mode operation</strong> supporting both CLI and GUI usage patterns</li>
+  <li><strong>Progress reporting</strong> for long-running discovery operations</li>
+  <li><strong>Comprehensive validation</strong> with user-friendly error messages</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-interactive-lab-computer-selection">EXAMPLE 1: Interactive Lab Computer Selection</h3>
+
+<p>Select-OUComputers -BaseOU “Lab” -PromptUser $true</p>
+
+<p>Displays an interactive table of lab OUs with computer counts and allows user selection for NodeList addition.</p>
+
+<h3 id="example-2-automated-classroom-computer-addition">EXAMPLE 2: Automated Classroom Computer Addition</h3>
+
+<p>$computers = Select-OUComputers -BaseOU “Classroom” -WindowsOnly:$true -PromptUser:$false -AddToNodeList:$true
+Write-Host “Added $($computers.OUSummaries.Count) classroom OUs to NodeList”</p>
+
+<p>Automatically adds all Windows computers from classroom OUs to the NodeList without user interaction.</p>
+
+<h3 id="example-3-filtered-computer-discovery-with-progress">EXAMPLE 3: Filtered Computer Discovery with Progress</h3>
+
+<p>$callback = { param($status, $current, $total) 
+    Write-Progress -Activity “Discovering Computers” -Status $status -PercentComplete (($current/$total)*100)
+}
+$result = Select-OUComputers -StringSearch @(“CIS”, “Engineering”) -OS @(“Windows 11”) -StatusCallback $callback -PromptUser:$false</p>
+
+<p>Searches for Windows 11 computers in CIS and Engineering OUs with progress reporting for GUI integration.</p>
+
+<h3 id="example-4-interactive-multi-selection-workflow">EXAMPLE 4: Interactive Multi-Selection Workflow</h3>
+
+<h1 id="example-of-interactive-session">Example of interactive session:</h1>
+<h1 id="user-sees">User sees:</h1>
+<h1 id="index--ou--------------members--os-info----------------online--offline">Index  OU              Members  OS Info                Online  Offline</h1>
+<h1 id="01-----cis-faculty-----12-------windows-11-8-win10-4----10------2">01     CIS-Faculty     12       Windows 11: 8; Win10: 4    10      2</h1>
+<h1 id="02-----cis-students----25-------windows-11-15-win10-10---20------5">02     CIS-Students    25       Windows 11: 15; Win10: 10   20      5</h1>
+<h1 id="03-----cis-lab---------30-------windows-11-25-win10-5----28------2">03     CIS-Lab         30       Windows 11: 25; Win10: 5    28      2</h1>
+<p>#</p>
+<h1 id="user-enters-13-or-13-or-1-3">User enters: 1,3 or 1..3 or 1-3</h1>
+<h1 id="function-processes-selection-and-prompts-for-group-name">Function processes selection and prompts for group name</h1>
+
+<p>Select-OUComputers -StringSearch @(“CIS”) -PromptUser:$true</p>
+
+<p>Demonstrates the interactive selection interface with multiple selection patterns.</p>
+
+<h3 id="example-5-bulk-processing-with-custom-groups">EXAMPLE 5: Bulk Processing with Custom Groups</h3>
+
+<p>$labComputers = Select-OUComputers -BaseOU “Lab” -PromptUser:$false -AddToNodeList:$false
+foreach ($ouIndex in $labComputers.OUComputersDict.Keys) {
+    $computers = $labComputers.OUComputersDict[$ouIndex]
+    $ouName = $labComputers.OUSummaries[$ouIndex].OU</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre># Assign custom group names based on OU
+$computers | ForEach-Object { $_.Group = "Lab-$ouName" }
+NodeList -Action Add -Nodes $computers -PromptUser:$false }
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Demonstrates programmatic processing with custom group assignment logic.</p>
+
+<h3 id="example-6-connectivity-based-selection">EXAMPLE 6: Connectivity-Based Selection</h3>
+
+<p>$result = Select-OUComputers -StringSearch @(“Student”) -PromptUser:$false
+$onlineComputers = $result.OUComputersDict.Values | ForEach-Object { $_ } | Where-Object { $_.Online -eq “Online” }
+NodeList -Action Add -Nodes $onlineComputers -PromptUser:$false
+Write-Host “Added $($onlineComputers.Count) online student computers to NodeList”</p>
+
+<p>Filters for online computers only and adds them to NodeList for immediate management.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-baseou">-BaseOU</h3>
+
+<p>Specifies the base organizational unit for computer discovery. Supports built-in mappings for common organizational structures.</p>
+
+<p><strong>Built-in Mappings:</strong></p>
+
+<ul>
+  <li><strong>“Lab”</strong>: Student computer labs and learning spaces</li>
+  <li><strong>“Classroom”</strong>: Instructional computers and presentation systems</li>
+</ul>
+
+<p><strong>Usage Patterns:</strong></p>
+
+<ul>
+  <li>Use built-in mappings for quick access to common areas</li>
+  <li>Provide custom Distinguished Names for specific organizational targeting</li>
+  <li>Leave empty to search entire domain (may be slow in large environments)</li>
+</ul>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 0
+Default value: Domain root
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-stringsearch">-StringSearch</h3>
+
+<p>Array of search strings for filtering organizational units by name pattern. Enables targeted discovery of specific departments or areas.</p>
+
+<p><strong>Search Capabilities:</strong></p>
+
+<ul>
+  <li>Case-insensitive wildcard matching</li>
+  <li>Multiple strings create inclusive OR conditions</li>
+  <li>Matches both OU names and descriptions</li>
+  <li>Supports partial name matching for flexible discovery</li>
+</ul>
+
+<p><strong>Common Patterns:</strong></p>
+
+<ul>
+  <li>
+    <p>Department codes: `@(“CIS”, “MATH”, “ENGR”)</p>
+  </li>
+  <li>
+    <p>Functional areas: `@(“Faculty”, “Student”, “Admin”)</p>
+  </li>
+  <li>
+    <p>Location indicators: `@(“Building-A”, “Library”, “Lab”)</p>
+  </li>
+</ul>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: None (discovers all OUs)
+Accept pipeline input: False
+Accept wildcard characters: True</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>Controls the interaction mode and determines CLI vs. programmatic behavior.</p>
+
+<p><strong>When $true (Interactive CLI Mode):</strong></p>
+
+<ul>
+  <li>Displays formatted OU selection table with statistics</li>
+  <li>Provides interactive selection with range and pattern support</li>
+  <li>Prompts for group name assignment to selected computers</li>
+  <li>Confirms NodeList addition with user approval</li>
+  <li>Shows hide/show options for empty OUs</li>
+  <li>Supports export functionality</li>
+</ul>
+
+<p><strong>When $false (Programmatic Mode):</strong></p>
+
+<ul>
+  <li>Returns structured data without user interaction</li>
+  <li>Suitable for GUI applications and automation scripts</li>
+  <li>Automatic processing based on AddToNodeList parameter</li>
+  <li>No console output or user prompts</li>
+</ul>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-addtonodelist">-AddToNodeList</h3>
+
+<p>Controls automatic NodeList integration behavior.</p>
+
+<p><strong>When $true:</strong></p>
+
+<ul>
+  <li>Automatically adds discovered computers to CheckIT NodeList</li>
+  <li>Applies standardization via New-NodeObject for consistency</li>
+  <li>Updates existing NodeList entries or creates new ones</li>
+  <li>Triggers NodeList deduplication and validation</li>
+</ul>
+
+<p><strong>When $false:</strong></p>
+
+<ul>
+  <li>Returns computer data without NodeList modification</li>
+  <li>Suitable for analysis and custom processing scenarios</li>
+  <li>Allows manual control over NodeList operations</li>
+</ul>
+
+<p><strong>Interaction with PromptUser:</strong></p>
+
+<ul>
+  <li>PromptUser:$true + AddToNodeList:$true = User confirmation required</li>
+  <li>PromptUser:$false + AddToNodeList:$true = Automatic addition</li>
+  <li>AddToNodeList:$false = Never adds regardless of PromptUser setting</li>
+</ul>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-windowsonly">-WindowsOnly</h3>
+
+<p>Filters discovery to include only Windows-based computer systems.</p>
+
+<p><strong>Filtering Behavior:</strong></p>
+
+<ul>
+  <li>Excludes Linux, macOS, and other non-Windows systems</li>
+  <li>Uses Active Directory OperatingSystem attribute for determination</li>
+  <li>Reduces noise in Windows-focused environments</li>
+  <li>Improves performance by reducing connectivity tests</li>
+</ul>
+
+<p><strong>Use Cases:</strong></p>
+
+<ul>
+  <li>Windows patch management preparation</li>
+  <li>Windows-specific software deployment</li>
+  <li>License compliance and inventory</li>
+  <li>Security policy application</li>
+</ul>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-os">-OS</h3>
+
+<p>Array of specific operating system filters for granular targeting.</p>
+
+<p><strong>Advanced Filtering:</strong></p>
+
+<ul>
+  <li>Supports wildcard patterns for flexible matching</li>
+  <li>Multiple values create inclusive OR conditions</li>
+  <li>Case-insensitive matching against AD OperatingSystem attribute</li>
+  <li>Works in combination with WindowsOnly parameter</li>
+</ul>
+
+<p><strong>Strategic Applications:</strong></p>
+
+<ul>
+  <li>Target specific Windows versions for updates</li>
+  <li>Identify legacy systems requiring attention</li>
+  <li>Support phased migration planning</li>
+  <li>Compliance reporting for specific OS versions</li>
+</ul>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: None (includes all OS types)
+Accept pipeline input: False
+Accept wildcard characters: True</p>
+
+<h3 id="-statuscallback">-StatusCallback</h3>
+
+<p>ScriptBlock for progress reporting during discovery and connectivity testing operations.</p>
+
+<p><strong>Callback Parameters:</strong></p>
+
+<ul>
+  <li><strong>$status</strong>: Descriptive text of current operation</li>
+  <li><strong>$current</strong>: Current item being processed (0-based)</li>
+  <li><strong>$total</strong>: Total number of items to process</li>
+</ul>
+
+<p><strong>GUI Integration Example:</strong></p>
+
+<p>$callback = { 
+    param($status, $current, $total)
+    [System.Windows.Forms.Application]::DoEvents()
+    $global:ProgressBar.Value = ($current / $total) * 100
+    $global:StatusLabel.Text = $status
+}</p>
+
+<p>```yaml
+Type: ScriptBlock
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>Standard PowerShell progress action preference for controlling built-in progress display.</p>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="none">None</h3>
+
+<p>This function does not accept pipeline input.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="systemobject">System.Object[]</h3>
+
+<p>Output varies based on PromptUser parameter:</p>
+
+<p><strong>Interactive Mode (PromptUser:$true):</strong>
+Returns array of selected computer objects with properties:</p>
+
+<ul>
+  <li><strong>Node</strong>: Computer name for CheckIT operations</li>
+  <li><strong>Group</strong>: Assigned group name (user-specified or OU-based)</li>
+  <li><strong>OS</strong>: Operating system from Active Directory</li>
+  <li><strong>OU</strong>: Source organizational unit name</li>
+  <li><strong>Online</strong>: Connectivity status (“Online” or “Offline”)</li>
+</ul>
+
+<p><strong>Programmatic Mode (PromptUser:$false):</strong>
+Returns hashtable with two keys:</p>
+
+<ul>
+  <li><strong>OUSummaries</strong>: Array of OU summary objects with statistics</li>
+  <li><strong>OUComputersDict</strong>: Dictionary of computer arrays indexed by OU</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Interactive Selection Patterns:</strong>
+The CLI mode supports sophisticated selection syntax:</p>
+
+<ul>
+  <li><strong>Single selection</strong>: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>1
+</pre></td></tr></tbody></table></code> (selects OU index 1)</li>
+  <li><strong>Multiple selection</strong>: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>1,3,5
+</pre></td></tr></tbody></table></code> (selects specific OUs)</li>
+  <li><strong>Range selection</strong>: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>1..5
+</pre></td></tr></tbody></table></code> or <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>1-5
+</pre></td></tr></tbody></table></code> (selects OUs 1 through 5)</li>
+  <li><strong>All selection</strong>: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>*
+</pre></td></tr></tbody></table></code> or <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>all
+</pre></td></tr></tbody></table></code> (selects all available OUs)</li>
+  <li><strong>Commands</strong>: <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>H
+</pre></td></tr></tbody></table></code> (hide empty), <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>S
+</pre></td></tr></tbody></table></code> (show all), <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>E
+</pre></td></tr></tbody></table></code> (export), <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Q
+</pre></td></tr></tbody></table></code> (quit)</li>
+</ul>
+
+<p><strong>Group Assignment Logic:</strong></p>
+
+<ul>
+  <li>Interactive mode prompts for custom group names</li>
+  <li>Default group assignment uses OU name for identification</li>
+  <li>Group names are used for NodeList organization and reporting</li>
+  <li>Empty group names preserve original OU-based grouping</li>
+</ul>
+
+<p><strong>Performance Optimization:</strong></p>
+
+<ul>
+  <li>Large OU discovery operations may take significant time</li>
+  <li>Connectivity testing adds overhead but provides valuable status</li>
+  <li>Use filtering parameters to reduce scope and improve performance</li>
+  <li>StatusCallback helps manage user expectations during long operations</li>
+</ul>
+
+<p><strong>Error Handling and Validation:</strong></p>
+
+<ul>
+  <li>Invalid OU selections are rejected with helpful messages</li>
+  <li>Empty result sets provide appropriate user feedback</li>
+  <li>Network connectivity issues are handled gracefully</li>
+  <li>AD permission problems are reported clearly</li>
+</ul>
+
+<p><strong>NodeList Integration:</strong></p>
+
+<ul>
+  <li>Uses New-NodeObject for standardization and consistency</li>
+  <li>Triggers automatic deduplication in NodeList</li>
+  <li>Updates Passman status based on credential availability</li>
+  <li>Maintains referential integrity with existing NodeList data</li>
+</ul>
+
+<p><strong>GUI Application Support:</strong></p>
+
+<ul>
+  <li>PromptUser:$false mode designed for GUI consumption</li>
+  <li>StatusCallback enables real-time progress updates</li>
+  <li>Structured return data supports complex GUI operations</li>
+  <li>No console dependencies when running in programmatic mode</li>
+</ul>
+
+<p><strong>Security Considerations:</strong></p>
+
+<ul>
+  <li>Respects Active Directory read permissions</li>
+  <li>No modification of AD objects or structure</li>
+  <li>Read-only discovery operations only</li>
+  <li>Honors organizational security boundaries</li>
+</ul>
+
+<p><strong>Best Practices:</strong></p>
+
+<ul>
+  <li>Use StringSearch to limit scope in large environments</li>
+  <li>Implement progress callbacks for long-running operations</li>
+  <li>Validate user selections before bulk NodeList operations</li>
+  <li>Consider using WindowsOnly in homogeneous Windows environments</li>
+  <li>Test connectivity requirements in network-restricted environments</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-OUComputerSummary.html">Get-OUComputerSummary</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/NodeList.html">NodeList</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/New-NodeObject.html">New-NodeObject</a></p>
+
+<p><a href="https://docs.microsoft.com/en-us/powershell/module/activedirectory/get-adorganizationalunit">Get-ADOrganizationalUnit</a></p>
+
+<p><a href="https://docs.microsoft.com/en-us/powershell/module/activedirectory/get-adcomputer">Get-ADComputer</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

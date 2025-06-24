@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔧 API Reference | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <div class="docs-header">
+  <div class="icon-container">
+    
+  </div>
+  
+  <div class="title-container">
+    <h1>🔧 API Reference</h1>
+    
+  </div>
+  
+  <div class="status-container">
+    <span class="version-pill">Version 1.5.0</span>
+    <span class="status-pill">Open Beta</span>
+  </div>
+</div>
+
+<div class="page-content">
+  <blockquote>
+  <p>Complete function library with usage examples, status, and dependencies</p>
+</blockquote>
+
+<h2 id="-table-of-contents">📋 Table of Contents</h2>
+
+<ul>
+  <li><a href="#-quick-function-reference">🚀 Quick Function Reference</a>
+    <ul>
+      <li><a href="#core-functions-and-utilities">Core Functions and Utilities</a></li>
+      <li><a href="#documentation--maintenance">Documentation &amp; Maintenance</a></li>
+      <li><a href="#store-management">Store Management Functions</a></li>
+      <li><a href="#template-system">Template System</a></li>
+      <li><a href="#node-management-functions">Node Management</a></li>
+      <li><a href="#credential-management">Credential Management</a></li>
+      <li><a href="#remote-operations">Remote Operations</a></li>
+      <li><a href="#active-directory-functions">Active Directory Functions</a></li>
+      <li><a href="#sccm-functions">SCCM Functions</a></li>
+      <li><a href="#reporting--logging">Reporting &amp; Logging</a></li>
+      <li><a href="#utility--support-functions">Utility &amp; Support Functions</a></li>
+    </ul>
+  </li>
+  <li><a href="#-function-status-matrix">📊 Function Status Matrix</a></li>
+  <li><a href="#-usage-examples">📊 Usage Examples</a>
+    <ul>
+      <li><a href="#template-system--workflows">Template System &amp; Workflows</a></li>
+      <li><a href="#node-and-credential-management">Node and Credential Management</a></li>
+      <li><a href="#remote-operations-and-diagnostics">Remote Operations and Diagnostics</a></li>
+      <li><a href="#sccm-integration">SCCM Integration</a></li>
+      <li><a href="#active-directory-integration">Active Directory Integration</a></li>
+      <li><a href="#reporting-and-data-management">Reporting and Data Management</a></li>
+    </ul>
+  </li>
+  <li><a href="#-function-details">🔍 Function Details</a></li>
+</ul>
+
+<h2 id="-function-status-matrix">📊 Function Status Matrix</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Need This?</th>
+      <th>Function</th>
+      <th>Status</th>
+      <th>CLI</th>
+      <th>GUI</th>
+      <th>Dependencies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Template workflows</strong></td>
+      <td>Invoke-TemplateWorkflow</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Template system, Excel</td>
+    </tr>
+    <tr>
+      <td><strong>Template commands</strong></td>
+      <td>Invoke-TemplateCommand</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Process-Parallel, templates</td>
+    </tr>
+    <tr>
+      <td><strong>Template management</strong></td>
+      <td>Manage-Templates</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Global stores</td>
+    </tr>
+    <tr>
+      <td><strong>Software inventory</strong></td>
+      <td>Get-Software</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Process-Parallel, NodeList</td>
+    </tr>
+    <tr>
+      <td><strong>SCCM packages</strong></td>
+      <td>Get-CCMPackages</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Process-Parallel, CIM/WMI</td>
+    </tr>
+    <tr>
+      <td><strong>Remote commands</strong></td>
+      <td>Invoke-NodeCommand</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Process-Parallel, credentials</td>
+    </tr>
+    <tr>
+      <td><strong>System connectivity</strong></td>
+      <td>Test-NodeConnection</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Process-Parallel, WinRM</td>
+    </tr>
+    <tr>
+      <td><strong>Excel export</strong></td>
+      <td>Export-ToExcel</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Excel COM (built-in)</td>
+    </tr>
+    <tr>
+      <td><strong>Pivot tables</strong></td>
+      <td>Invoke-Pivotizer</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Excel COM</td>
+    </tr>
+    <tr>
+      <td><strong>Node management</strong></td>
+      <td>NodeList, New-NodeObject</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Core functions</td>
+    </tr>
+    <tr>
+      <td><strong>Credential handling</strong></td>
+      <td>Process-Parallel -UseCredentials</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Passman integration</td>
+    </tr>
+    <tr>
+      <td><strong>Software analysis</strong></td>
+      <td>Get-SoftwareSampleAnalysis</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Get-Software, AD, Export</td>
+    </tr>
+    <tr>
+      <td><strong>Remote tools</strong></td>
+      <td>Open-RemoteSystemTools</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>MMC, credentials</td>
+    </tr>
+    <tr>
+      <td><strong>User sessions</strong></td>
+      <td>Get-Users</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Process-Parallel</td>
+    </tr>
+    <tr>
+      <td><strong>File explorer</strong></td>
+      <td>Open-RemoteExplorer</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>cmdkey, rundll32</td>
+    </tr>
+    <tr>
+      <td><strong>AD integration</strong></td>
+      <td>AD, Get-ADMembership</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Active Directory module</td>
+    </tr>
+    <tr>
+      <td><strong>Dynamic testing</strong></td>
+      <td>Start-Test, Invoke-TestStep</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Template system</td>
+    </tr>
+    <tr>
+      <td><strong>Task logging</strong></td>
+      <td>Write-TaskLog</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Global stores</td>
+    </tr>
+    <tr>
+      <td><strong>Business reporting</strong></td>
+      <td>Set-Report</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Global stores</td>
+    </tr>
+    <tr>
+      <td><strong>Data persistence</strong></td>
+      <td>Save/Load-CheckITDataCore</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>JSON serialization</td>
+    </tr>
+    <tr>
+      <td><strong>Store management</strong></td>
+      <td>Manage-Store</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Global stores</td>
+    </tr>
+    <tr>
+      <td><strong>Documentation</strong></td>
+      <td>Add-ChangelogEntry</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Standard patterns</td>
+    </tr>
+    <tr>
+      <td><strong>Package deployment</strong></td>
+      <td>Invoke-CCMPackageDeployment</td>
+      <td>✅ Ready</td>
+      <td>✅</td>
+      <td>✅</td>
+      <td>Process-Parallel, SCCM</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="implementation-status-summary">Implementation Status Summary</h3>
+
+<ul>
+  <li><strong>Core Module</strong>: 100% complete - 75+ functions fully implemented and beta access is requestable</li>
+  <li><strong>Template System</strong>: Enhanced with multi-template workflows, session confirmation memory, and Excel integration</li>
+  <li><strong>Node Management</strong>: Complete with Passman status preservation and AD integration</li>
+  <li><strong>Authentication</strong>: Enhanced credential security with session-only storage and Passman integration</li>
+  <li><strong>Data Collection</strong>: Comprehensive software inventory, SCCM package discovery, and user session tracking</li>
+  <li><strong>Reporting</strong>: Multi-sheet Excel export with pivot tables, slicers, and task/business reporting separation</li>
+  <li><strong>Session Management</strong>: Full save/load capability with preference preservation and template store memory</li>
+  <li><strong>Documentation Automation</strong>: Changelog generation and AI-assisted documentation analysis</li>
+</ul>
+
+<h2 id="-quick-function-reference">🚀 Quick Function Reference</h2>
+
+<h3 id="by-category">By Category</h3>
+
+<h4 id="core-functions-and-utilities">Core Functions and Utilities</h4>
+
+<ul>
+  <li><strong>Convert-ReportData</strong> - Post-processes raw template data for clean reporting</li>
+  <li><strong>Convert-WMIDateTime</strong> - Converts WMI datetime format to readable date string</li>
+  <li><strong>Get-AllColumns</strong> - Gets all unique column names from an array of objects</li>
+  <li><strong>Get-CheckITColumns</strong> - Retrieves standard column definitions for CheckIT stores</li>
+  <li><strong>Get-FriendlySize</strong> - Converts byte values to human-readable size strings</li>
+  <li><strong>Write-Color</strong> - Writes colored console output with enhanced formatting</li>
+  <li><strong>Get-UserPreference</strong> - Retrieves a user preference for a specific function</li>
+  <li><strong>Set-UserPreference</strong> - Sets user preference values with validation</li>
+  <li><strong>Show-PreferenceHelp</strong> - Displays help text for available preferences</li>
+</ul>
+
+<h4 id="documentation--maintenance">Documentation &amp; Maintenance</h4>
+
+<ul>
+  <li><strong>Add-ChangelogEntry</strong> - Adds a new entry to CHANGELOG with preview and clipboard support</li>
+  <li><strong>Generate-DocumentationAnalysisPrompt</strong> - Creates analysis prompts for documentation reviews</li>
+</ul>
+
+<h4 id="store-management">Store Management</h4>
+
+<ul>
+  <li><strong>Ensure-CheckITGlobals</strong> - Initializes and validates global state variables</li>
+  <li><strong>Get-CheckITStore</strong> - Safely retrieves or clears a CheckIT data store</li>
+  <li><strong>Manage-Store</strong> - View, preview, and manage CheckIT virtual stores</li>
+  <li><strong>Save-CheckITDataCore</strong> - Saves CheckIT data to disk as JSON with security controls</li>
+  <li><strong>Load-CheckITDataCore</strong> - Loads CheckIT data from disk with validation</li>
+  <li><strong>Normalize-CheckITData</strong> - Normalizes data structure from older versions</li>
+</ul>
+
+<h4 id="template-system">Template System</h4>
+
+<ul>
+  <li><strong>Ensure-Templates</strong> - Loads built-in templates into the global template store</li>
+  <li><strong>Invoke-TemplateCommand</strong> - Executes a command template on one or more nodes</li>
+  <li><strong>Invoke-TemplateWorkflow</strong> - Executes multiple templates in sequence with reporting</li>
+  <li><strong>Manage-Templates</strong> - Complete template management for Command, Test, and Codebase templates</li>
+  <li><strong>New-SystemTestTemplate</strong> - Creates common system test templates</li>
+  <li><strong>New-TestTemplate</strong> - Creates a test template with multiple steps</li>
+  <li><strong>Start-Test</strong> - Runs interactive test steps on a remote machine</li>
+  <li><strong>Invoke-TestStep</strong> - Executes a single test step with response handling</li>
+</ul>
+
+<h4 id="node-management">Node Management</h4>
+
+<ul>
+  <li><strong>Add-SkipNode</strong> - Adds a node to the global skip list to bypass processing</li>
+  <li><strong>New-NodeObject</strong> - Creates a standardized node object with consistent properties</li>
+  <li><strong>NodeList</strong> - Comprehensive node list management (add/update/remove/synchronize)</li>
+  <li><strong>Resolve-NodeObjects</strong> - Resolves node names or objects to valid node objects</li>
+  <li><strong>Update-NodeFromResult</strong> - Updates node status from command results</li>
+</ul>
+
+<h4 id="credential-management">Credential Management</h4>
+
+<ul>
+  <li><strong>Ensure-GlobalCredStore</strong> - Initializes and maintains the global credential store</li>
+  <li><strong>Get-NodeCredAndFQDN</strong> - Gets credentials and FQDN for a node with caching</li>
+  <li><strong>Get-PassManInfo</strong> - Collects and validates work order information for credential requests</li>
+  <li><strong>Get-ValidCred</strong> - Obtains valid credentials for a node with status</li>
+  <li><strong>Get-ValidCredStatus</strong> - Tests credential validity status</li>
+  <li><strong>Passman</strong> - Retrieves credentials from Passman credential manager</li>
+  <li><strong>Show-CredentialClipboard</strong> - Displays credential information with clipboard support</li>
+</ul>
+
+<h4 id="remote-operations">Remote Operations</h4>
+
+<ul>
+  <li><strong>Invoke-NodeCommand</strong> - Executes commands on remote nodes with comprehensive error handling</li>
+  <li><strong>Process-Parallel</strong> - Parallel execution engine with credential support and job management</li>
+  <li><strong>Get-Users</strong> - Retrieves active user sessions from remote computers</li>
+  <li><strong>Open-RemoteExplorer</strong> - Opens File Explorer to a remote computer share</li>
+  <li><strong>Open-RemoteSystemTools</strong> - Opens remote management tools connected to a computer</li>
+  <li><strong>Test-AlternativeShares</strong> - Tests alternative share paths for a remote computer</li>
+  <li><strong>Test-NodeConnection</strong> - Tests comprehensive connectivity to remote nodes</li>
+  <li><strong>Test-RemoteSystemAccess</strong> - Tests multiple remote access methods for diagnostics</li>
+</ul>
+
+<h4 id="active-directory-functions">Active Directory Functions</h4>
+
+<ul>
+  <li><strong>AD</strong> - Updates OS and OU information for nodes from Active Directory</li>
+  <li><strong>Get-ADMembership</strong> - Retrieves AD group membership for a computer or user</li>
+  <li><strong>Ensure-NodeADInfo</strong> - Ensures nodes have AD information populated</li>
+  <li><strong>Get-OUComputerSummary</strong> - Generates OU summaries with computer counts</li>
+  <li><strong>Select-OUComputers</strong> - Interactive selection of computers from Active Directory OUs</li>
+</ul>
+
+<h4 id="sccm-functions">SCCM Functions</h4>
+
+<ul>
+  <li><strong>Get-AvailablePackages</strong> - Discovers available SCCM packages from sample nodes</li>
+  <li><strong>Get-CCMPackages</strong> - Comprehensive SCCM package discovery and analysis</li>
+  <li><strong>Invoke-CCMPackageDeployment</strong> - Interactive package deployment with pre/post auditing</li>
+  <li><strong>Select-PackageForDeployment</strong> - Interactive package selection interface</li>
+  <li><strong>Get-DeploymentPackage</strong> - Helper to retrieve package information for deployment</li>
+  <li><strong>Get-DeploymentCommand</strong> - Helper to generate deployment commands</li>
+  <li><strong>New-PackageAuditCommand</strong> - Creates audit commands for package verification</li>
+</ul>
+
+<h4 id="reporting--logging">Reporting &amp; Logging</h4>
+
+<ul>
+  <li><strong>Build-Report</strong> - Builds a structured report object for CheckIT</li>
+  <li><strong>Clean-ExcelColumnName</strong> - Ensures Excel column names are valid</li>
+  <li><strong>Export-ToExcel</strong> - Exports data to Excel with formatting and multi-sheet support</li>
+  <li><strong>Get-SafeReportFilename</strong> - Generates safe filenames for reports</li>
+  <li><strong>Get-TaskLogErrors</strong> - Filters task log rows for error conditions</li>
+  <li><strong>Get-WorklogBatchName</strong> - Gets unique batch names for worklog reports</li>
+  <li><strong>Import-CheckITData</strong> - Imports data from Excel to appropriate CheckIT stores</li>
+  <li><strong>Import-FromExcel</strong> - Imports data from Excel with worksheet selection</li>
+  <li><strong>Invoke-Pivotizer</strong> - Creates pivot tables in Excel workbooks</li>
+  <li><strong>Is-TaskLogError</strong> - Tests if a task log entry contains an error</li>
+  <li><strong>New-ErrorRecord</strong> - Creates standardized error records for reporting</li>
+  <li><strong>Set-Report</strong> - Adds data to the global report store with validation</li>
+  <li><strong>Write-TaskLog</strong> - Writes entries to the task log with standardized format</li>
+</ul>
+
+<h4 id="utility--support-functions">Utility &amp; Support Functions</h4>
+
+<ul>
+  <li><strong>ConvertTo-PSCustomObject</strong> - Converts hashtables to PSCustomObjects recursively</li>
+  <li><strong>SanityCheck</strong> - Checks for common configuration issues</li>
+  <li><strong>Update-Progress</strong> - Updates progress indicators for long-running operations</li>
+</ul>
+
+<h2 id="-function-details">🔍 Function Details</h2>
+
+<div class="function-card" id="function-invoke-nodecommand">
+  <h3>🛠️ Invoke-NodeCommand</h3>
+  <div class="tabs">
+    <button class="tab active" data-tab="overview-invoke-nodecommand">Overview</button>
+    <button class="tab" data-tab="examples-invoke-nodecommand">Examples</button>
+    <button class="tab" data-tab="detailed-invoke-nodecommand">Detailed</button>
+  </div>
+
+  <!-- Overview Tab -->
+  <div class="tab-content" id="overview-invoke-nodecommand">
+    <div class="function-description">
+      Safely runs commands or scriptblocks on multiple nodes with comprehensive logging, dry-run support, and robust error handling.
+    </div>
+    <div class="function-section"><strong>Syntax:</strong></div>
+    <pre><code class="language-powershell">
+Invoke-NodeCommand [-Nodes] <Array> [-TimeoutSeconds] <Int32> [-Command] <String> [-ScriptBlock] <ScriptBlock> [-ArgumentList] &lt;Object[]&gt; [-MaxParallel] <Int32> [-PromptUser] <Boolean> [-StatusCallback] <ScriptBlock> [-LogResults] <Boolean> [-ShowOutput] <Boolean> [-DryRun] <SwitchParameter> [-ProgressAction] <ActionPreference>
+    &lt;/code&gt;&lt;/pre&gt;
+    <div class="function-section"><strong>Parameters:</strong></div>
+    <ul class="param-list">
+      <li><span class="param-icon">🔸</span> <code>Nodes</code>: Array of node objects or node names to execute commands on. Supports both string arrays and CheckIT node objects with automatic normalization.</li>
+      <li><span class="param-icon">🔸</span> <code>Command</code>: The PowerShell command string to execute remotely. Cannot be used together with ScriptBlock parameter.</li>
+      <li><span class="param-icon">🔸</span> <code>ScriptBlock</code>: A PowerShell scriptblock to execute remotely. The scriptblock receives the node object as the first parameter. Cannot be used together with Command parameter.</li>
+      <li><span class="param-icon">🔸</span> <code>ArgumentList</code>: Additional arguments to pass to the scriptblock after the node object. Only used when ScriptBlock parameter is specified.</li>
+      <li><span class="param-icon">🔸</span> <code>MaxParallel</code>: Maximum number of parallel jobs to run simultaneously. Default: 8 (balanced for network and CPU resources).</li>
+      <li><span class="param-icon">🔸</span> <code>DryRun</code>: If specified, shows what commands would be executed without actually running them. Useful for validation and testing before actual execution.</li>
+      <li><span class="param-icon">🔸</span> <code>PromptUser</code>: Controls output behavior: - $true (default): CLI mode with detailed console output - $false: GUI mode returning structured objects for data binding</li>
+      <li><span class="param-icon">🔸</span> <code>StatusCallback</code>: Optional scriptblock for real-time progress reporting in GUI scenarios. Receives activity description, current count, and total count parameters.</li>
+      <li><span class="param-icon">🔸</span> <code>LogResults</code>: If $true (default), logs all execution details to TaskLog for audit trail. Set to $false to disable logging for sensitive operations.</li>
+      <li><span class="param-icon">🔸</span> <code>ShowOutput</code>: If $true (default), displays command output in CLI mode. Set to $false to suppress output display while maintaining logging.</li>
+      <li><span class="param-icon">🔸</span> <code>TimeoutSeconds</code>: Command execution timeout in seconds per node. Default: 60 seconds. Increase for long-running commands.</li>
+      <li><span class="param-icon">🔸</span> <code>ProgressAction</code>: </li>
+    </ul>
+    <div class="returns-section"><span class="returns-icon">📤</span> <strong>Returns:</strong> CLI Mode (PromptUser:$true): Displays formatted results and returns result objects GUI Mode (PromptUser:$false): Returns hashtable with Results, Summary, and Errors properties</div>
+  &lt;/div&gt;
+
+  <!-- Examples Tab -->
+  <div class="tab-content" id="examples-invoke-nodecommand" style="display:none;">
+    <div class="code-example" data-language="POWERSHELL">
+      <h4>-------------------------- EXAMPLE 1 --------------------------</h4>
+      <pre><code class="language-powershell">
+# Basic command execution
+Invoke-NodeCommand -Nodes @("PC001", "PC002") -Command 'Get-Service -Name CcmExec | Select-Object Name,Status'
+      </code></pre>
+      <p class="example-desc">
+        No description available
+      </p>
+    </div>
+    <div class="code-example" data-language="POWERSHELL">
+      <h4>-------------------------- EXAMPLE 2 --------------------------</h4>
+      <pre><code class="language-powershell">
+# Command with extended timeout
+Invoke-NodeCommand -Nodes $nodeList -Command 'Get-Process | Where-Object {$_.CPU -gt 100}' -TimeoutSeconds 120
+      </code></pre>
+      <p class="example-desc">
+        No description available
+      </p>
+    </div>
+    <div class="code-example" data-language="POWERSHELL">
+      <h4>-------------------------- EXAMPLE 3 --------------------------</h4>
+      <pre><code class="language-powershell">
+# Dry-run for validation
+Invoke-NodeCommand -Nodes $nodes -Command 'Restart-Service CcmExec' -DryRun
+      </code></pre>
+      <p class="example-desc">
+        No description available
+      </p>
+    </div>
+    <div class="code-example" data-language="POWERSHELL">
+      <h4>-------------------------- EXAMPLE 4 --------------------------</h4>
+      <pre><code class="language-powershell">
+# GUI integration with progress callback
+$callback = { param($activity, $current, $total) Update-ProgressBar $activity $current $total }
+$results = Invoke-NodeCommand -Nodes $nodes -Command $cmd -PromptUser:$false -StatusCallback $callback
+      </code></pre>
+      <p class="example-desc">
+        No description available
+      </p>
+    </div>
+    <div class="code-example" data-language="POWERSHELL">
+      <h4>-------------------------- EXAMPLE 5 --------------------------</h4>
+      <pre><code class="language-powershell">
+# ScriptBlock execution with arguments
+$script = { param($node, $serviceName) Get-Service -Name $serviceName }
+Invoke-NodeCommand -Nodes $nodes -ScriptBlock $script -ArgumentList @("CcmExec")
+      </code></pre>
+      <p class="example-desc">
+        No description available
+      </p>
+    </div>
+  </div>
+
+  <!-- Detailed Tab -->
+  <div class="tab-content" id="detailed-invoke-nodecommand" style="display:none;">
+    <div class="function-section"><strong>Detailed Description:</strong></div>
+    <p>Collection Commander-style remote command execution with detailed logging of commands, results, errors, and execution metrics. Uses Process-Parallel with automatic credential management to run commands with proper authentication and timeout handling. Provides comprehensive visibility into command execution, results, and failures across all nodes with both CLI and GUI support. Key features: - Automatic credential resolution via CheckIT credential management - Comprehensive timeout and error handling to prevent hanging - Dry-run capability for safe command validation - Real-time progress reporting compatible with both CLI and GUI - Detailed execution logging for audit and troubleshooting - Robust job cleanup to prevent resource leaks</p>
+    <div class="function-section"><strong>Parameters (Detailed):</strong></div>
+    <ul>
+      <li><strong>Nodes:</strong> Array of node objects or node names to execute commands on. Supports both string arrays and CheckIT node objects with automatic normalization.</li>
+      <li><strong>Command:</strong> The PowerShell command string to execute remotely. Cannot be used together with ScriptBlock parameter.</li>
+      <li><strong>ScriptBlock:</strong> A PowerShell scriptblock to execute remotely. The scriptblock receives the node object as the first parameter. Cannot be used together with Command parameter.</li>
+      <li><strong>ArgumentList:</strong> Additional arguments to pass to the scriptblock after the node object. Only used when ScriptBlock parameter is specified.</li>
+      <li><strong>MaxParallel:</strong> Maximum number of parallel jobs to run simultaneously. Default: 8 (balanced for network and CPU resources).</li>
+      <li><strong>DryRun:</strong> If specified, shows what commands would be executed without actually running them. Useful for validation and testing before actual execution.</li>
+      <li><strong>PromptUser:</strong> Controls output behavior: - $true (default): CLI mode with detailed console output - $false: GUI mode returning structured objects for data binding</li>
+      <li><strong>StatusCallback:</strong> Optional scriptblock for real-time progress reporting in GUI scenarios. Receives activity description, current count, and total count parameters.</li>
+      <li><strong>LogResults:</strong> If $true (default), logs all execution details to TaskLog for audit trail. Set to $false to disable logging for sensitive operations.</li>
+      <li><strong>ShowOutput:</strong> If $true (default), displays command output in CLI mode. Set to $false to suppress output display while maintaining logging.</li>
+      <li><strong>TimeoutSeconds:</strong> Command execution timeout in seconds per node. Default: 60 seconds. Increase for long-running commands.</li>
+      <li><strong>ProgressAction:</strong> </li>
+    </ul>
+    <div class="function-section"><strong>Notes, Troubleshooting, and Best Practices:</strong></div>
+    <ul>
+      <li>Uses Process-Parallel for enhanced performance and credential management</li>
+      <li>Supports both CLI and GUI modes via PromptUser parameter</li>
+      <li>Includes comprehensive error handling and logging</li>
+    </ul>
+  </div>
+&lt;/div&gt;
+</ActionPreference></SwitchParameter></Boolean></Boolean></ScriptBlock></Boolean></Int32></ScriptBlock></String></Int32></Array></code></pre></div></div>
+
+</div>
+
+<div class="docs-footer">
+  <div class="footer-nav">
+    <a href="/CheckIT-Documentation/index">🏠 Home</a>
+    <a href="/CheckIT-Documentation/docs/README">ℹ️ About</a>
+    <a href="/CheckIT-Documentation/docs/get-started">🚀 Get Started</a>
+    <a href="/CheckIT-Documentation/docs/api-reference">📘 API Reference</a>
+    <a href="/CheckIT-Documentation/docs/quick-reference">⚡ Quick Reference</a><br>
+    <a href="/CheckIT-Documentation/docs/templateInfo">🧩 Template System</a>
+    <a href="/CheckIT-Documentation/docs/troubleshooting">🔍 Troubleshooting</a>
+    <a href="/CheckIT-Documentation/docs/internal-helpers">🔧 Internal Helper Functions</a>
+    <a href="/CheckIT-Documentation/CHANGELOG">📋 Changelog</a>
+  </div>
+  
+  <div class="footer-info">
+    <div class="footer-badge-container">
+      <span class="footer-badge">1.5.0</span>
+      <span class="footer-badge status">Open Beta</span>
+      <span class="footer-badge">75+ Functions</span>
+    </div>
+    <p>CheckIT-Core • <a href="https://nyantoasty.github.io/CheckIT-Documentation/">Repository</a> • Maintained by KJA • MIT License</p>
+    <p class="footer-updated">Last updated: 2025-06-13</p>
+  </div>
+</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

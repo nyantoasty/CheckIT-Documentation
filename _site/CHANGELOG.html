@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🆕 Changelog | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <div class="docs-header">
+  <div class="icon-container">
+    
+  </div>
+  
+  <div class="title-container">
+    <h1>🆕 Changelog</h1>
+    
+  </div>
+  
+  <div class="status-container">
+    <span class="version-pill">Version 1.5.0</span>
+    <span class="status-pill">Open Beta</span>
+  </div>
+</div>
+
+<div class="page-content">
+  <h2 id="2025-06-12---enhanced-documentation-workflow">2025-06-12 - Enhanced Documentation Workflow</h2>
+
+<p><strong>Type:</strong> Enhancement
+<strong>Version:</strong> 1.5.2</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Added comprehensive documentation validation to Fix-Documentation.ps1</li>
+  <li>Created new scripts to test documentation completeness and quality</li>
+  <li>Added README synchronization checks to ensure accurate feature representation</li>
+  <li>Implemented automated changelog entry creation for documentation updates</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Fix-Documentation.ps1
+</pre></td></tr></tbody></table></code> - Enhanced documentation workflow</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Test-DocumentationCompleteness.ps1
+</pre></td></tr></tbody></table></code> - New documentation validation script</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Check-ReadmeSync.ps1
+</pre></td></tr></tbody></table></code> - New README consistency check script</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Add-DocumentationChangelogEntry.ps1
+</pre></td></tr></tbody></table></code> - New changelog entry generator</li>
+</ul>
+
+<p><strong>Impact:</strong> Low - Improved developer experience and documentation consistency with no user-facing changes</p>
+
+<hr />
+
+<h2 id="2025-06-14---improved-documentation-structure">2025-06-14 - Improved Documentation Structure</h2>
+
+<p><strong>Type:</strong> Documentation
+<strong>Version:</strong> 1.5.1</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Moved detailed inline documentation to external help files</li>
+  <li>Created comprehensive help for Generate-DocumentationAnalysisPrompt</li>
+  <li>Created comprehensive help for Add-ChangelogEntry</li>
+  <li>Added script to regenerate XML help files</li>
+  <li>Fixed lint errors in documentation</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/help/Generate-DocumentationAnalysisPrompt.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/help/Add-ChangelogEntry.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>en-US/checkit-core-help.xml
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Update-HelpFiles.ps1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Improved code maintainability and help system consistency while preserving comprehensive documentation</p>
+
+<hr />
+
+<h2 id="2025-06-14---improved-excel-export-with-automatic-column-name-sanitization">2025-06-14 - Improved Excel Export with Automatic Column Name Sanitization</h2>
+
+<p><strong>Type:</strong> Enhancement
+<strong>Version:</strong> 1.5.1</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Enhanced Export-ToExcel with automatic column name cleaning for Excel pivot compatibility</li>
+  <li>Added Clean-ExcelColumnName function for sanitizing Excel column names (removes special characters, trims to 31 chars, deduplicates, replaces spaces)</li>
+  <li>Updated Invoke-Pivotizer documentation with column name requirements</li>
+  <li>Added column name cleaning for sheet names and table names in Excel exports</li>
+  <li>Enhanced documentation for Excel pivot tables and slicers</li>
+  <li>Added best practices for Excel reporting in quick-reference guide</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/help/Export-ToExcel.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/help/Convert-ReportData.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/help/Invoke-Pivotizer.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/quick-reference.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/troubleshooting.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>examples/ExcelReporting.ps1
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>examples/TroubleshootExcelPivots.ps1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Significantly improves Excel export reliability by automatically ensuring column names are compatible with Excel pivot tables and slicers, eliminating common causes of Excel export and pivot table failures.</p>
+
+<hr />
+
+<h2 id="2025-06-12---enhanced-excel-reporting-with-pivot-tables-and-slicers">2025-06-12 - Enhanced Excel Reporting with Pivot Tables and Slicers</h2>
+
+<p><strong>Type:</strong> Enhancement
+<strong>Version:</strong> 1.5.0</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Added pivot table and slicer support to Excel exports</li>
+  <li>Enhanced <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Invoke-Pivotizer
+</pre></td></tr></tbody></table></code> function with interactive filtering</li>
+  <li>Improved multi-sheet Excel exports with clean business data separation</li>
+  <li>Added Excel column name sanitization for better compatibility</li>
+  <li>Enhanced error handling for Excel operations</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/help/Invoke-Pivotizer.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/quick-reference.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Enables more powerful data analysis in Excel exports with interactive filtering and visualization</p>
+
+<hr />
+
+<h2 id="2025-06-09---enhanced-template-workflow-system-and-complete-documentation-update">2025-06-09 - Enhanced Template Workflow System and Complete Documentation Update</h2>
+
+<p><strong>Type:</strong> Enhancement
+<strong>Version:</strong> 1.4.0</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Enhanced template workflow system with multi-template execution and Excel export integration</li>
+  <li>Implemented three-tier confirmation system ($true, $false, “Auto”) with session memory and YA/NA support</li>
+  <li>Added comprehensive template auto-detection for Command vs Test templates with proper inheritance</li>
+  <li>Enhanced Process-Parallel job management eliminating hanging job issues with robust completion detection</li>
+  <li>Updated all documentation to reflect 100% function completion status and production-ready capabilities</li>
+  <li>Added documentation automation with automated changelog maintenance and AI-assisted analysis</li>
+  <li>Enhanced README.md with template workflow examples, current capabilities, and production status</li>
+  <li>Updated API Reference with enhanced template system guidance and function readiness matrix</li>
+  <li>Updated Developer Guide with template-driven development philosophy and enhanced confirmation patterns</li>
+  <li>Updated Troubleshooting Guide with template system troubleshooting and session automation solutions</li>
+  <li>Improved Quick Reference with small tweaks development philosophy and essential patterns</li>
+  <li>Enhanced Implementation Status to reflect production-ready status with comprehensive completion metrics</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/README.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/api-reference.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/developer-guide.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/troubleshooting.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/quick-reference.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/implementation-status.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/assistance-guide.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>CHANGELOG.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Functions Completed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Invoke-TemplateWorkflow
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Invoke-TemplateCommand
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Manage-Templates
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Ensure-Templates
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Add-ChangelogEntry
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Generate-DocumentationAnalysisPrompt
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> CheckIT-Core has reached production-ready status with comprehensive template workflow system, advanced automation capabilities, and complete documentation. All 71 functions are operational with enterprise-grade reliability. Template system enables rapid development and consistent operations across all IT workflows. Enhanced confirmation patterns support seamless GUI integration and batch automation. Documentation automation ensures ongoing maintenance quality and AI-assisted analysis capabilities.</p>
+
+<hr />
+
+<h2 id="2025-06-07---documentation-synchronization-and-version-updates">2025-06-07 - Documentation Synchronization and Version Updates</h2>
+
+<p><strong>Type:</strong> Documentation
+<strong>Version:</strong> 1.3.0</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>
+    <p>Updated version references from 1.2.0 to 1.3.0 across all files</p>
+  </li>
+  <li>Added Add-ChangelogEntry and Generate-DocumentationAnalysisPrompt to function lists</li>
+  <li>Enhanced template system documentation with Codebase template type</li>
+  <li>Added implementation status verification guidance</li>
+  <li>Fixed cross-references to use new docs/ structure</li>
+  <li>Added development workflow examples using new functions</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>README.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/api-reference.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/implementation-status.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/quick-reference.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Functions Completed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Add-ChangelogEntry
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Generate-DocumentationAnalysisPrompt
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Documentation now accurately reflects v1.3.0 capabilities and new automation features. Users have clear guidance on function availability and development workflows.</p>
+
+<hr />
+
+<h2 id="2025-06-07---major-documentation-restructure-and-module-manifest-creation">2025-06-07 - Major Documentation Restructure and Module Manifest Creation</h2>
+
+<p><strong>Type:</strong> Enhancement
+<strong>Version:</strong> 1.3.0</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>
+    <p>Created comprehensive docs/ directory structure with specialized guides</p>
+  </li>
+  <li>Archived original guidelines to maintain development history</li>
+  <li>Added professional README.md with feature overview and usage examples</li>
+  <li>Created complete checkit-core.psd1 module manifest with all 67 functions exported</li>
+  <li>Implemented Add-ChangelogEntry function for automated documentation maintenance</li>
+  <li>Enhanced AI-assisted development workflow with comprehensive collaboration guide</li>
+  <li>Updated module version to 1.3.0 reflecting near-completion status</li>
+  <li>Added session management documentation and troubleshooting guides</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>README.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psd1
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/assistance-guide.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/api-reference.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/developer-guide.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/implementation-status.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/quick-reference.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/troubleshooting.md
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>archive/Checkit-Guidelines.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Functions Added:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Add-ChangelogEntry
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Generate-DocumentationAnalysisPrompt
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> CheckIT-Core now has professional-grade documentation structure, complete module manifest, and automated documentation maintenance. This establishes the foundation for final release preparation and provides comprehensive guidance for both human developers and AI assistants.</p>
+
+<hr />
+
+<h2 id="2025-06-06---process-parallel-enhanced-job-management-and-ccm-evaluation-fix">2025-06-06 - Process-Parallel Enhanced Job Management and CCM Evaluation Fix</h2>
+
+<p><strong>Type:</strong> Enhancement</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Enhanced Process-Parallel while loop with robust job completion detection using multiple methods</li>
+  <li>Added comprehensive timeout handling (10-minute job timeout, 15-minute maximum wait)</li>
+  <li>Implemented safety checks to prevent infinite loops in job processing</li>
+  <li>Fixed CCM package evaluation commands with CIM/WMI fallback pattern</li>
+  <li>Enhanced error detection to properly distinguish CCM data from actual errors</li>
+  <li>Added guaranteed job cleanup in finally blocks to prevent resource leaks</li>
+  <li>Improved progress reporting with safe callback error handling</li>
+  <li>Standardized result processing and normalization across all execution paths</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Process-Parallel now reliably processes all jobs to completion, eliminating the 8/47 node hanging issue. CCM package evaluation now uses proven CIM-first, WMI-fallback pattern for maximum compatibility. Enhanced error handling prevents legitimate CCM data from being classified as errors, improving Get-CCMPackages accuracy.</p>
+
+<hr />
+
+<h2 id="2025-06-06---process-parallel-and-core-functions-enhancement">2025-06-06 - Process-Parallel and Core Functions Enhancement</h2>
+
+<p><strong>Type:</strong> Enhancement</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Fixed Process-Parallel final collection phase to properly process remaining jobs</li>
+  <li>Enhanced Process-Parallel job completion detection with robust while loop</li>
+  <li>Improved credential resolution and error handling in parallel execution</li>
+  <li>Verified Get-Software function working correctly with Process-Parallel integration</li>
+  <li>Enhanced Invoke-NodeCommand with comprehensive timeout and error handling</li>
+  <li>Added detailed debug output and progress reporting in Process-Parallel</li>
+  <li>Standardized argument passing and credential management across parallel functions</li>
+  <li>Initiated Get-CCMPackages debugging and parameter alignment fixes</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Process-Parallel now reliably processes all jobs to completion, eliminating hanging jobs and incomplete results. Get-Software confirmed working with parallel credential support. Invoke-NodeCommand enhanced for production reliability. Get-CCMPackages debugging initiated to resolve parameter mismatch and result classification issues.</p>
+
+<hr />
+
+<h2 id="2025-06-06---template-system-enhancement-for-function-development">2025-06-06 - Template System Enhancement for Function Development</h2>
+
+<p><strong>Type:</strong> Enhancement</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Added Codebase template type to Manage-Templates function</li>
+  <li>Created complete CheckIT function development template</li>
+  <li>Added credential resolution, reporting, and error handling patterns</li>
+  <li>Added search functionality for Codebase templates</li>
+  <li>Created comprehensive function development checklist in Guidelines</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>CheckIT-Core\checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>CheckIT-Core\Checkit-Guidelines.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Provides standardized templates and patterns for rapid, consistent function development. Reduces development errors and ensures all new functions follow established CheckIT patterns.</p>
+
+<hr />
+
+<h2 id="2025-06-05---get-ccmpackages-function-and-reporting-system-completion">2025-06-05 - Get-CCMPackages Function and Reporting System Completion</h2>
+
+<p><strong>Type:</strong> Feature</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Completed Get-CCMPackages function with full interactive package management capabilities</li>
+  <li>Fixed reporting pattern separation between Write-TaskLog and Set-Report functions</li>
+  <li>Implemented CCM package discovery using both CIM and WMI fallback methods</li>
+  <li>Added clipboard integration for install/uninstall/evaluate commands</li>
+  <li>Enhanced interactive CLI mode with numbered package selection and command generation</li>
+  <li>Established proper reporting patterns following Get-Software model for task logging vs business reports</li>
+  <li>Added remote execution capabilities for CCM package deployment across multiple nodes</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>CheckIT-Core\checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Users can now discover available CCM packages, generate deployment commands for clipboard use, and execute package operations across multiple target nodes. Proper separation of audit logging and business reporting ensures clean Excel exports and GUI compatibility.</p>
+
+<hr />
+
+<h2 id="2025-06-05---open-remotesystemtools-menu-flow-fix">2025-06-05 - Open-RemoteSystemTools Menu Flow Fix</h2>
+
+<p><strong>Type:</strong> Fix</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Removed intrusive remote RemoteRegistry service manipulation that was causing menu exit failures</li>
+  <li>Simplified Registry Editor approach to open locally with user instructions instead of forcing remote service start</li>
+  <li>Eliminated Invoke-Command calls that could fail and prevent return to menu system</li>
+  <li>Made Registry Editor option consistent with other MMC tools in terms of flow and error handling</li>
+  <li>Registry Editor now opens with clear instructions for manual connection rather than automated service starting</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>CheckIT-Core\checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Users can now successfully navigate the Remote System Tools menu without getting stuck after selecting Registry Editor. The function is less intrusive on target computers and more reliable for repeated use. Registry Editor functionality is preserved while eliminating the problematic automated service manipulation.</p>
+
+<hr />
+
+<h2 id="2025-06-04---add-changelogentry-function-fix">2025-06-04 - Add-ChangelogEntry Function Fix</h2>
+
+<p><strong>Type:</strong> Fix</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Fixed string concatenation logic in CHANGELOG.md update section</li>
+  <li>Corrected newline handling to properly prepend new entries to existing changelog content</li>
+  <li>Enhanced regex pattern to handle variations in guidelines recent changes footer text</li>
+  <li>Improved error handling and content replacement logic for both CHANGELOG.md and Guidelines updates</li>
+  <li>Fixed issue where new changelog entries were not being properly added to the file</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Add-ChangelogEntry function now properly updates both CHANGELOG.md and Guidelines recent changes section. Changelog maintenance is now fully functional for tracking development progress.</p>
+
+<hr />
+
+<h2 id="2025-06-04---excel-functions-and-software-inventory-completion">2025-06-04 - Excel Functions and Software Inventory Completion</h2>
+
+<p><strong>Type:</strong> Feature</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Completed Export-ToExcel function with multi-sheet export, Excel COM integration, and table formatting</li>
+  <li>Fixed syntax error in Invoke-Pivotizer function (missing space in conditional)</li>
+  <li>Added missing Import-FromExcel function for complete Excel import/export capability</li>
+  <li>Verified Get-Software function is production-ready with dual-mode inventory and robust error handling</li>
+  <li>Updated Get-AllColumns utility function with proper implementation</li>
+  <li>Confirmed all Excel and Main Tools regions are now 100% complete</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Checkit-Guidelines.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> All critical CheckIT infrastructure is now complete. Excel export/import capabilities are fully functional. Software inventory system is production-ready. Phase 1 development is complete - ready for Phase 2 GUI integration.</p>
+
+<hr />
+
+<h2 id="2025-06-04---implementation-status-review--unified-development-plan">2025-06-04 - Implementation Status Review &amp; Unified Development Plan</h2>
+
+<p><strong>Type:</strong> Enhancement</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Comprehensive review of both Core and GUI implementation status</li>
+  <li>Established unified development priorities with Core functions taking precedence</li>
+  <li>Identified 4 critical functions blocking GUI integration (Invoke-NodeCommand, Write-TaskLog, Set-Report, Export-ToExcel)</li>
+  <li>Created clear dependency mapping between Core and GUI components</li>
+  <li>Updated implementation strategy to prioritize Core completion before GUI integration</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Checkit-Guidelines.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Clear development path established with Core functions taking priority to unblock GUI integration. Provides structured approach for completing remaining 54% of core functionality.</p>
+
+<hr />
+
+<h2 id="2025-06-04---node-object-passman-status-preservation-fix">2025-06-04 - Node Object Passman Status Preservation Fix</h2>
+
+<p><strong>Type:</strong> Fix</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Fixed critical issue where Passman status was being reset to false during node updates</li>
+  <li>Enhanced New-NodeObject to preserve existing Passman values during updates</li>
+  <li>Implemented conditional logic to only query CredStore for new nodes or missing Passman properties</li>
+  <li>Corrected variable reference from $InputObject to $inputObj to match function parameter</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Node credential status now remains consistent across all CheckIT operations, resolving the primary issue where Test-NodeConnection was inadvertently clearing Passman flags.</p>
+
+<hr />
+
+<h2 id="2025-06-04---credential-lookup-pattern-standardization">2025-06-04 - Credential Lookup Pattern Standardization</h2>
+
+<p><strong>Type:</strong> Enhancement</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Standardized credential lookup pattern between Get-ValidCred and Get-NodeCredAndFQDN</li>
+  <li>Added support for Boolean return values from Get-ValidCred</li>
+  <li>Enhanced robust type checking for PSCustomObject, Boolean, and Hashtable return types</li>
+  <li>Implemented case-insensitive credential key lookups across all functions</li>
+  <li>Established consistent FQDN construction pattern</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Credential lookup is now consistent and robust across all credential management functions, eliminating lookup failures and type mismatch errors.</p>
+
+<hr />
+
+<h2 id="2025-01-04---passman-credential-retrieval-region-completion-analysis">2025-01-04 - Passman Credential Retrieval Region Completion Analysis</h2>
+
+<p><strong>Type:</strong> Documentation</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Corrected function status for Passman region after comprehensive analysis</li>
+  <li>Updated Passman from placeholder to complete (full web portal integration)</li>
+  <li>Updated Get-NodeCredAndFQDN from placeholder to complete (credential resolution)</li>
+  <li>Verified all 7 functions in Passman region are production-ready</li>
+  <li>Removed Passman region from critical implementation targets</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Checkit-Guidelines.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> All credential management functionality confirmed operational, unblocking Main Tools and Diagnostics regions that depend on credential support.</p>
+
+<hr />
+
+<h2 id="2025-06-04---nodelist-syntax-errors-fixed--implementation-status-update">2025-06-04 - NodeList Syntax Errors Fixed &amp; Implementation Status Update</h2>
+
+<p><strong>Type:</strong> Fix</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Fixed critical syntax errors in NodeList function (unreachable code after return statements)</li>
+  <li>Corrected orphaned code placement at end of function</li>
+  <li>Fixed misplaced Passman update logic</li>
+  <li>Standardized Passman status updates across ALL NodeList operations (Add, Remove, Update, Upload, SyncWithCredStore)</li>
+  <li>Fixed all New-ErrorRecord calls to use correct -tmpError parameter</li>
+  <li>Added proper PromptUser checks for user-facing error messages</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Node Management region now 100% functional, unblocking Main Tools, Diagnostics, and other dependent regions.</p>
+
+<hr />
+
+<h2 id="2025-06-04---node-management-region-analysis--function-status-corrections">2025-06-04 - Node Management Region Analysis &amp; Function Status Corrections</h2>
+
+<p><strong>Type:</strong> Documentation</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Corrected function status based on comprehensive code analysis</li>
+  <li>Updated New-ErrorRecord from placeholder to complete (standardized error object creation)</li>
+  <li>Updated Write-Color from placeholder to complete (multi-color console output)</li>
+  <li>Updated AD from placeholder to complete (full Active Directory integration)</li>
+  <li>Updated New-NodeObject from placeholder to complete (standardized node creation)</li>
+  <li>Identified Resolve-NodeObjects as complete but requiring refactoring for circular dependencies</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Checkit-Guidelines.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Node Management region status corrected from 25% to 80% complete, with only NodeList syntax issues remaining.</p>
+
+<hr />
+
+<h2 id="2025-06-02---syntax-fixes-completed">2025-06-02 - Syntax Fixes Completed</h2>
+
+<p><strong>Type:</strong> Fix</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Replaced all Get-Date -Format usage with (Get-Date).ToString() method calls</li>
+  <li>Updated all string interpolation to use $($variable) syntax in double-quoted strings</li>
+  <li>Standardized all null comparisons to place $null on the left side</li>
+  <li>Applied PowerShell best practices consistently throughout codebase</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Core module now follows all PowerShell best practices for syntax consistency and reliability.</p>
+
+<hr />
+
+<h2 id="2025-06-02---utility-functions-status-correction">2025-06-02 - Utility Functions Status Correction</h2>
+
+<p><strong>Type:</strong> Documentation</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Corrected Get-CheckITColumns from placeholder to complete (comprehensive switch statement)</li>
+  <li>Corrected Write-Color from placeholder to complete (full multi-color implementation)</li>
+  <li>Corrected Set-UserPreference/Get-UserPreference from placeholder to complete</li>
+  <li>Corrected Show-PreferenceHelp from placeholder to complete (regex-based help extraction)</li>
+  <li>Corrected Manage-Templates from placeholder to complete (extensive CRUD operations)</li>
+  <li>Corrected ConvertTo-PSCustomObject from placeholder to complete (recursive conversion)</li>
+  <li>Updated utility functions region from 36% to 100% complete</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Checkit-Guidelines.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Core infrastructure functions confirmed available, unblocking dependent regions and establishing solid foundation for development.</p>
+
+<hr />
+
+<h2 id="2025-06-02---module-load-order-fix-verification">2025-06-02 - Module Load Order Fix Verification</h2>
+
+<p><strong>Type:</strong> Fix</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Verified Ensure-CheckITGlobals is correctly placed at end of module after Export-ModuleMember</li>
+  <li>Confirmed module initialization occurs after all function definitions</li>
+  <li>Validated proper module load sequence to prevent undefined function errors</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>checkit-core.psm1
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Module initialization sequence now reliable, preventing startup errors and ensuring all functions are available when globals are initialized.</p>
+
+<hr />
+
+<h2 id="2025-06-02---guidelines-accuracy-update">2025-06-02 - Guidelines Accuracy Update</h2>
+
+<p><strong>Type:</strong> Documentation</p>
+
+<p><strong>Key Changes:</strong></p>
+
+<ul>
+  <li>Updated function status listings to reflect actual implementation state rather than assumptions</li>
+  <li>Corrected dependency analysis to show realistic implementation requirements</li>
+  <li>Emphasized that most functions have placeholder implementations requiring completion</li>
+  <li>Updated priority implementation order based on actual code analysis</li>
+  <li>Established accurate baseline for tracking completion progress</li>
+</ul>
+
+<p><strong>Files Changed:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Checkit-Guidelines.md
+</pre></td></tr></tbody></table></code></li>
+</ul>
+
+<p><strong>Impact:</strong> Guidelines now provide accurate roadmap for development with realistic assessment of current state and clear priorities for completion.</p>
+
+<hr />
+
+</div>
+
+<div class="docs-footer">
+  <div class="footer-nav">
+    <a href="/CheckIT-Documentation/index">🏠 Home</a>
+    <a href="/CheckIT-Documentation/docs/README">ℹ️ About</a>
+    <a href="/CheckIT-Documentation/docs/get-started">🚀 Get Started</a>
+    <a href="/CheckIT-Documentation/docs/api-reference">📘 API Reference</a>
+    <a href="/CheckIT-Documentation/docs/quick-reference">⚡ Quick Reference</a><br>
+    <a href="/CheckIT-Documentation/docs/templateInfo">🧩 Template System</a>
+    <a href="/CheckIT-Documentation/docs/troubleshooting">🔍 Troubleshooting</a>
+    <a href="/CheckIT-Documentation/docs/internal-helpers">🔧 Internal Helper Functions</a>
+    <a href="/CheckIT-Documentation/CHANGELOG">📋 Changelog</a>
+  </div>
+  
+  <div class="footer-info">
+    <div class="footer-badge-container">
+      <span class="footer-badge">1.5.0</span>
+      <span class="footer-badge status">Open Beta</span>
+      <span class="footer-badge">75+ Functions</span>
+    </div>
+    <p>CheckIT-Core • <a href="https://nyantoasty.github.io/CheckIT-Documentation/">Repository</a> • Maintained by KJA • MIT License</p>
+    <p class="footer-updated">Last updated: 2025-06-13</p>
+  </div>
+</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

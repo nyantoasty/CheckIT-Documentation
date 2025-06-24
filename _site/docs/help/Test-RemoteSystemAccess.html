@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test-RemoteSystemAccess | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Test-RemoteSystemAccess</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="test-remotesystemaccess">Test-RemoteSystemAccess</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="test-remotesystemaccess-1">Test-RemoteSystemAccess</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Tests if the stored Administrator credentials can access remote system management tools.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Test-RemoteSystemAccess [-Node] <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Verifies that the Administrator credentials stored in CredStore have the necessary permissions for remote administration.
+Uses non-intrusive tests that don’t modify or start services on the remote computer.</p>
+
+<p>Tests performed include:</p>
+
+<ul>
+  <li><strong>WMI Access</strong>: Verifies WMI connectivity and permissions</li>
+  <li><strong>PowerShell Remoting</strong>: Tests PSRemoting capabilities</li>
+  <li><strong>Service Enumeration</strong>: Checks ability to query system services</li>
+  <li><strong>Registry Access</strong>: Validates registry read permissions</li>
+  <li><strong>File System Access</strong>: Tests administrative file system access</li>
+</ul>
+
+<p>Returns detailed results including specific failure points for troubleshooting credential or network issues.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-access-test">EXAMPLE 1: Basic Access Test</h3>
+
+<p>Test-RemoteSystemAccess -Node “PC123”</p>
+
+<p>Tests if stored Administrator credentials can access basic management tools on PC123.</p>
+
+<h3 id="example-2-multiple-node-testing">EXAMPLE 2: Multiple Node Testing</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$nodes = Get-CheckITStore -Store NodeList</td>
+      <td>Where-Object Group -eq “Servers”</td>
+    </tr>
+    <tr>
+      <td>$nodes</td>
+      <td>ForEach-Object { Test-RemoteSystemAccess -Node $_.Name }</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Tests credential access across multiple nodes from the node list.</p>
+
+<h3 id="example-3-gui-integration">EXAMPLE 3: GUI Integration</h3>
+
+<p>$result = Test-RemoteSystemAccess -Node $selectedNode -ProgressAction SilentlyContinue
+if ($result.Status -eq “Success”) {
+    Write-Host “Credentials validated successfully” -ForegroundColor Green
+} else {
+    Write-Host “Credential validation failed: $($result.Error)” -ForegroundColor Red
+}</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-node">-Node</h3>
+
+<p>The target node to test access against.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h2 id="notes">NOTES</h2>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

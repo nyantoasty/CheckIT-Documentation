@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage-Store | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Manage-Store</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="manage-store">Manage-Store</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="manage-store-1">Manage-Store</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>View, preview, drill down, and clear CheckIT virtual stores including NodeList, Reports, TaskLog, ErrorLog, Preferences, Templates, and CredStore.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Manage-Store [-Store] <String> [[-Action] <String>] [[-PageSize] <Int32>] [[-PromptUser] <Boolean>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></Boolean></Int32></String></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Provides comprehensive management of all CheckIT data stores with interactive preview, drilling capabilities, and clearing functions.
+Honors user preferences for default page size and prompt behavior if set via Set-UserPreference.
+Dynamically displays all columns/properties for each store with proper normalization.</p>
+
+<p>Special Store Behaviors:</p>
+
+<ul>
+  <li>Preferences: Shows both $global:CheckIT_Preferences and $global:Reports[‘Preferences’]</li>
+  <li>Templates: Displays Command, Test, and Codebase templates with descriptions</li>
+  <li>CredStore: Shows node list with credential status and expiration info</li>
+  <li>Reports/TaskLog/ErrorLog: Supports interactive drilldown to view detailed data</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<p>Manage-Store -Store NodeList -Action Preview</p>
+<h1 id="shows-paginated-view-of-all-nodes-with-interactive-navigation-nnext-pprev-ddrilldown-qquit">Shows paginated view of all nodes with interactive navigation (N=Next, P=Prev, D=Drilldown, Q=Quit)</h1>
+
+<h3 id="example-2">EXAMPLE 2</h3>
+
+<p>Manage-Store -Store Reports -Action Clear</p>
+<h1 id="clears-all-business-reports-from-the-reports-store">Clears all business reports from the Reports store</h1>
+
+<h3 id="example-3">EXAMPLE 3</h3>
+
+<p>Manage-Store -Store Preferences -Action Preview</p>
+<h1 id="shows-both-global-preferences-and-reportspreferences-side-by-side">Shows both global preferences and Reports[‘Preferences’] side by side</h1>
+
+<h3 id="example-4">EXAMPLE 4</h3>
+
+<p>Manage-Store -Store Templates -Action Summary</p>
+<h1 id="shows-count-of-command-test-and-codebase-templates">Shows count of Command, Test, and Codebase templates</h1>
+
+<h3 id="example-5">EXAMPLE 5</h3>
+
+<p>Manage-Store -Store TaskLog -Action Preview -PageSize 10</p>
+<h1 id="shows-tasklog-with-10-items-per-page-instead-of-default-20">Shows TaskLog with 10 items per page instead of default 20</h1>
+
+<h3 id="example-6">EXAMPLE 6</h3>
+
+<p>$credData = Manage-Store -Store CredStore -Action Preview -PromptUser:$false</p>
+<h1 id="returns-credential-store-data-as-objects-for-gui-processing">Returns credential store data as objects for GUI processing</h1>
+
+<h3 id="example-7">EXAMPLE 7</h3>
+
+<p>Manage-Store -Store ErrorLog -Action Preview</p>
+<h1 id="interactive-view-with-drilldown-capability---use-d-to-view-detailed-error-information">Interactive view with drilldown capability - use ‘D’ to view detailed error information</h1>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-store">-Store</h3>
+
+<p>Which store to manage.
+Valid values:</p>
+
+<ul>
+  <li>NodeList: Computer inventory with status tracking</li>
+  <li>Reports: Business reporting with versioning and export capabilities</li>
+  <li>TaskLog: Comprehensive audit trail for all operations</li>
+  <li>ErrorLog: Centralized error tracking and analysis</li>
+  <li>Preferences: User configuration and customization settings</li>
+  <li>Templates: Reusable command, test, and codebase templates</li>
+  <li>CredStore: Secure credential management with expiration handling</li>
+</ul>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-action">-Action</h3>
+
+<p>What to do with the store:</p>
+
+<ul>
+  <li>Summary: Show count and basic information (default)</li>
+  <li>Preview: Interactive paginated view with navigation options</li>
+  <li>Clear: Reset store to empty/default state</li>
+</ul>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: Summary
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-pagesize">-PageSize</h3>
+
+<p>How many items to show per preview page.
+Defaults to 20, or user preference if set via Set-UserPreference.</p>
+
+<p>```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: $(Get-UserPreference -Function ‘Manage-Store’ -Key ‘PageSize’ -Default 20)
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>Controls interactive behavior:</p>
+
+<ul>
+  <li>$true (default): Enables CLI prompts, colored output, and interactive navigation</li>
+  <li>$false: Returns structured objects for GUI/automation use
+Can be overridden by user preference if set.</li>
+</ul>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: $(Get-UserPreference -Function ‘Manage-Store’ -Key ‘PromptUser’ -Default $true)
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="depends-on-action-and-promptuser-parameters">Depends on Action and PromptUser parameters</h3>
+
+<h3 id="summary-action">Summary Action</h3>
+
+<h3 id="--promptusertrue-displays-colored-summary-to-console">- PromptUser=$true: Displays colored summary to console</h3>
+
+<h3 id="--promptuserfalse-returns-hashtable-with-store-and-count-properties">- PromptUser=$false: Returns hashtable with Store and Count properties</h3>
+
+<h3 id="preview-action">Preview Action</h3>
+
+<h3 id="--promptusertrue-interactive-paginated-display-with-navigation">- PromptUser=$true: Interactive paginated display with navigation</h3>
+
+<h3 id="--promptuserfalse-returns-normalized-data-objects">- PromptUser=$false: Returns normalized data objects</h3>
+
+<h3 id="clear-action">Clear Action</h3>
+
+<h3 id="--promptusertrue-shows-colored-confirmation-message">- PromptUser=$true: Shows colored confirmation message</h3>
+
+<h3 id="--promptuserfalse-no-output-silent-operation">- PromptUser=$false: No output (silent operation)</h3>
+
+<h2 id="notes">NOTES</h2>
+
+<p>Interactive Navigation (Preview Action with PromptUser=$true):</p>
+
+<ul>
+  <li>N: Next page</li>
+  <li>P: Previous page</li>
+  <li>D: Drilldown (detailed view for Reports/TaskLog/ErrorLog/CredStore)</li>
+  <li>Q: Quit preview mode</li>
+</ul>
+
+<p>User Preferences:
+Default PageSize and PromptUser behavior can be customized:
+Set-UserPreference -Function ‘Manage-Store’ -Key ‘PageSize’ -Value 10
+Set-UserPreference -Function ‘Manage-Store’ -Key ‘PromptUser’ -Value $false</p>
+
+<p>Security Notes:</p>
+
+<ul>
+  <li>CredStore credentials are never persisted to disk (session-only)</li>
+  <li>Clear action for CredStore only clears in-memory credentials</li>
+  <li>Credential expiration is displayed when available</li>
+</ul>
+
+<p>Data Normalization:</p>
+
+<ul>
+  <li>All null values are replaced with empty strings for consistent display</li>
+  <li>Arrays and complex objects are properly formatted for table output</li>
+  <li>Column sets are dynamically determined or use predefined schemas</li>
+</ul>
+
+<p>Store Dependencies:</p>
+
+<ul>
+  <li>All stores are automatically initialized via Ensure-CheckITGlobals</li>
+  <li>Uses Get-CheckITColumns for consistent column definitions</li>
+  <li>Integrates with Save-CheckITDataCore/Load-CheckITDataCore for persistence</li>
+</ul>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

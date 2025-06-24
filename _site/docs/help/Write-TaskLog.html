@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write-TaskLog | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Write-TaskLog</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="write-tasklog">Write-TaskLog</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="write-tasklog-1">Write-TaskLog</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Logs task results as a report entry in the global Reports[‘TaskLog’] store.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Write-TaskLog [[-InputObject] &lt;Object[]&gt;] [[-Function] <String>] [[-StatusProperty] <String>]
+ [[-Author] <String>] [[-Timestamp] <DateTime>] [-Append] [[-TaskParams] <Hashtable>] [[-Caller] <String>]
+ [[-Groups] &lt;String[]&gt;] [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></String></Hashtable></DateTime></String></String></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Converts input objects to standardized log rows and adds them to a Task-Log report in $global:Reports[‘TaskLog’].
+Supports session-based appending or unique-per-call logs.
+Does NOT call Set-Report (task logs are kept separate).
+Adds robust error and metadata fields for filtering and analysis in both CLI and GUI.
+Handles both CLI and GUI/automation scenarios.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>$results</td>
+      <td>Write-TaskLog -Function “Get-Software”</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-inputobject">-InputObject</h3>
+
+<p>The objects to log (accepts pipeline input).</p>
+
+<p>```yaml
+Type: Object[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False</p>
+
+<h3 id="-function">-Function</h3>
+
+<p>The function or context for which the log is being written.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-statusproperty">-StatusProperty</h3>
+
+<p>The property to use for status (default: “TaskStatus”, fallback to “Status”).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: TaskStatus
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-author">-Author</h3>
+
+<p>The author of the log entry (default: current user).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: $env:USERNAME
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-timestamp">-Timestamp</h3>
+
+<p>The timestamp for the log entry (default: now).</p>
+
+<p>```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: (Get-Date)
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-append">-Append</h3>
+
+<p>If set, appends to the current session’s TaskLog report.</p>
+
+<p>```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-taskparams">-TaskParams</h3>
+
+<p>Hashtable of additional parameters to log.
+If TaskParams[‘Report’] is $true, will also call Set-Report for the main function.</p>
+
+<p>```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 6
+Default value: @{}
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-caller">-Caller</h3>
+
+<p>The calling function (default: current function).</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 7
+Default value: $MyInvocation.MyCommand.Name
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-groups">-Groups</h3>
+
+<p>Optional.
+Array of group names for the report.</p>
+
+<p>```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 8
+Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-progressaction">-ProgressAction</h3>
+
+<p>```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga</p>
+
+<p>Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="commonparameters">CommonParameters</h3>
+
+<p>This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see <a href="http://go.microsoft.com/fwlink/?LinkID=113216">about_CommonParameters</a>.</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h2 id="notes">NOTES</h2>
+
+<ul>
+  <li>Always uses $global:Reports[‘TaskLog’] for task logs.</li>
+  <li>If TaskParams[‘Report’] is set, also calls Set-Report for the main function.</li>
+  <li>Robust for both CLI and GUI/automation.</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

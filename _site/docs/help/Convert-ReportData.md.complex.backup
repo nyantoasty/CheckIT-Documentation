@@ -1,0 +1,207 @@
+# Convert-ReportData
+
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+
+# Convert-ReportData
+
+## SYNOPSIS
+
+Post-processes raw template data for clean reporting while preserving original audit data.
+
+## SYNTAX
+
+
+
+
+
+Convert-ReportData [-RawData] <Array> [[-SourceFunction] <String>] [[-ConversionRules] <Hashtable>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+
+
+
+
+
+## DESCRIPTION
+
+Applies intelligent data transformations to make reports more readable and Excel-friendly:
+
+- Converts WMI datetime strings (20250607123045.000000+***) to readable formats (06/07/2025 12:30:45)
+- Standardizes null/empty values to consistent display text ("N/A", "Never Used", "Unknown")
+- Normalizes data types across different sources (WMI, CIM, Registry)
+- Cleans up complex nested objects for Excel export compatibility
+- Converts numeric file/memory sizes to human-readable formats
+- Applies field-specific formatting rules based on property name patterns
+
+This function is automatically called by Set-Report when the -CleanData parameter is specified, ensuring that business reports contain clean, user-friendly data while preserving the original raw data in the audit trail.
+
+## EXAMPLES
+
+### Example 1: Basic report data cleaning
+
+
+
+
+
+$rawData = Get-InstalledSoftware -Nodes $computers
+$cleanData = Convert-ReportData -RawData $rawData -SourceFunction "Get-InstalledSoftware"
+$cleanData | Export-ToExcel -Title "Software Inventory"
+
+
+
+
+
+Cleans and formats software inventory data for better Excel export compatibility.
+
+### Example 2: Using with Set-Report's CleanData parameter
+
+
+
+
+
+$rawData = Get-OSInfo -Nodes $servers
+Set-Report -ReportName "OS Details" -Function "Get-OSInfo" -Data $rawData -CleanData
+
+
+
+
+
+The -CleanData parameter automatically invokes Convert-ReportData to clean the OS information before storing it.
+
+### Example 3: Custom conversion rules
+
+
+
+
+
+$rules = @{
+    "Size" = { param($val) if ($val -is [int]) { "$([math]::Round($val/1GB, 2)) GB" } else { $val } };
+    "Date" = { param($val) if ($val) { Get-Date $val -Format "yyyy-MM-dd" } else { "Never" } }
+}
+
+$data = Get-DataFromSource
+$cleanData = Convert-ReportData -RawData $data -ConversionRules $rules
+
+
+
+
+
+Applies custom formatting rules for Size and Date fields in the data.
+
+## PARAMETERS
+
+### -RawData
+
+Array of raw data objects from template execution or CheckIT functions.
+Each object will be processed and cleaned for reporting.
+
+```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -SourceFunction
+
+Name of the source function that generated the raw data.
+Used for context-aware processing and logging. Default: "Unknown"
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: "Unknown"
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -ConversionRules
+
+Optional hashtable of custom conversion rules to apply.
+Keys are property names, values are scriptblocks to transform the data.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: {}
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### -ProgressAction
+
+Controls the progress output as per PowerShell's common parameters.
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+### None
+
+This function does not accept pipeline input.
+
+## OUTPUTS
+
+### System.Object[]
+
+Returns an array of cleaned and processed objects with the same structure as the input.
+
+## NOTES
+
+- The original data structure is preserved, only the display values are changed
+- Empty values are standardized to "N/A" for consistency
+- Large numeric values are converted to human-readable formats
+- WMI timestamps are converted to DateTime objects
+- Excel column names are automatically cleaned via Export-ToExcel
+- Improvements to this function directly enhance Excel export quality
+
+## RELATED LINKS
+
+[Set-Report](Set-Report.md)
+[Export-ToExcel](Export-ToExcel.md)
+[Invoke-Pivotizer](Invoke-Pivotizer.md)
+
+
+

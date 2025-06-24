@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Save-CheckITDataCore | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Save-CheckITDataCore</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="save-checkitdatacore">Save-CheckITDataCore</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="save-checkitdatacore-1">Save-CheckITDataCore</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Saves CheckIT data (Reports, NodeList, Preferences, Templates) to disk as JSON with security controls.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Save-CheckITDataCore [[-Path] <String>] [[-PromptUser] <Boolean>]</Boolean></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Serializes the current session’s Reports, NodeList, Preferences, and Templates to a JSON file for persistence across sessions.
+Ensures all global stores are properly structured before saving and automatically updates preferences.</p>
+
+<p>✅ SECURITY POLICY: Credentials are NEVER saved to disk for security reasons - they remain session-only.</p>
+
+<p>Data Structure Saved:</p>
+
+<ul>
+  <li>Reports: Business reports with versioning and export capabilities</li>
+  <li>NodeList: Computer inventory with status tracking (saved in Reports[‘NodeList’])</li>
+  <li>TaskLog: Comprehensive audit trail for all operations</li>
+  <li>ErrorLog: Centralized error tracking and analysis</li>
+  <li>Preferences: User configuration and customization settings</li>
+  <li>Templates: Reusable command, test, and codebase templates (Command, Test, Codebase)</li>
+</ul>
+
+<p>The function automatically ensures proper hashtable structure and handles legacy upgrades by adding missing keys.
+All data is stored with UTF-8 encoding and includes metadata (version, save timestamp, security note).</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<p>Save-CheckITDataCore</p>
+<h1 id="saves-to-default-checkit_reportsjson-with-console-output">Saves to default “CheckIT_Reports.json” with console output</h1>
+
+<h3 id="example-2">EXAMPLE 2</h3>
+
+<p>Save-CheckITDataCore -Path “C:\Transcripts\CheckIT_Reports.json”</p>
+<h1 id="saves-to-specific-path-with-full-console-feedback">Saves to specific path with full console feedback</h1>
+
+<h3 id="example-3">EXAMPLE 3</h3>
+
+<p>Save-CheckITDataCore -Path “backup_$(Get-Date -Format ‘yyyyMMdd_HHmmss’).json” -PromptUser:$false</p>
+<h1 id="silent-save-with-timestamped-filename-for-automation">Silent save with timestamped filename for automation</h1>
+
+<h3 id="example-4">EXAMPLE 4</h3>
+
+<h1 id="error-handling-pattern-for-automation">Error handling pattern for automation</h1>
+<p>try {
+    Save-CheckITDataCore -Path $backupPath -PromptUser:$false
+    Write-Log “CheckIT data saved successfully”
+} catch {
+    Write-Error “Failed to save CheckIT data: $($_.Exception.Message)”
+}</p>
+
+<h3 id="example-5">EXAMPLE 5</h3>
+
+<h1 id="save-before-major-operations">Save before major operations</h1>
+<p>Save-CheckITDataCore -Path “pre_operation_backup.json”</p>
+<h1 id="perform-risky-operations">Perform risky operations…</h1>
+<h1 id="load-checkitdatacore--path-pre_operation_backupjson--if-needed">Load-CheckITDataCore -Path “pre_operation_backup.json” # if needed</h1>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-path">-Path</h3>
+
+<p>The file path where the data will be saved.
+Defaults to “CheckIT_Reports.json” in the current directory.
+Supports relative and absolute paths.
+The directory must exist and be writable.</p>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: CheckIT_Reports.json
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>Controls output behavior:</p>
+
+<ul>
+  <li>$true (default): Displays colored status messages and confirmations to the console</li>
+  <li>$false: Operates silently for GUI/automation scenarios - no console output</li>
+</ul>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="none-this-function-performs-file-io-operations-as-a-side-effect">None. This function performs file I/O operations as a side effect</h3>
+
+<h3 id="success-indicators">Success Indicators</h3>
+
+<h3 id="--promptusertrue-green-success-message-displayed-to-console">- PromptUser=$true: Green success message displayed to console</h3>
+
+<h3 id="--promptuserfalse-no-output-no-exceptions-thrown">- PromptUser=$false: No output, no exceptions thrown</h3>
+
+<h3 id="error-indicators">Error Indicators</h3>
+
+<h3 id="--promptusertrue-red-error-message-displayed-to-console">- PromptUser=$true: Red error message displayed to console</h3>
+
+<h3 id="--promptuserfalse-no-console-output-but-exceptions-may-be-thrown">- PromptUser=$false: No console output, but exceptions may be thrown</h3>
+
+<h3 id="file-output">File Output</h3>
+
+<h3 id="creates-a-json-file-containing-the-complete-checkit-data-structure-with">Creates a JSON file containing the complete CheckIT data structure with</h3>
+
+<h3 id="--reports-all-checkit-stores-in-hashtable-format">- Reports: All CheckIT stores in hashtable format</h3>
+
+<h3 id="--version-data-format-version-currently-13">- Version: Data format version (currently “1.3”)</h3>
+
+<h3 id="--securitynote-reminder-about-credential-security-policy">- SecurityNote: Reminder about credential security policy</h3>
+
+<h3 id="--savedat-iso-timestamp-of-when-the-data-was-saved">- SavedAt: ISO timestamp of when the data was saved</h3>
+
+<h2 id="notes">NOTES</h2>
+
+<p>Security Features:</p>
+
+<ul>
+  <li>Credentials are NEVER written to disk - session-only storage for maximum security</li>
+  <li>All user input and configuration data is sanitized before saving</li>
+  <li>File operations use UTF-8 encoding for cross-platform compatibility</li>
+</ul>
+
+<p>Data Structure Management:</p>
+
+<ul>
+  <li>Automatically ensures $global:Reports is a properly structured hashtable</li>
+  <li>Adds missing keys for legacy compatibility (NodeList, TaskLog, ErrorLog, Reports, Preferences, Templates)</li>
+  <li>Updates Templates structure to include Command, Test, and Codebase substores</li>
+  <li>Synchronizes global preferences before saving</li>
+</ul>
+
+<p>File Format:</p>
+
+<ul>
+  <li>JSON with 8-level depth for complex nested structures</li>
+  <li>UTF-8 encoding for international character support</li>
+  <li>Self-documenting with version and timestamp metadata</li>
+</ul>
+
+<p>Error Handling:</p>
+
+<ul>
+  <li>Graceful handling of file system errors (permissions, disk space, path issues)</li>
+  <li>Automatic structure repair if global stores are corrupted</li>
+  <li>Console feedback respects PromptUser parameter for automation compatibility</li>
+</ul>
+
+<p>Performance Considerations:</p>
+
+<ul>
+  <li>Serialization depth limited to 8 levels to prevent infinite recursion</li>
+  <li>Minimal memory footprint during JSON conversion</li>
+  <li>Fast file I/O with single write operation</li>
+</ul>
+
+<p>Related Workflows:</p>
+
+<ul>
+  <li>Save before risky operations or major changes</li>
+  <li>Regular backups of CheckIT session data</li>
+  <li>Data migration between environments</li>
+  <li>Session persistence across PowerShell restarts</li>
+</ul>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

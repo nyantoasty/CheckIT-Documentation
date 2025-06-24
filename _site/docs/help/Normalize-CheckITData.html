@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Normalize-CheckITData | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Normalize-CheckITData</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="normalize-checkitdata">Normalize-CheckITData</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="normalize-checkitdata-1">Normalize-CheckITData</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Normalizes CheckIT data structures to ensure consistent PSCustomObject formatting and proper array handling.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Normalize-CheckITData [[-Data] <Hashtable>]</Hashtable></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Converts and standardizes CheckIT data structures to ensure compatibility across all CheckIT functions.
+Handles both current (hashtable) and legacy (array) data formats by normalizing them to the expected
+structure with proper PSCustomObject formatting.</p>
+
+<p>This function is critical for data import/export operations, ensuring that all data maintains the
+correct structure regardless of source format.
+It handles complex nested data structures and
+ensures that all objects are properly typed for downstream processing.</p>
+
+<p>Key Normalization Operations:</p>
+
+<ul>
+  <li>Converts legacy array formats to proper hashtable structure</li>
+  <li>Ensures all data items are PSCustomObjects for consistent property access</li>
+  <li>Normalizes Reports data with proper Data array structure</li>
+  <li>Converts hashtables to PSCustomObjects in TaskLog and ErrorLog</li>
+  <li>Preserves Preferences and Templates as hashtables for bracket notation access</li>
+  <li>Handles NodeList normalization using New-NodeObject for standardization</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1">EXAMPLE 1</h3>
+
+<h1 id="normalize-a-hashtable-with-mixed-data-types">Normalize a hashtable with mixed data types</h1>
+<p>$data = @{
+    NodeList = @(“PC1”, “PC2”)
+    Reports = @(@{ ReportName = “Test”; Data = @{ Node = “PC1”; Status = “OK” } })
+    TaskLog = @(@{ Task = “Test”; Result = “Success” })
+    Preferences = @{ Setting1 = “Value1” }
+}
+$normalized = Normalize-CheckITData -Data $data</p>
+<h1 id="returns-properly-structured-data-with-pscustomobjects">Returns properly structured data with PSCustomObjects</h1>
+
+<h3 id="example-2">EXAMPLE 2</h3>
+
+<h1 id="handle-legacy-array-format">Handle legacy array format</h1>
+<p>$legacyData = @(“PC1”, “PC2”, “PC3”)
+$normalized = Normalize-CheckITData -Data $legacyData</p>
+<h1 id="converts-to--reports--pc1-pc2-pc3-">Converts to: @{ Reports = @(“PC1”, “PC2”, “PC3”) }</h1>
+
+<h3 id="example-3">EXAMPLE 3</h3>
+
+<h1 id="normalize-reports-with-complex-data-structures">Normalize Reports with complex Data structures</h1>
+<p>$reportsData = @{
+    Reports = @(
+        @{
+            ReportName = “Software_Audit”
+            Data = @{ Software = “Office”; Version = “2021” }  # Single hashtable
+        },
+        @{
+            ReportName = “Hardware_Check” 
+            Data = @(“Result1”, “Result2”)  # Array of strings
+        }
+    )
+}
+$normalized = Normalize-CheckITData -Data $reportsData</p>
+<h1 id="ensures-all-data-entries-are-arrays-of-pscustomobjects">Ensures all Data entries are arrays of PSCustomObjects</h1>
+
+<h3 id="example-4">EXAMPLE 4</h3>
+
+<h1 id="import-and-normalize-data-from-external-source">Import and normalize data from external source</h1>
+<p>$importedData = Import-Csv “data.csv” | ConvertTo-Json | ConvertFrom-Json -AsHashtable
+$normalized = Normalize-CheckITData -Data $importedData</p>
+<h1 id="ensures-compatibility-with-checkit-data-structures">Ensures compatibility with CheckIT data structures</h1>
+
+<h3 id="example-5">EXAMPLE 5</h3>
+
+<h1 id="error-handling-for-invalid-input">Error handling for invalid input</h1>
+<p>try {
+    $invalid = “not a hashtable or array”
+    Normalize-CheckITData -Data $invalid
+} catch {
+    Write-Error “Input must be a hashtable or array: $($_.Exception.Message)”
+}</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-data">-Data</h3>
+
+<p>The data structure to normalize.
+Must be a hashtable or array.</p>
+
+<p>Supported Input Formats:</p>
+
+<ul>
+  <li>Hashtable with CheckIT store structure (NodeList, Reports, TaskLog, etc.)</li>
+  <li>Array of data (automatically wrapped as Reports structure)</li>
+  <li>Mixed data types with nested hashtables and arrays</li>
+</ul>
+
+<p>The function will validate input type and throw an error for unsupported formats.</p>
+
+<p>```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="hashtable-or-array---the-data-structure-to-normalize">[hashtable] or [array] - The data structure to normalize</h3>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="hashtable---normalized-data-structure-with-consistent-pscustomobject-formatting">[hashtable] - Normalized data structure with consistent PSCustomObject formatting</h3>
+
+<h3 id="output-structure">Output Structure</h3>
+
+<h3 id="--all-array-elements-are-properly-typed-pscustomobjects">- All array elements are properly typed PSCustomObjects</h3>
+
+<h3 id="--reports-data-arrays-contain-standardized-objects">- Reports Data arrays contain standardized objects</h3>
+
+<h3 id="--nodelist-items-are-normalized-using-new-nodeobject">- NodeList items are normalized using New-NodeObject</h3>
+
+<h3 id="--tasklog-and-errorlog-contain-pscustomobjects">- TaskLog and ErrorLog contain PSCustomObjects</h3>
+
+<h3 id="--preferences-and-templates-remain-as-hashtables-for-bracket-notation-access">- Preferences and Templates remain as hashtables for bracket notation access</h3>
+
+<h2 id="notes">NOTES</h2>
+
+<p>Data Structure Handling:</p>
+
+<ul>
+  <li>Legacy array inputs are automatically wrapped as Reports structure</li>
+  <li>Reports.Data handling ensures consistent array formatting:
+    <ul>
+      <li>Single hashtables are converted to PSCustomObject arrays</li>
+      <li>Non-enumerable objects are wrapped in arrays</li>
+      <li>Existing arrays have all items converted to PSCustomObjects</li>
+    </ul>
+  </li>
+  <li>Empty or missing Data properties are initialized as empty arrays</li>
+</ul>
+
+<p>Store-Specific Processing:</p>
+
+<ul>
+  <li>NodeList: Uses New-NodeObject for complete standardization</li>
+  <li>Reports: Complex Data array normalization with type conversion</li>
+  <li>TaskLog/ErrorLog: Hashtable to PSCustomObject conversion</li>
+  <li>Preferences: Hashtable structure preserved for bracket notation</li>
+  <li>Templates: Hashtable structure preserved for bracket notation</li>
+</ul>
+
+<p>Type Safety:</p>
+
+<ul>
+  <li>All input is validated before processing</li>
+  <li>Consistent PSCustomObject output for array elements</li>
+  <li>Preserves data integrity while ensuring compatibility</li>
+</ul>
+
+<p>Performance Considerations:</p>
+
+<ul>
+  <li>Single-pass processing for efficiency</li>
+  <li>Minimal object creation and copying</li>
+  <li>Optimized for large data structures</li>
+</ul>
+
+<p>Error Handling:</p>
+
+<ul>
+  <li>Validates input type before processing</li>
+  <li>Throws descriptive errors for unsupported input types</li>
+  <li>Graceful handling of missing or null properties</li>
+</ul>
+
+<p>Integration Points:</p>
+
+<ul>
+  <li>Called by Load-CheckITDataCore for data restoration</li>
+  <li>Used by Import-CheckITData for external data import</li>
+  <li>Integrated with Save-CheckITDataCore for pre-save validation</li>
+  <li>Essential for cross-environment data migration</li>
+</ul>
+
+<p>Development Notes:</p>
+
+<ul>
+  <li>Always use this function when importing external data</li>
+  <li>Required for maintaining data structure consistency</li>
+  <li>Critical for ensuring bracket notation access works correctly</li>
+  <li>Must be called before storing data in global CheckIT stores</li>
+</ul>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

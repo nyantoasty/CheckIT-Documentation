@@ -1,0 +1,121 @@
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+# Convert-WMIDateTime
+
+---
+external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+---
+
+# Convert-WMIDateTime
+
+## SYNOPSIS
+
+Converts WMI datetime format to readable date string
+
+## SYNTAX
+
+
+
+
+
+Convert-WMIDateTime [[-WMIDateTime] <String>] [<CommonParameters>]
+
+
+
+
+
+## DESCRIPTION
+
+Converts WMI datetime strings in formats like `20250607000000.000000+***` to readable date/time strings.
+Handles both full datetime stamps and date-only formats.
+Returns properly formatted strings for display and logging.
+
+## EXAMPLES
+
+### Example 1
+
+
+
+
+
+Convert-WMIDateTime "20250607000000.000000+000"
+
+
+
+
+
+Returns: `06/07/2025 00:00:00
+
+
+### Example 2
+
+
+
+
+
+Convert-WMIDateTime "20250607"
+
+
+
+
+
+Returns: `06/07/2025
+
+
+## PARAMETERS
+
+### -WMIDateTime
+
+WMI datetime string in format like `20250607000000.000000+***` or `20250607
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+
+
+
+
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+### System.String (Input)
+
+WMI datetime string in format like `20250607000000.000000+***` or `20250607`.
+
+## OUTPUTS
+
+### System.String (Output)
+
+Formatted date string (MM/dd/yyyy or MM/dd/yyyy HH:mm:ss).
+
+## NOTES
+
+- Handles null/empty input gracefully
+- Returns original value if conversion fails
+- Used extensively in SMS/CCM template processing
+- Thread-safe for parallel execution
+
+## RELATED LINKS
+
+[Convert-ReportData](./Convert-ReportData.md)
+
+
+

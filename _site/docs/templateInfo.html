@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧩 Template System | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <div class="docs-header">
+  <div class="icon-container">
+    
+  </div>
+  
+  <div class="title-container">
+    <h1>🧩 Template System</h1>
+    
+  </div>
+  
+  <div class="status-container">
+    <span class="version-pill">Version 1.5.0</span>
+    <span class="status-pill">Open Beta</span>
+  </div>
+</div>
+
+<div class="page-content">
+  <h2 id="-template-design-philosophy">🎯 Template Design Philosophy</h2>
+
+<p>CheckIT templates follow a <strong>“simple commands, powerful workflows”</strong> approach that maximizes flexibility while maintaining ease of use:</p>
+
+<h3 id="-simple-commands">✅ Simple Commands</h3>
+
+<ul>
+  <li>Each command template does ONE thing well</li>
+  <li>Pure PowerShell commands that return structured data</li>
+  <li>Automatic credential management via Process-Parallel</li>
+  <li>Consistent error handling and timeout management</li>
+</ul>
+
+<h3 id="-powerful-workflows">✅ Powerful Workflows</h3>
+
+<ul>
+  <li>Combine multiple templates using <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Invoke-TemplateWorkflow
+</pre></td></tr></tbody></table></code></li>
+  <li>Automatic Excel export with separate sheets per template</li>
+  <li>Parallel execution across all target nodes</li>
+  <li>Comprehensive logging and reporting</li>
+</ul>
+
+<h3 id="-integration-with-checkit-functions">✅ Integration with CheckIT Functions</h3>
+
+<p>Templates can leverage existing CheckIT functions for consistency:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="c"># Template can call CheckIT functions for enhanced functionality</span><span class="w">
+</span><span class="nv">$userResults</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-Users</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">env</span><span class="p">:</span><span class="nv">COMPUTERNAME</span><span class="w"> </span><span class="nt">-PromptUser</span><span class="p">:</span><span class="bp">$false</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="-advanced-template-workflows">🆕 Advanced Template Workflows</h3>
+
+<h4 id="system-audit-workflow">System Audit Workflow</h4>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="w">
+    </span><span class="s2">"Get OS Info"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Get System Specs"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"Check Disk Space"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"List Logged-On Users"</span><span class="w">
+</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"Complete_System_Audit"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="sccm-analysis-workflow">SCCM Analysis Workflow</h4>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$labNodes</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="w">
+    </span><span class="s2">"Get SCCM Client Info"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Get CCM Packages"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Get SMS Installed Software"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Get CCM Software Metering"</span><span class="w">
+</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"SCCM_Analysis"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-enhanced-software-discovery-v140">🆕 Enhanced Software Discovery (v1.4.0)</h2>
+
+<p>CheckIT now provides the most comprehensive SCCM software discovery available:</p>
+
+<h3 id="three-complementary-approaches">Three Complementary Approaches</h3>
+
+<ol>
+  <li><strong>SMS_InstalledSoftware</strong> - Official software inventory with metering correlation</li>
+  <li><strong>CCM_Application + CCM_Program</strong> - Available packages with deployment status</li>
+  <li><strong>CCM_RecentlyUsedApps</strong> - Individual application usage tracking</li>
+</ol>
+
+<h3 id="why-three-templates">Why Three Templates?</h3>
+
+<ul>
+  <li><strong>Different data sources</strong> provide different insights</li>
+  <li><strong>Combine in workflows</strong> for complete software landscape</li>
+  <li><strong>Individual templates</strong> remain simple and focused</li>
+  <li><strong>Process-Parallel execution</strong> makes it fast across many nodes</li>
+</ul>
+
+<h3 id="real-world-usage">Real-World Usage</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c"># Quick software inventory</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s2">"Get SMS Installed Software"</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$nodes</span><span class="w">
+
+</span><span class="c"># Complete software analysis workflow</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="w">
+    </span><span class="s2">"Get SMS Installed Software"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"Get CCM Packages"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"Get CCM Software Metering"</span><span class="w">
+</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"Software_Analysis"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-creating-your-own-templates">🚀 Creating Your Own Templates</h2>
+
+<h3 id="why-create-custom-templates">Why Create Custom Templates?</h3>
+
+<p>The built-in templates cover common IT operations, but every environment has unique needs. Custom templates allow you to:</p>
+
+<ul>
+  <li><strong>Standardize repetitive tasks</strong> specific to your environment</li>
+  <li><strong>Create organization-specific workflows</strong> (e.g., lab imaging validation, department-specific software checks)</li>
+  <li><strong>Build comprehensive test suites</strong> for your hardware/software configurations</li>
+  <li><strong>Develop reusable code patterns</strong> for consistent CheckIT function development</li>
+</ul>
+
+<h3 id="how-to-create-templates">How to Create Templates</h3>
+
+<p>CheckIT supports three template types, each serving different purposes:</p>
+
+<h4 id="-command-templates">🔧 Command Templates</h4>
+
+<p><strong>Purpose</strong>: Remote PowerShell commands for data collection or system operations</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="c"># Create a new command template</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Command</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Add</span><span class="w">
+
+</span><span class="c"># Example: Custom software audit for your department</span><span class="w">
+</span><span class="c"># Template Name: "Department Software Audit"</span><span class="w">
+</span><span class="c"># Command: Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -match "YourDeptSoftware" } | Select-Object Name, Version</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="-test-templates">🧪 Test Templates</h4>
+
+<p><strong>Purpose</strong>: Interactive validation workflows with manual and automated steps</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="c"># Create a new test template</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Test</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Add</span><span class="w">
+
+</span><span class="c"># Example: Lab computer checkout procedure</span><span class="w">
+</span><span class="c"># - Automated: Check network connectivity, services</span><span class="w">
+</span><span class="c"># - Manual: Verify peripherals, user login test</span><span class="w">
+</span><span class="c"># - Documentation: Issues found, technician notes</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h4 id="-codebase-templates">💻 Codebase Templates</h4>
+
+<p><strong>Purpose</strong>: Development patterns and function templates for building new CheckIT functions</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c"># Browse development patterns</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Search</span><span class="w">
+
+</span><span class="c"># Copy and modify existing patterns for your needs</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Copy</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="template-management-commands">Template Management Commands</h3>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="c"># List available templates by type</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Command</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">List</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Test</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">List</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Codebase</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">List</span><span class="w">
+
+</span><span class="c"># Preview a template before using</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Command</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Preview</span><span class="w">
+
+</span><span class="c"># Copy and modify existing templates</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Command</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Copy</span><span class="w">
+
+</span><span class="c"># Edit your user templates</span><span class="w">
+</span><span class="n">Manage-Templates</span><span class="w"> </span><span class="nt">-Type</span><span class="w"> </span><span class="nx">Test</span><span class="w"> </span><span class="nt">-Action</span><span class="w"> </span><span class="nx">Edit</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="integration-with-workflows">Integration with Workflows</h3>
+
+<p>Once created, your templates integrate seamlessly with CheckIT workflows:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c"># Use custom templates in workflows</span><span class="w">
+</span><span class="n">Invoke-TemplateWorkflow</span><span class="w"> </span><span class="nt">-Templates</span><span class="w"> </span><span class="p">@(</span><span class="s2">"Your Custom Template"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Get OS Info"</span><span class="p">)</span><span class="w"> </span><span class="nt">-WorkflowName</span><span class="w"> </span><span class="s2">"Custom_Audit"</span><span class="w"> </span><span class="nt">-ExportToExcel</span><span class="w">
+
+</span><span class="c"># Execute individual custom templates</span><span class="w">
+</span><span class="n">Invoke-TemplateCommand</span><span class="w"> </span><span class="nt">-TemplateName</span><span class="w"> </span><span class="s2">"Your Custom Template"</span><span class="w"> </span><span class="nt">-Nodes</span><span class="w"> </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">nodeList</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="-built-in-command-templates-20-total">📋 Built-in Command Templates (20 total)</h2>
+
+<h3 id="system-information-commands-4-templates">System Information Commands (4 templates)</h3>
+
+<ol>
+  <li><strong>“Get OS Info”</strong> - Comprehensive OS and system information including computer name, OS version, memory, manufacturer, model, serial number, and domain</li>
+  <li><strong>“Get System Specs”</strong> - Detailed hardware specifications with processor, memory, and disk information</li>
+  <li><strong>“Get System Uptime”</strong> - System boot time and uptime analysis with recommendations for long uptimes</li>
+  <li><strong>“Get Event Log Errors”</strong> - Recent error events from System and Application logs (last 24 hours)</li>
+</ol>
+
+<h3 id="disk-and-storage-commands-2-templates">Disk and Storage Commands (2 templates)</h3>
+
+<ol>
+  <li><strong>“Check Disk Space”</strong> - Disk space analysis for all drives with usage percentages and status alerts</li>
+  <li><strong>“Get Disk Health”</strong> - Physical disk health and SMART status information</li>
+</ol>
+
+<h3 id="user-and-session-commands-2-templates">User and Session Commands (2 templates)</h3>
+
+<ol>
+  <li><strong>“List Logged-On Users”</strong> - Active user sessions using CheckIT’s Get-Users function with fallback</li>
+  <li><strong>“Get User Sessions”</strong> - Detailed user session information with process counts</li>
+</ol>
+
+<h3 id="network-and-connectivity-commands-2-templates">Network and Connectivity Commands (2 templates)</h3>
+
+<ol>
+  <li><strong>“Test Network Connectivity”</strong> - Test connectivity to domain controller, Google DNS, and local gateway</li>
+  <li><strong>“Get Network Info”</strong> - Network adapter and IP configuration details</li>
+</ol>
+
+<h3 id="system-maintenance-commands-3-templates">System Maintenance Commands (3 templates)</h3>
+
+<ol>
+  <li><strong>“Force GPUpdate”</strong> - Force Group Policy update with execution timing and results</li>
+  <li><strong>“Clear Print Queue”</strong> - Clear all print jobs from all printers with summary statistics</li>
+  <li><strong>“Check Pending Reboot”</strong> - Check for pending reboots from Windows Update, CBS, SCCM, and file operations</li>
+</ol>
+
+<h3 id="sccm--software-discovery-commands-6-templates-">SCCM &amp; Software Discovery Commands (6 templates) 🆕</h3>
+
+<ol>
+  <li><strong>“SCCM Client Actions”</strong> - Trigger multiple SCCM client actions (Policy, Inventory, Updates)</li>
+  <li><strong>“Get SCCM Client Info”</strong> - SCCM client version, configuration, and status information</li>
+  <li><strong>“Get SMS Installed Software”</strong> - Comprehensive SMS software inventory with metering correlation</li>
+  <li><strong>“Get CCM Packages”</strong> - Available CCM applications and legacy packages with deployment status</li>
+  <li><strong>“Get CCM Software Metering”</strong> - Individual application usage and metering data</li>
+</ol>
+
+<h3 id="system-control-commands-2-templates">System Control Commands (2 templates)</h3>
+
+<ol>
+  <li><strong>“Reboot Computer”</strong> - Schedule system reboot with 60-second user warning</li>
+  <li><strong>“Cancel Reboot”</strong> - Cancel a pending system reboot</li>
+</ol>
+
+<h3 id="diagnostic-commands-3-templates">Diagnostic Commands (3 templates)</h3>
+
+<ol>
+  <li><strong>“Get System Uptime”</strong> - System boot time and uptime analysis</li>
+  <li><strong>“Get Event Log Errors”</strong> - Recent error events from system logs</li>
+  <li><strong>“Get Network Info”</strong> - Network adapter and configuration details</li>
+</ol>
+
+<h2 id="-built-in-test-templates-5-total">🧪 Built-in Test Templates (5 total)</h2>
+
+<h3 id="functionality-tests-5-templates">Functionality Tests (5 templates)</h3>
+
+<ol>
+  <li><strong>“Default Functionality Test”</strong> - Comprehensive system functionality check including:
+    <ul>
+      <li>Win32PM service status</li>
+      <li>User login verification</li>
+      <li>Start Menu functionality (manual)</li>
+      <li>Calculator and Windows Apps (manual)</li>
+      <li>Office applications (manual)</li>
+      <li>Office licensing and installation</li>
+      <li>Software Center installation</li>
+      <li>General notes field</li>
+    </ul>
+  </li>
+  <li><strong>“CCM Health Check”</strong> - SCCM/Configuration Manager health assessment:
+    <ul>
+      <li>CCM summary information</li>
+      <li>Pending Windows updates count</li>
+      <li>Reboot requirement status</li>
+      <li>SCCM-specific issues notes</li>
+    </ul>
+  </li>
+  <li><strong>“Network &amp; Drive Check”</strong> - Network and storage validation:
+    <ul>
+      <li>Node connectivity testing</li>
+      <li>Mapped drives verification</li>
+      <li>Network drive accessibility (manual)</li>
+      <li>Printer status</li>
+      <li>Network/drive issues notes</li>
+    </ul>
+  </li>
+  <li><strong>“Profile &amp; Login Troubleshooting”</strong> - User profile and login diagnostics:
+    <ul>
+      <li>Profile loading verification (manual)</li>
+      <li>Login status verification</li>
+      <li>Start Menu functionality (manual)</li>
+      <li>Browser functionality (manual)</li>
+      <li>Login/profile issues documentation</li>
+    </ul>
+  </li>
+  <li><strong>“Office &amp; Apps Validation”</strong> - Application functionality verification:
+    <ul>
+      <li>Office applications functionality (manual)</li>
+      <li>Office licensing status</li>
+      <li>Office installation verification</li>
+      <li>Software Center installation check</li>
+      <li>Calculator and Windows Apps (manual)</li>
+      <li>Application issues documentation</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="-built-in-codebase-templates-5-total">💻 Built-in Codebase Templates (5 total)</h2>
+
+<h3 id="development-patterns-5-templates">Development Patterns (5 templates)</h3>
+
+<ol>
+  <li><strong>“CheckIT Function Template”</strong> - Complete template for new CheckIT functions with all required patterns:
+    <ul>
+      <li>Credential management</li>
+      <li>Node normalization</li>
+      <li>Progress tracking</li>
+      <li>Process-Parallel execution</li>
+      <li>Error handling</li>
+      <li>Reporting separation</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>“Credential Resolution Pattern”</strong> - Standard credential resolution workflow using Get-NodeCredAndFQDN</p>
+  </li>
+  <li>
+    <p><strong>“Process-Parallel Template”</strong> - Template for parallel execution with credential support</p>
+  </li>
+  <li>
+    <p><strong>“Reporting Pattern”</strong> - Correct separation of task logging and business reporting to avoid double reporting</p>
+  </li>
+  <li><strong>“Error Handling Pattern”</strong> - Standard error handling and node status updates with NodeList integration</li>
+</ol>
+
+<h2 id="-template-summary-statistics">📊 Template Summary Statistics</h2>
+
+<ul>
+  <li><strong>Total Built-in Templates: 30</strong>
+    <ul>
+      <li>Command Templates: 20 (70%)</li>
+      <li>Test Templates: 5 (15%)</li>
+      <li>Codebase Templates: 5 (15%)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="-template-integration-features">🔧 Template Integration Features</h2>
+
+<h3 id="command-templates">Command Templates</h3>
+
+<ul>
+  <li>All integrate with CheckIT’s parallel processing ([[Process-Parallel]])</li>
+  <li>Support both CLI and GUI modes via <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>PromptUser
+</pre></td></tr></tbody></table></code> parameter</li>
+  <li>Include comprehensive error handling and timeout management</li>
+  <li>Generate structured PSCustomObject output for reporting</li>
+  <li>Support dry-run mode for validation</li>
+  <li><strong>Software inventory now uses command template approach</strong> with three specialized SCCM templates</li>
+</ul>
+
+<h3 id="test-templates">Test Templates</h3>
+
+<ul>
+  <li>Support both attended and unattended execution modes</li>
+  <li>Include manual verification steps and automated checks</li>
+  <li>Provide structured response types (YesNo, Text, Status, File)</li>
+  <li>Enable comprehensive system validation workflows</li>
+</ul>
+
+<h3 id="codebase-templates">Codebase Templates</h3>
+
+<ul>
+  <li>Provide development patterns and best practices</li>
+  <li>Include complete function templates with all required CheckIT patterns</li>
+  <li>Support credential management and parallel processing</li>
+  <li>Demonstrate proper separation of concerns (logging vs. reporting)</li>
+</ul>
+
+<hr />
+
+</div>
+
+<div class="docs-footer">
+  <div class="footer-nav">
+    <a href="/CheckIT-Documentation/index">🏠 Home</a>
+    <a href="/CheckIT-Documentation/docs/README">ℹ️ About</a>
+    <a href="/CheckIT-Documentation/docs/get-started">🚀 Get Started</a>
+    <a href="/CheckIT-Documentation/docs/api-reference">📘 API Reference</a>
+    <a href="/CheckIT-Documentation/docs/quick-reference">⚡ Quick Reference</a><br>
+    <a href="/CheckIT-Documentation/docs/templateInfo">🧩 Template System</a>
+    <a href="/CheckIT-Documentation/docs/troubleshooting">🔍 Troubleshooting</a>
+    <a href="/CheckIT-Documentation/docs/internal-helpers">🔧 Internal Helper Functions</a>
+    <a href="/CheckIT-Documentation/CHANGELOG">📋 Changelog</a>
+  </div>
+  
+  <div class="footer-info">
+    <div class="footer-badge-container">
+      <span class="footer-badge">1.5.0</span>
+      <span class="footer-badge status">Open Beta</span>
+      <span class="footer-badge">75+ Functions</span>
+    </div>
+    <p>CheckIT-Core • <a href="https://nyantoasty.github.io/CheckIT-Documentation/">Repository</a> • Maintained by KJA • MIT License</p>
+    <p class="footer-updated">Last updated: 2025-06-13</p>
+  </div>
+</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

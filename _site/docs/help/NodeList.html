@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NodeList | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">NodeList</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="nodelist">NodeList</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="nodelist-1">NodeList</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Manage and manipulate the global CheckIT node list with comprehensive CRUD operations and advanced features.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>NodeList [-Action] <String> [[-Nodes] <Array>] [[-FilePath] <String>] [[-CreateIfMissing] <Boolean>]
+ [[-PromptUser] <Boolean>] [-ProgressAction <ActionPreference>] [<CommonParameters>]</CommonParameters></ActionPreference></Boolean></Boolean></String></Array></String></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Comprehensive node list management supporting Add, Remove, Clear, Preview, Update, Upload, and SyncWithCredStore operations. The NodeList is the central repository for all computer/node information in CheckIT, providing standardized node objects with automatic property normalization and credential synchronization.</p>
+
+<p>Features include:</p>
+
+<ul>
+  <li><strong>Automatic deduplication</strong> by node name with conflict resolution</li>
+  <li><strong>Property standardization</strong> using New-NodeObject for consistent structure</li>
+  <li><strong>Credential synchronization</strong> with automatic Passman status updates</li>
+  <li><strong>Active Directory integration</strong> for metadata enhancement</li>
+  <li><strong>File import/export</strong> supporting CSV, TXT, and Excel formats</li>
+  <li><strong>Selective updates</strong> preserving existing data while adding new information</li>
+  <li><strong>Error handling</strong> with comprehensive logging and recovery</li>
+</ul>
+
+<p>Node objects include standardized properties: Node, Group, OU, OS, Skip, Online, WinRM, WSManAuth, LastCheck, Passman, UserName, IdleTime, ID, State, LogonTime, LastError, Win32PM, TaskStatus, and LastReboot.</p>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-node-addition">EXAMPLE 1: Basic Node Addition</h3>
+
+<p>NodeList -Action Add -Nodes @(“PC123”, “SERVER01”, “LAB-PC-05”)</p>
+
+<p>Adds multiple nodes to the NodeList with automatic standardization and deduplication.</p>
+
+<h3 id="example-2-advanced-node-addition-with-properties">EXAMPLE 2: Advanced Node Addition with Properties</h3>
+
+<p>$nodesToAdd = @(
+    [PSCustomObject]@{ Node = “PC123”; Group = “Lab Computers”; Description = “Student workstation” },
+    [PSCustomObject]@{ Node = “SERVER01”; Group = “Servers”; OU = “OU=Servers,DC=domain,DC=com” }
+)
+NodeList -Action Add -Nodes $nodesToAdd</p>
+
+<p>Adds nodes with comprehensive metadata that will be preserved and enhanced.</p>
+
+<h3 id="example-3-selective-node-removal">EXAMPLE 3: Selective Node Removal</h3>
+
+<h1 id="remove-specific-nodes">Remove specific nodes</h1>
+<p>$nodesToRemove = $global:nodeList | Where-Object { $_.Group -eq “Decommissioned” }
+NodeList -Action Remove -Nodes $nodesToRemove</p>
+
+<h1 id="remove-by-name">Remove by name</h1>
+<p>NodeList -Action Remove -Nodes @(“OLD-PC”, “BROKEN-SERVER”)</p>
+
+<p>Removes nodes based on criteria or specific names with automatic cleanup.</p>
+
+<h3 id="example-4-file-import-operations">EXAMPLE 4: File Import Operations</h3>
+
+<h1 id="import-from-csv-with-standard-columns">Import from CSV with standard columns</h1>
+<p>NodeList -Action Upload -FilePath “C:\Data\computers.csv”</p>
+
+<h1 id="import-from-excel-with-automatic-column-mapping">Import from Excel with automatic column mapping</h1>
+<p>NodeList -Action Upload -FilePath “C:\Inventory\node_inventory.xlsx”</p>
+
+<h1 id="import-from-plain-text-file-one-node-per-line">Import from plain text file (one node per line)</h1>
+<p>NodeList -Action Upload -FilePath “C:\Lists\computer_names.txt”</p>
+
+<p>Supports multiple file formats with intelligent column mapping and data normalization.</p>
+
+<h3 id="example-5-selective-property-updates">EXAMPLE 5: Selective Property Updates</h3>
+
+<h1 id="update-specific-properties-without-affecting-others">Update specific properties without affecting others</h1>
+<p>$updates = @(
+    [PSCustomObject]@{ Node = “PC123”; OS = “Windows 11 Pro”; LastCheck = Get-Date },
+    [PSCustomObject]@{ Node = “SERVER01”; Online = “Online”; WinRM = $true }
+)
+NodeList -Action Update -Nodes $updates -CreateIfMissing:$false</p>
+
+<p>Updates only specified properties while preserving all other existing node data.</p>
+
+<h3 id="example-6-credential-store-synchronization">EXAMPLE 6: Credential Store Synchronization</h3>
+
+<h1 id="sync-with-credential-store-and-enhance-with-ad-data">Sync with credential store and enhance with AD data</h1>
+<p>NodeList -Action SyncWithCredStore</p>
+
+<p>Automatically adds missing nodes from the credential store, retrieves AD metadata, and tests connectivity.</p>
+
+<h3 id="example-7-guiautomation-usage">EXAMPLE 7: GUI/Automation Usage</h3>
+
+<h1 id="get-structured-data-for-gui-applications">Get structured data for GUI applications</h1>
+<p>$nodeData = NodeList -Action Preview -PromptUser:$false</p>
+
+<h1 id="batch-updates-without-prompts">Batch updates without prompts</h1>
+<p>$batchUpdates = @(
+    @{ Node = “PC001”; Group = “Updated”; LastCheck = Get-Date },
+    @{ Node = “PC002”; Group = “Updated”; LastCheck = Get-Date }
+)
+NodeList -Action Update -Nodes $batchUpdates -PromptUser:$false -CreateIfMissing:$true</p>
+
+<p>Demonstrates silent operation for GUI integration and automation scenarios.</p>
+
+<h3 id="example-8-conditional-node-creation">EXAMPLE 8: Conditional Node Creation</h3>
+
+<h1 id="update-with-automatic-creation-of-missing-nodes">Update with automatic creation of missing nodes</h1>
+<p>$discoveredNodes = @(
+    [PSCustomObject]@{ Node = “NEW-PC”; Group = “Discovered”; OS = “Windows 10” }
+)
+NodeList -Action Update -Nodes $discoveredNodes -CreateIfMissing:$true</p>
+
+<h1 id="update-with-user-confirmation-for-missing-nodes">Update with user confirmation for missing nodes</h1>
+<p>NodeList -Action Update -Nodes $discoveredNodes -CreateIfMissing:$null -PromptUser:$true</p>
+
+<p>Shows different approaches for handling nodes that don’t exist in the current list.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-action">-Action</h3>
+
+<p>The operation to perform on the NodeList.</p>
+
+<p><strong>Available Actions:</strong></p>
+
+<ul>
+  <li><strong>Add</strong>: Adds new nodes with automatic deduplication and standardization</li>
+  <li><strong>Remove</strong>: Removes specified nodes from the list with cleanup</li>
+  <li><strong>Clear</strong>: Empties the entire NodeList (use with caution)</li>
+  <li><strong>Preview</strong>: Displays or returns the current NodeList for viewing</li>
+  <li><strong>Update</strong>: Modifies existing nodes or optionally creates missing ones</li>
+  <li><strong>Upload</strong>: Imports nodes from external files (CSV, TXT, Excel)</li>
+  <li><strong>SyncWithCredStore</strong>: Synchronizes with credential store and enhances with AD data</li>
+</ul>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-nodes">-Nodes</h3>
+
+<p>Array of node objects, hashtables, or strings to process. The format depends on the action:</p>
+
+<p><strong>For Add/Update/Remove:</strong></p>
+
+<ul>
+  <li>Strings: Node names only (e.g., @(“PC1”, “PC2”))</li>
+  <li>Objects: Full node objects with properties</li>
+  <li>Hashtables: Property-value pairs for node data</li>
+</ul>
+
+<p><strong>Node Object Properties:</strong>
+All properties are optional except ‘Node’:</p>
+
+<ul>
+  <li><strong>Node</strong>: Computer/device name (required)</li>
+  <li><strong>Group</strong>: Logical grouping (e.g., “Lab Computers”, “Servers”)</li>
+  <li><strong>OU</strong>: Active Directory Organizational Unit</li>
+  <li><strong>OS</strong>: Operating System information</li>
+  <li><strong>Description</strong>: Free-text description</li>
+  <li><strong>Online</strong>: Connection status (“Online”, “Offline”, “Unknown”)</li>
+  <li><strong>WinRM</strong>: PowerShell remoting capability (true/false)</li>
+  <li><strong>LastCheck</strong>: Last connectivity test timestamp</li>
+  <li><strong>Passman</strong>: Credential availability status (auto-managed)</li>
+</ul>
+
+<p>```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False</p>
+
+<h3 id="-filepath">-FilePath</h3>
+
+<p>File path for Upload operations. Supports multiple formats:</p>
+
+<p><strong>Supported File Types:</strong></p>
+
+<ul>
+  <li><strong>.csv</strong>: Comma-separated values with headers</li>
+  <li><strong>.txt</strong>: Plain text (one node per line or delimited)</li>
+  <li><strong>.xlsx</strong>: Excel workbook (first sheet used)</li>
+</ul>
+
+<p><strong>Column Mapping:</strong>
+The function automatically maps common column names:</p>
+
+<ul>
+  <li>Node, ComputerName, HostName → Node property</li>
+  <li>Group, GroupName → Group property</li>
+  <li>OU, OrganizationalUnit → OU property</li>
+  <li>Description, Desc → Description property</li>
+</ul>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-createifmissing">-CreateIfMissing</h3>
+
+<p>Controls behavior when updating nodes that don’t exist in the NodeList:</p>
+
+<ul>
+  <li><strong>$true</strong>: Automatically creates missing nodes</li>
+  <li><strong>$false</strong>: Skips missing nodes (update existing only)</li>
+  <li><strong>$null</strong> (default): Prompts user if PromptUser is true, otherwise skips</li>
+</ul>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>Controls interactive behavior and output formatting:</p>
+
+<ul>
+  <li><strong>$true</strong> (default): CLI mode with colored output, prompts, and formatted display</li>
+  <li><strong>$false</strong>: Silent mode returning structured objects for GUI/automation use</li>
+</ul>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 5
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="string">String[]</h3>
+
+<p>Array of node names for simple addition or removal operations.</p>
+
+<h3 id="in-pscustomobject">IN PSCustomObject[]</h3>
+
+<p>Array of node objects with comprehensive property sets for advanced operations.</p>
+
+<h3 id="hashtable">Hashtable[]</h3>
+
+<p>Array of property-value hashtables for flexible node data specification.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="out-pscustomobject">OUT PSCustomObject[]</h3>
+
+<p>Array of standardized node objects representing the updated NodeList. All objects include the complete set of NodeList properties with proper typing and formatting.</p>
+
+<p><strong>Return Object Properties:</strong>
+Each returned object includes all standardized NodeList columns:</p>
+
+<ul>
+  <li>Node, Group, OU, OS, Skip, Online, WinRM, WSManAuth</li>
+  <li>LastCheck, Passman, UserName, IdleTime, ID, State</li>
+  <li>LogonTime, LastError, Win32PM, TaskStatus, LastReboot</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Global NodeList Management:</strong></p>
+
+<ul>
+  <li>Stored in <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$global:nodeList
+</pre></td></tr></tbody></table></code> for session-wide access</li>
+  <li>Automatically persisted when using Save-CheckITDataCore</li>
+  <li>Synchronized with credential store via Passman integration</li>
+  <li>Enhanced with Active Directory metadata when available</li>
+</ul>
+
+<p><strong>Deduplication and Standardization:</strong></p>
+
+<ul>
+  <li>Automatic deduplication by Node name (case-sensitive)</li>
+  <li>Conflict resolution keeps the most recent/complete record</li>
+  <li>All objects standardized via New-NodeObject for consistency</li>
+  <li>Property validation ensures data integrity</li>
+</ul>
+
+<p><strong>File Import Features:</strong></p>
+
+<ul>
+  <li>Intelligent column mapping for various naming conventions</li>
+  <li>Support for delimited text files (comma, semicolon, tab, pipe)</li>
+  <li>Excel import via Import-FromExcel for module independence</li>
+  <li>Automatic data type conversion and validation</li>
+</ul>
+
+<p><strong>Credential Integration:</strong></p>
+
+<ul>
+  <li>Automatic Passman status updates based on credential store</li>
+  <li>SyncWithCredStore action for comprehensive credential alignment</li>
+  <li>Integration with Get-ValidCredStatus for accurate status reporting</li>
+</ul>
+
+<p><strong>Active Directory Enhancement:</strong></p>
+
+<ul>
+  <li>Automatic OS and OU population via AD function integration</li>
+  <li>SyncWithCredStore includes AD metadata retrieval</li>
+  <li>Supports both exact and partial name matching for AD lookup</li>
+</ul>
+
+<p><strong>Error Handling and Recovery:</strong></p>
+
+<ul>
+  <li>Comprehensive error logging via New-ErrorRecord</li>
+  <li>Graceful handling of file import failures</li>
+  <li>Automatic cleanup of invalid or empty node entries</li>
+  <li>Detailed error messages for troubleshooting</li>
+</ul>
+
+<p><strong>Performance Considerations:</strong></p>
+
+<ul>
+  <li>Efficient deduplication using Group-Object operations</li>
+  <li>Batch processing for large node sets</li>
+  <li>Minimal AD queries through intelligent caching</li>
+  <li>Optimized property updates preserve existing data</li>
+</ul>
+
+<p><strong>Best Practices:</strong></p>
+
+<ul>
+  <li>Use Preview with PromptUser:$false for GUI data retrieval</li>
+  <li>Implement error handling when calling from automation scripts</li>
+  <li>Regular SyncWithCredStore to maintain credential alignment</li>
+  <li>Use descriptive Group names for logical organization</li>
+  <li>Test file imports with small datasets before large operations</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/New-NodeObject.html">New-NodeObject</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Update-NodeFromResult.html">Update-NodeFromResult</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Resolve-NodeObjects.html">Resolve-NodeObjects</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-CheckITColumns.html">Get-CheckITColumns</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Save-CheckITDataCore.html">Save-CheckITDataCore</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Load-CheckITDataCore.html">Load-CheckITDataCore</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>

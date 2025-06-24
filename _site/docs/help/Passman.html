@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passman | CheckIT-Core Documentation</title>
+  <link rel="stylesheet" href="/CheckIT-Documentation/assets/style.css">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <div class="wrapper">
+        <a class="site-title" href="/CheckIT-Documentation/">CheckIT-Core</a>
+        <nav class="site-nav">
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/README" class="page-link">ℹ️ About</a>
+            
+              <a href="/CheckIT-Documentation/docs/get-started" class="page-link">🚀 Get Started</a>
+            
+              <a href="/CheckIT-Documentation/docs/api-reference" class="page-link">📘 API Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/quick-reference" class="page-link">⚡ Quick Reference</a>
+            
+              <a href="/CheckIT-Documentation/docs/templateInfo" class="page-link">🧩 Template System</a>
+            
+          </div>
+          <div class="nav-row">
+            
+              <a href="/CheckIT-Documentation/docs/troubleshooting" class="page-link">🔍 Troubleshooting</a>
+            
+              <a href="/CheckIT-Documentation/docs/internal-helpers" class="page-link">🔧 Internal Helper Functions</a>
+            
+              <a href="/CheckIT-Documentation/CHANGELOG" class="page-link">📋 Changelog</a>
+            
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Passman</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="passman">Passman</h1>
+
+<hr />
+<p>external help file: checkit-core-help.xml
+Module Name: checkit-core
+online version:
+schema: 2.0.0
+—</p>
+
+<h1 id="passman-1">Passman</h1>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+
+<p>Retrieve administrator credentials from Passman for valid Active Directory nodes with comprehensive validation and security controls.</p>
+
+<h2 id="syntax">SYNTAX</h2>
+
+<p>Passman [[-Nodes] <Array>] [[-PromptUser] <Boolean>] [[-WO] <String>] [[-Reason] <String>]
+ [<CommonParameters>]</CommonParameters></String></String></Boolean></Array></p>
+
+<h2 id="description">DESCRIPTION</h2>
+
+<p>Securely retrieves administrator credentials from the SHSU Passman system for Windows computers in Active Directory. This function provides comprehensive validation, including Active Directory verification, user selection interfaces, and automatic credential storage with expiration management.</p>
+
+<p>The function integrates with CheckIT’s NodeList system and provides both interactive CLI and programmatic automation modes. It ensures only valid Windows systems receive credential requests and maintains audit trails through work order and reason tracking.</p>
+
+<p>Key features:</p>
+
+<ul>
+  <li><strong>Active Directory validation</strong> before credential requests</li>
+  <li><strong>Interactive node selection</strong> for multi-node scenarios</li>
+  <li><strong>Automatic credential storage</strong> with expiration tracking</li>
+  <li><strong>NodeList integration</strong> with automatic node management</li>
+  <li><strong>Security controls</strong> with input validation and sanitization</li>
+  <li><strong>Dual-mode operation</strong> supporting both CLI and automation workflows</li>
+</ul>
+
+<h2 id="examples">EXAMPLES</h2>
+
+<h3 id="example-1-basic-credential-retrieval-for-single-node">EXAMPLE 1: Basic Credential Retrieval for Single Node</h3>
+
+<p>$node = [PSCustomObject]@{ Node = “LAB-PC-01” }
+$retrievedNodes = Passman -Nodes @($node)</p>
+
+<p>Retrieves administrator credentials for LAB-PC-01 with interactive prompts for work order and reason.</p>
+
+<h3 id="example-2-multiple-node-selection-with-interactive-interface">EXAMPLE 2: Multiple Node Selection with Interactive Interface</h3>
+
+<p>$nodes = $global:nodeList | Where-Object { $_.Group -eq “Lab Computers” }
+$credentialNodes = Passman -Nodes $nodes -PromptUser $true</p>
+
+<p>Displays selection interface for lab computers and allows user to choose specific nodes for credential retrieval.</p>
+
+<h3 id="example-3-automated-credential-retrieval-for-scripts">EXAMPLE 3: Automated Credential Retrieval for Scripts</h3>
+
+<p>$nodes = @(“PC123”, “PC124”, “PC125”)
+$result = Passman -Nodes $nodes -PromptUser $false -WO “WO2024-001” -Reason “Software deployment automation”</p>
+
+<p>Silently retrieves credentials for multiple nodes using predefined work order and reason for automation scenarios.</p>
+
+<h3 id="example-4-nodelist-integration-workflow">EXAMPLE 4: NodeList Integration Workflow</h3>
+
+<h1 id="add-nodes-to-nodelist-if-not-already-present">Add nodes to NodeList if not already present</h1>
+<p>NodeList -Action Add -Nodes @(“NEW-PC-01”, “NEW-PC-02”)</p>
+
+<h1 id="retrieve-credentials-with-automatic-nodelist-updates">Retrieve credentials with automatic NodeList updates</h1>
+<p>$credNodes = Passman -Nodes @(“NEW-PC-01”, “NEW-PC-02”)</p>
+
+<h1 id="verify-credential-status">Verify credential status</h1>
+<p>$credStatus = Get-ValidCred -Nodes $credNodes</p>
+
+<p>Demonstrates complete workflow with NodeList integration and credential verification.</p>
+
+<h3 id="example-5-error-handling-and-node-validation">EXAMPLE 5: Error Handling and Node Validation</h3>
+
+<p>$mixedNodes = @(“VALID-PC”, “INVALID-PC”, “NON-WINDOWS-DEVICE”)
+try {
+    $result = Passman -Nodes $mixedNodes -PromptUser $true
+    Write-Host “Successfully retrieved credentials for: $($result -join ‘, ‘)”
+} catch {
+    Write-Warning “Credential retrieval failed: $($_.Exception.Message)”
+}</p>
+
+<p>Shows handling of mixed valid/invalid nodes with appropriate error management.</p>
+
+<h3 id="example-6-credential-expiration-management">EXAMPLE 6: Credential Expiration Management</h3>
+
+<h1 id="check-current-credential-status">Check current credential status</h1>
+<p>$credStatus = Get-ValidCred -Nodes $global:nodeList
+$expired = $credStatus | Where-Object { $_.Status -eq “Expired” }</p>
+
+<p>if ($expired.Count -gt 0) {
+    Write-Host “Refreshing expired credentials for $($expired.Count) nodes…”
+    $refreshed = Passman -Nodes $expired.Node -PromptUser $false -WO “WO2024-002” -Reason “Credential refresh”
+}</p>
+
+<p>Demonstrates proactive credential expiration management in automation scenarios.</p>
+
+<h2 id="parameters">PARAMETERS</h2>
+
+<h3 id="-nodes">-Nodes</h3>
+
+<p>Array of node objects or node names for credential retrieval. Supports multiple input formats and automatic resolution from the global NodeList.</p>
+
+<p><strong>Supported Input Types:</strong></p>
+
+<ul>
+  <li>
+    <p><strong>String arrays</strong>: `@(“PC1”, “PC2”, “PC3”)</p>
+  </li>
+  <li><strong>Node objects</strong>: Objects with <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>.Node
+</pre></td></tr></tbody></table></code> property from NodeList</li>
+  <li><strong>Mixed arrays</strong>: Combination of strings and node objects</li>
+</ul>
+
+<p><strong>Input Processing:</strong></p>
+
+<ul>
+  <li>Strings are resolved against global NodeList when possible</li>
+  <li>Missing nodes prompt for NodeList addition (interactive mode)</li>
+  <li>Invalid or non-existent nodes are filtered out after AD validation</li>
+  <li>Automatic conversion to standardized node objects</li>
+</ul>
+
+<p><strong>Node Requirements:</strong></p>
+
+<ul>
+  <li>Must exist in Active Directory</li>
+  <li>Must be Windows-based systems (Non-PC systems excluded)</li>
+  <li>Must have valid computer accounts in the domain</li>
+</ul>
+
+<p>```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False</p>
+
+<h3 id="-promptuser">-PromptUser</h3>
+
+<p>Controls the interaction mode and user interface behavior for the credential retrieval process.</p>
+
+<p><strong>When $true (Interactive Mode - Default):</strong></p>
+
+<ul>
+  <li>Displays multi-node selection interface for choosing specific nodes</li>
+  <li>Prompts for work order number with validation</li>
+  <li>Prompts for reason with length and content validation</li>
+  <li>Shows confirmation dialog before submitting Passman request</li>
+  <li>Provides colored status output during AD verification</li>
+  <li>Allows corrections to work order, reason, and node list</li>
+  <li>Displays success/failure messages with detailed information</li>
+</ul>
+
+<p><strong>When $false (Automation Mode):</strong></p>
+
+<ul>
+  <li>Uses provided WO and Reason parameters without prompting</li>
+  <li>Processes all provided nodes without selection interface</li>
+  <li>Silent operation suitable for scripts and background automation</li>
+  <li>No console output except warnings and errors</li>
+  <li>Immediate processing without user confirmation</li>
+</ul>
+
+<p><strong>Use Cases:</strong></p>
+
+<ul>
+  <li>Interactive Mode: Manual credential retrieval, troubleshooting, ad-hoc operations</li>
+  <li>Automation Mode: Scheduled scripts, GUI applications, batch processing</li>
+</ul>
+
+<p>```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 2
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-wo">-WO</h3>
+
+<p>Work order number for audit tracking and accountability. Required for automation mode, prompted in interactive mode.</p>
+
+<p><strong>Format Requirements:</strong></p>
+
+<ul>
+  <li><strong>Allowed characters</strong>: Letters, numbers, dashes, underscores only</li>
+  <li>
+    <p><strong>Pattern</strong>: `^[A-Za-z0-9-_]+$</p>
+  </li>
+  <li><strong>No spaces or special characters</strong> (except dash and underscore)</li>
+  <li><strong>Cannot be empty</strong> or whitespace-only</li>
+</ul>
+
+<p><strong>Common Formats:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>WO2024-001
+</pre></td></tr></tbody></table></code> - Standard work order format</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>TICKET_12345
+</pre></td></tr></tbody></table></code> - Ticket system reference</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>MAINT-2024-Q1
+</pre></td></tr></tbody></table></code> - Maintenance window identifier</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>DEPLOY_APP_V2
+</pre></td></tr></tbody></table></code> - Deployment project reference</li>
+</ul>
+
+<p><strong>Security and Audit:</strong></p>
+
+<ul>
+  <li>Logged with Passman request for accountability</li>
+  <li>Included in credential retrieval audit trail</li>
+  <li>Used for tracking credential usage patterns</li>
+  <li>Required for organizational compliance</li>
+</ul>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 3
+Default value: None (prompted in interactive mode)
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h3 id="-reason">-Reason</h3>
+
+<p>Description of why credentials are needed. Required for audit tracking and organizational compliance.</p>
+
+<p><strong>Content Requirements:</strong></p>
+
+<ul>
+  <li><strong>Length</strong>: 1-100 characters (enforced)</li>
+  <li><strong>Content filtering</strong>: Removes potentially dangerous characters</li>
+  <li><strong>Sanitization</strong>: Strips HTML/script characters (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>&lt;&gt;;&amp;"'\
+</pre></td></tr></tbody></table></code>)</li>
+  <li><strong>Normalization</strong>: Converts line breaks to spaces</li>
+  <li><strong>Trimming</strong>: Removes leading/trailing whitespace</li>
+</ul>
+
+<p><strong>Good Reason Examples:</strong></p>
+
+<ul>
+  <li>
+    <p>`“Software deployment and configuration”</p>
+  </li>
+  <li>
+    <p>`“Troubleshooting network connectivity issues”</p>
+  </li>
+  <li>
+    <p>`“Installing security updates”</p>
+  </li>
+  <li>
+    <p>`“Hardware diagnostics and repair”</p>
+  </li>
+  <li>
+    <p>`“User profile cleanup and maintenance”</p>
+  </li>
+</ul>
+
+<p><strong>Security Considerations:</strong></p>
+
+<ul>
+  <li>Sanitized to prevent injection attacks</li>
+  <li>Logged for audit and compliance tracking</li>
+  <li>Reviewed for organizational policy compliance</li>
+  <li>Used in credential usage reporting</li>
+</ul>
+
+<p>```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:</p>
+
+<p>Required: False
+Position: 4
+Default value: None (prompted in interactive mode)
+Accept pipeline input: False
+Accept wildcard characters: False</p>
+
+<h2 id="inputs">INPUTS</h2>
+
+<h3 id="in-systemobject">IN System.Object[]</h3>
+
+<p>Array of node names (strings) or node objects with Node property.</p>
+
+<h3 id="systemstring">System.String[]</h3>
+
+<p>Array of computer names for credential retrieval.</p>
+
+<h2 id="outputs">OUTPUTS</h2>
+
+<h3 id="out-systemstring">OUT System.String[]</h3>
+
+<p>Array of node names for which credentials were successfully retrieved and stored. These nodes can be used with other CheckIT functions that require credentials.</p>
+
+<p>Returns empty array if:</p>
+
+<ul>
+  <li>No valid nodes found in Active Directory</li>
+  <li>Authentication to Passman fails</li>
+  <li>User cancels the operation</li>
+  <li>All requested nodes are filtered out</li>
+</ul>
+
+<h2 id="notes">NOTES</h2>
+
+<p><strong>Authentication Requirements:</strong></p>
+
+<ul>
+  <li>Must be logged in with regular user profile (not Technician/Administrator accounts)</li>
+  <li>Requires network connectivity to passman.shsu.edu</li>
+  <li>Uses Windows integrated authentication (no separate login required)</li>
+  <li>Passman portal must be accessible and functional</li>
+</ul>
+
+<p><strong>Active Directory Integration:</strong></p>
+
+<ul>
+  <li>Automatically verifies all nodes exist in AD before credential requests</li>
+  <li>Filters out non-Windows systems and non-existent computers</li>
+  <li>Updates NodeList with AD verification results</li>
+  <li>Skips nodes marked as “Not in AD” or “Non-PC”</li>
+</ul>
+
+<p><strong>Node Processing Workflow:</strong></p>
+
+<ol>
+  <li><strong>Input Normalization</strong>: Convert strings to node objects from NodeList</li>
+  <li><strong>Missing Node Handling</strong>: Prompt to add unknown nodes to NodeList (interactive mode)</li>
+  <li><strong>Task Status Tracking</strong>: Set nodes to ‘Pending’ status during processing</li>
+  <li><strong>Node Selection</strong>: Interactive selection interface for multiple nodes</li>
+  <li><strong>Configuration Check</strong>: Run SanityCheck for common issues</li>
+  <li><strong>AD Verification</strong>: Verify each node exists in Active Directory</li>
+  <li><strong>Node Filtering</strong>: Remove invalid nodes from credential request</li>
+  <li><strong>Credential Request</strong>: Submit validated nodes to Passman</li>
+  <li><strong>Credential Storage</strong>: Store retrieved credentials in global CredStore</li>
+  <li><strong>NodeList Updates</strong>: Update node Passman status indicators</li>
+</ol>
+
+<p><strong>Credential Storage:</strong></p>
+
+<ul>
+  <li>Stored in global <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>$CredStore
+</pre></td></tr></tbody></table></code> with automatic expiration tracking</li>
+  <li>Credentials include full FQDN usernames (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>NODENAME.shsu.edu\Administrator
+</pre></td></tr></tbody></table></code>)</li>
+  <li>SecureString passwords for memory protection</li>
+  <li>Automatic NodeList Passman status updates</li>
+  <li>Thread-safe storage for concurrent access</li>
+</ul>
+
+<p><strong>Security Features:</strong></p>
+
+<ul>
+  <li>Input validation and sanitization for work orders and reasons</li>
+  <li>HTML decoding of passwords from Passman response</li>
+  <li>Secure credential storage with PSCredential objects</li>
+  <li>Automatic cleanup of expired credentials</li>
+  <li>No persistent credential storage (session-only)</li>
+</ul>
+
+<p><strong>Error Handling:</strong></p>
+
+<ul>
+  <li>Graceful handling of authentication failures</li>
+  <li>Network connectivity error management</li>
+  <li>Individual node processing errors don’t stop batch operations</li>
+  <li>Clear error messages for troubleshooting</li>
+  <li>Automatic retry capabilities for network timeouts</li>
+</ul>
+
+<p><strong>Integration with CheckIT Functions:</strong></p>
+
+<ul>
+  <li>Used by all functions requiring remote computer access</li>
+  <li>Integrated with Process-Parallel for credential injection</li>
+  <li>Compatible with Get-ValidCred for credential status checking</li>
+  <li>Supports Show-CredentialClipboard for password access</li>
+</ul>
+
+<p><strong>Performance Considerations:</strong></p>
+
+<ul>
+  <li>AD verification adds processing time but prevents failed requests</li>
+  <li>Large node lists may take significant time for AD validation</li>
+  <li>Passman portal response parsing scales with node count</li>
+  <li>Network latency affects overall completion time</li>
+</ul>
+
+<p><strong>Best Practices:</strong></p>
+
+<ul>
+  <li>Use descriptive work orders and reasons for audit trails</li>
+  <li>Verify node existence in AD before calling function</li>
+  <li>Use automation mode for scripted operations</li>
+  <li>Implement error handling for production scripts</li>
+  <li>Regularly check credential expiration status</li>
+  <li>Use appropriate node filtering to minimize invalid requests</li>
+</ul>
+
+<p><strong>Common Issues and Solutions:</strong></p>
+
+<ul>
+  <li><strong>Authentication Failed</strong>: Ensure logged in with regular profile, not admin account</li>
+  <li><strong>Nodes Not Found</strong>: Verify computer names and AD connectivity</li>
+  <li><strong>Network Errors</strong>: Check passman.shsu.edu accessibility</li>
+  <li><strong>Invalid Input</strong>: Review work order format and reason length requirements</li>
+  <li><strong>Credential Expiration</strong>: Use Get-ValidCred to check status before operations</li>
+</ul>
+
+<h2 id="related-links">RELATED LINKS</h2>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-PassManInfo.html">Get-PassManInfo</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Get-ValidCred.html">Get-ValidCred</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Show-CredentialClipboard.html">Show-CredentialClipboard</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/Ensure-GlobalCredStore.html">Ensure-GlobalCredStore</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/NodeList.html">NodeList</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/AD.html">AD</a></p>
+
+<p><a href="/CheckIT-Documentation/docs/help/SanityCheck.html">SanityCheck</a></p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/CheckIT-Documentation/assets/js/code-blocks.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/function-links.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/field-icons.js"></script>
+  <script src="/CheckIT-Documentation/assets/js/functionCardTabs.js"></script>  
+</body>
+</html>
